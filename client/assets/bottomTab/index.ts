@@ -19,4 +19,10 @@ export interface BottomTabIconSvgProp {
         | EntryExitAnimationFunction
         | Keyframe
         | undefined;
+    exiting?:
+        | BaseAnimationBuilder
+        | typeof BaseAnimationBuilder
+        | EntryExitAnimationFunction
+        | Keyframe
+        | undefined;
 }

@@ -26,6 +26,7 @@ function BottomTabIconWrapper(BottomTabIconSvg: React.FC<BottomTabIconSvgProp>) 
             }
         }, [iconDimensions, props.focused]);
         const animatedProps = useIconAnimation(props);
+
         return (
             <View
                 ref={ref}
@@ -41,6 +42,7 @@ function BottomTabIconWrapper(BottomTabIconSvg: React.FC<BottomTabIconSvgProp>) 
                     height={props.height}
                     fill={props.fill}
                     entering={props.entering}
+                    exiting={props.exiting}
                 />
             </View>
         );

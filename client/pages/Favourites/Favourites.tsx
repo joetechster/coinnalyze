@@ -1,6 +1,6 @@
 import { baseSlice, store } from "@redux_store/store";
 import * as React from "react";
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, TouchableNativeFeedback } from "react-native";
 import { useDispatch } from "react-redux";
 
 const { toggleTheme } = baseSlice.actions;
@@ -8,22 +8,27 @@ const { toggleTheme } = baseSlice.actions;
 function Favourites() {
     const dispatch = useDispatch();
     return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "white" }}>
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Text>Favourites</Text>
-            <Pressable
+            <View
                 style={{
-                    borderStyle: "solid",
-                    borderWidth: 1,
-                    borderColor: "black",
-                    padding: 4,
                     borderRadius: 10,
-                }}
-                onPress={() => {
-                    dispatch(toggleTheme());
+                    width: 50,
+                    height: 50,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: "black",
                 }}
             >
-                <Text>click me</Text>
-            </Pressable>
+                <TouchableNativeFeedback
+                    onPress={() => {
+                        dispatch(toggleTheme());
+                    }}
+                    background={TouchableNativeFeedback.Ripple("#aaa", true)}
+                >
+                    <View style={{ flex: 1 }} />
+                </TouchableNativeFeedback>
+            </View>
         </View>
     );
 }

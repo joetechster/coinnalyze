@@ -3,7 +3,13 @@ import { View } from "react-native";
 import useStyles from "../../custom_hooks/useStyles";
 import BottomTabStyles from "./BottomTabStyles";
 import BottomTabSvg from "./BottomTabSvg";
-import Animated, { useAnimatedStyle, useSharedValue, FadeInDown, SharedValue } from "react-native-reanimated";
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    FadeInDown,
+    SharedValue,
+    FadeOutDown,
+} from "react-native-reanimated";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import BottomTabItemList from "./BottomTabItemList";
 import { BottomTabIconSvgProp } from "@assets/bottomTab";
@@ -57,6 +63,7 @@ export default function BottomTab({ state, descriptors, navigation }: BottomTabB
                     strokeWidth={1}
                     activeCase={activeCase}
                     entering={FadeInDown}
+                    exiting={FadeOutDown}
                 />
             </Animated.View>
             <BottomTabItemList navigation={navigation} activeCase={activeCase} Tabs={Tabs} />
