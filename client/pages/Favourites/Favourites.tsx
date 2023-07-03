@@ -24,7 +24,11 @@ function Favourites() {
                 <TouchableNativeFeedback
                     onPress={() => {
                         console.log(url);
-                        fetch(url)
+                        fetch(url, {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
                             .then((res) => res.json())
                             .then((data) => {
                                 console.log("successful");
