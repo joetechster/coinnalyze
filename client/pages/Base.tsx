@@ -14,7 +14,7 @@ export default function Base() {
             <TabNavigator.Navigator
                 screenOptions={{ headerShown: false }}
                 tabBar={(props) => <BottomTab {...props} />}
-                initialRouteName="Home"
+                initialRouteName="Events"
             >
                 <TabNavigator.Screen
                     name="Home"

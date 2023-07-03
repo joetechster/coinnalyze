@@ -1,12 +1,13 @@
-import { baseSlice, store } from "@redux_store/store";
 import * as React from "react";
-import { Text, View, Pressable, TouchableNativeFeedback } from "react-native";
-import { useDispatch } from "react-redux";
+import { Text, View, TouchableNativeFeedback } from "react-native";
+import Constants from "expo-constants";
+const { manifest } = Constants;
 
-const { toggleTheme } = baseSlice.actions;
+export const url = manifest?.packagerOpts?.dev
+    ? `http://${manifest?.debuggerHost?.split(":").shift()}:4000/graphql`
+    : "api.example.com";
 
 function Favourites() {
-    const dispatch = useDispatch();
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Text>Favourites</Text>
@@ -22,7 +23,17 @@ function Favourites() {
             >
                 <TouchableNativeFeedback
                     onPress={() => {
-                        dispatch(toggleTheme());
+                        console.log(url);
+                        fetch(url)
+                            .then((res) => res.json())
+                            .then((data) => {
+                                console.log("successful");
+                                console.log(data);
+                            })
+                            .catch((err) => {
+                                console.log("error occured");
+                                console.error(err);
+                            });
                     }}
                     background={TouchableNativeFeedback.Ripple("#aaa", true)}
                 >
