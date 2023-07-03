@@ -9,16 +9,15 @@ import Drawer from "@components/Drawer/Drawer";
 import { useSelector, Provider } from "react-redux";
 import { store } from "@redux_store/store";
 import { selectTheme } from "@redux_store/selectors";
-import useRootBackgroundColor from "@custom_hooks/useRootBackgroundColor";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import useSetRootBg from "@custom_hooks/useSetRootBg";
 
 const DrawerNavigator = createDrawerNavigator();
 
 function App() {
     const theme = useSelector(selectTheme);
     const statusBarTheme = useStatusBarStyle(theme);
-    useRootBackgroundColor();
-
+    useSetRootBg();
     return (
         <Provider store={store}>
             <StatusBar barStyle={statusBarTheme.content} backgroundColor={statusBarTheme.background} />

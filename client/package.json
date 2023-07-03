@@ -36,7 +36,8 @@
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.1",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "expo-system-ui": "~2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

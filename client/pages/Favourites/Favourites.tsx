@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Text, View, TouchableNativeFeedback } from "react-native";
 import Constants from "expo-constants";
+import { useDispatch } from "react-redux";
+import { baseSlice } from "@redux_store/store";
 const { manifest } = Constants;
 
 export const url = manifest?.packagerOpts?.dev
@@ -8,6 +10,7 @@ export const url = manifest?.packagerOpts?.dev
     : "api.example.com";
 
 function Favourites() {
+    const dispatch = useDispatch();
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Text>Favourites</Text>
@@ -23,21 +26,7 @@ function Favourites() {
             >
                 <TouchableNativeFeedback
                     onPress={() => {
-                        console.log(url);
-                        fetch(url, {
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })
-                            .then((res) => res.json())
-                            .then((data) => {
-                                console.log("successful");
-                                console.log(data);
-                            })
-                            .catch((err) => {
-                                console.log("error occured");
-                                console.error(err);
-                            });
+                        dispatch(baseSlice.actions.toggleTheme());
                     }}
                     background={TouchableNativeFeedback.Ripple("#aaa", true)}
                 >
