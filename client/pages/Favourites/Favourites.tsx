@@ -2,17 +2,31 @@ import * as React from "react";
 import { Text, View, TouchableNativeFeedback } from "react-native";
 import Constants from "expo-constants";
 import { useDispatch } from "react-redux";
-import { baseSlice } from "@redux_store/store";
-const { manifest } = Constants;
+import { gql, useQuery } from "@apollo/client";
+import LoadingSuspense from "@components/LoadingSuspense";
 
-export const url = manifest?.packagerOpts?.dev
-    ? `http://${manifest?.debuggerHost?.split(":").shift()}:4000/graphql`
-    : "api.example.com";
+const GET_USERS = gql`
+    query {
+        users {
+            name
+        }
+    }
+`;
+type User = {
+    name: string;
+};
 
 function Favourites() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const { data, loading } = useQuery(GET_USERS);
+
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <LoadingSuspense loading={loading} fallback={<Text>This is loading</Text>}>
+                {(data?.users as User[])?.map((user, i) => (
+                    <Text key={i}>{user.name}</Text>
+                ))}
+            </LoadingSuspense>
             <Text>Favourites</Text>
             <View
                 style={{
@@ -26,7 +40,7 @@ function Favourites() {
             >
                 <TouchableNativeFeedback
                     onPress={() => {
-                        dispatch(baseSlice.actions.toggleTheme());
+                        // dispatch(baseSlice.actions.toggleTheme());
                     }}
                     background={TouchableNativeFeedback.Ripple("#aaa", true)}
                 >

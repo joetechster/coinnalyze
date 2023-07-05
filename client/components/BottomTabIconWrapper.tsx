@@ -2,7 +2,7 @@ import { activeCaseType } from "@components/BottomTab/BottomTab";
 import useIconAnimation from "@custom_hooks/useIconAnimation";
 import * as React from "react";
 import { View } from "react-native";
-import { updateIconDimensions } from "./updateIconDimensions";
+import { updateIconDimensions } from "../utils/updateIconDimensions";
 import { BottomTabIconSvgProp } from "../assets/bottomTab";
 import { withSpring } from "react-native-reanimated";
 

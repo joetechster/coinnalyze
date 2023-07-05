@@ -13,7 +13,7 @@ import Animated, {
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import BottomTabItemList from "./BottomTabItemList";
 import { BottomTabIconSvgProp } from "@assets/bottomTab";
-import { BottomTabIconProps } from "@utils/BottomTabIconWrapper";
+import { BottomTabIconProps } from "@components/BottomTabIconWrapper";
 
 export interface activeCaseType {
     width: number;

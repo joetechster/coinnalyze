@@ -1,4 +1,4 @@
-import { BottomTabIconProps } from "@utils/BottomTabIconWrapper";
+import { BottomTabIconProps } from "@components/BottomTabIconWrapper";
 import { useAnimatedProps, withTiming } from "react-native-reanimated";
 
 export default function useIconAnimation({ height, focused, inActiveCase }: BottomTabIconProps) {

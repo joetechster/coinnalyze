@@ -1,12 +1,17 @@
 {
     "compilerOptions": {
+        "baseUrl": "./src",
         "rootDirs": ["src"],
         "outDir": "dist",
         "lib": ["es2020"],
-        "target": "es2020",
+        "target": "ES2020",
         "module": "esnext",
         "moduleResolution": "node",
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
         "esModuleInterop": true,
         "types": ["node"]
-    }
+    },
+    "include": ["src/**/*.ts", "tests/**/*.ts"],
+    "exclude": ["node_modules", ".vscode"]
 }

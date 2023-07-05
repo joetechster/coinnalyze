@@ -11,6 +11,7 @@ import { store } from "@redux_store/store";
 import { selectTheme } from "@redux_store/selectors";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import useSetRootBg from "@custom_hooks/useSetRootBg";
+import { url } from "@utils/globals";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -18,8 +19,9 @@ function App() {
     const theme = useSelector(selectTheme);
     const statusBarTheme = useStatusBarStyle(theme);
     useSetRootBg();
+
     return (
-        <Provider store={store}>
+        <>
             <StatusBar barStyle={statusBarTheme.content} backgroundColor={statusBarTheme.background} />
             <NavigationContainer>
                 <DrawerNavigator.Navigator
@@ -33,13 +35,13 @@ function App() {
                     <DrawerNavigator.Screen name="Index" component={Base} />
                 </DrawerNavigator.Navigator>
             </NavigationContainer>
-        </Provider>
+        </>
     );
 }
 
 // Initialize Apollo Client
 const client = new ApolloClient({
-    uri: "localhost:4000/graphql",
+    uri: url,
     cache: new InMemoryCache(),
 });
 
