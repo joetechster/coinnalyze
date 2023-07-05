@@ -1,8 +1,26 @@
+type Candle {
+    eventType: String
+    eventTime: String
+    symbol: String
+    open: String
+    high: String
+    low: String
+    close: String
+    volume: String
+    trades: Int
+    interval: String
+    isFinal: Boolean
+    quoteVolume: String
+    buyVolume: String
+    quoteBuyVolume: String
+}
+
 type User {
     name: String!
 }
 type Query {
     users: [User!]
+    candles(symbol: String!): [Candle!]
 }
 type Mutation {
     addUser(name: String!): User
@@ -10,4 +28,5 @@ type Mutation {
 type Subscription {
     users: [User!]
     newUser: User!
+    candle(symbol: String!): Candle
 }

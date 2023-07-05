@@ -12,7 +12,7 @@ import { createServer } from "http";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
-import contextFunc, { Context } from "context.ts";
+import contextFunc, { Context } from "./context.ts";
 
 const { json } = bodyParser;
 const __filename = fileURLToPath(import.meta.url);
