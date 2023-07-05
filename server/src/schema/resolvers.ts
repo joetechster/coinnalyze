@@ -1,4 +1,3 @@
-import { PubSub } from "graphql-subscriptions";
 import { Context } from "server";
 
 let users = [{ name: "dami" }, { name: "joseph" }];

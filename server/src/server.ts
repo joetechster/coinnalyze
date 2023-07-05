@@ -3,28 +3,23 @@ import path from "path";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { ApolloServer, ContextFunction } from "@apollo/server";
+import { ApolloServer } from "@apollo/server";
 import resolvers from "./schema/resolvers.ts";
 import { fileURLToPath } from "url";
-import { PubSub } from "graphql-subscriptions";
-import { ExpressContextFunctionArgument, expressMiddleware } from "@apollo/server/express4";
+import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { createServer } from "http";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
+import contextFunc, { Context } from "context.ts";
 
 const { json } = bodyParser;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const pubsub = new PubSub();
 const typeDefs = fs.readFileSync(path.join(__dirname, "schema/types.gql"), {
     encoding: "utf8",
 });
-
-export type Context = {
-    pubsub: PubSub;
-};
 
 const app = express();
 const httpServer = createServer(app);
@@ -38,9 +33,9 @@ const server = new ApolloServer<Context>({
 
         // Proper shutdown for the WebSocket server.
         {
-            async serverWillStart() {
+            serverWillStart: async () => {
                 return {
-                    async drainServer() {
+                    drainServer: async () => {
                         await serverCleanup.dispose();
                     },
                 };
@@ -50,9 +45,6 @@ const server = new ApolloServer<Context>({
 });
 
 await server.start();
-const contextFunc: ContextFunction<[ExpressContextFunctionArgument], Context> = async ({ req, res }) => ({
-    pubsub,
-});
 
 app.use(
     "/graphql",
