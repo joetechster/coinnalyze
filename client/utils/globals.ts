@@ -1,6 +1,6 @@
 import Constants from "expo-constants";
 const { manifest } = Constants;
 
-export const url = manifest?.packagerOpts?.dev
-    ? `http://${manifest?.debuggerHost?.split(":").shift()}:4000/graphql`
+export const domain = manifest?.packagerOpts?.dev
+    ? `${manifest?.debuggerHost?.split(":").shift()}:4000`
     : "api.example.com";

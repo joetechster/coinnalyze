@@ -3,7 +3,7 @@ import Binance, { Binance as BinanceType } from "binance-api-node";
 import { subscribe } from "diagnostics_channel";
 
 // @ts-ignore
-const client: BinanceType = Binance.default();
+const client: BinanceType = Binance.default(); //this line having type issuse with ts-node
 let candleApiConnected = false;
 let users = [{ name: "dami" }, { name: "joseph" }];
 
@@ -41,9 +41,13 @@ const resolvers = {
             subscribe: (parent, { symbol }, { pubsub }: Context) => {
                 if (!candleApiConnected) {
                     candleApiConnected = true;
-                    client.ws.candles(symbol, "1m", (candle) => {
-                        pubsub.publish(`${symbol}_SUBSCRIPTION`, { candle });
-                    });
+                    try {
+                        client.ws.candles(symbol, "1m", (candle) => {
+                            pubsub.publish(`${symbol}_SUBSCRIPTION`, { candle });
+                        });
+                    } catch {
+                        console.log("could not connect to binance api");
+                    }
                 }
                 return pubsub.asyncIterator(`${symbol}_SUBSCRIPTION`);
             },

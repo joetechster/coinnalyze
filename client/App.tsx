@@ -11,7 +11,11 @@ import { store } from "@redux_store/store";
 import { selectTheme } from "@redux_store/selectors";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import useSetRootBg from "@custom_hooks/useSetRootBg";
-import { url } from "@utils/globals";
+import { domain } from "@utils/globals";
+import { split, HttpLink } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -39,9 +43,28 @@ function App() {
     );
 }
 
+const wsLink = new GraphQLWsLink(
+    createClient({
+        url: `ws://${domain}/graphql`,
+    })
+);
+const httpLink = new HttpLink({
+    uri: `http://${domain}/graphql`,
+});
+
+const splitLink = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query);
+        return definition.kind === "OperationDefinition" && definition.operation === "subscription";
+    },
+    wsLink,
+    httpLink
+);
+
 // Initialize Apollo Client
 const client = new ApolloClient({
-    uri: url,
+    uri: `${domain}/graphql`,
+    link: splitLink,
     cache: new InMemoryCache(),
 });
 
