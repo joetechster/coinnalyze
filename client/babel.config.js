@@ -29,7 +29,7 @@ module.exports = function (api) {
                         "@custom_context": "./custom_context",
                         "@utils": "./utils",
                         "@styles": "./styles",
-                        "@redux_store": "./redux_store",
+                        "@redux_schema": "./redux_schema",
                     },
                 },
             ],

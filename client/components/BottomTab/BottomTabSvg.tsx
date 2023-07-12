@@ -3,21 +3,23 @@ import Svg, { Mask, Rect, G, Path } from "react-native-svg";
 import { Dimensions } from "react-native";
 import useStyles from "../../custom_hooks/useStyles";
 import BottomTabStyles from "./BottomTabStyles";
-import Animated, { SharedValue, useAnimatedProps } from "react-native-reanimated";
-import { activeCaseType } from "./BottomTab";
+import Animated, { useAnimatedProps } from "react-native-reanimated";
+import { useSelector } from "react-redux";
+import { selectTranslateX } from "@redux_schema/bottomTab/bottomTabSlice";
 
 interface SvgProps {
-    activeCase: activeCaseType;
     width?: number;
     height?: number;
 }
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
-function SVGComponent({ activeCase, width = Dimensions.get("window").width * 2.5, height = 50 }: SvgProps) {
+function SVGComponent({ width = Dimensions.get("window").width * 2.5, height = 50 }: SvgProps) {
     const styles = useStyles(BottomTabStyles);
+    const translateX = useSelector(selectTranslateX);
+
     const animatedProps = useAnimatedProps(() => {
         return {
-            translateX: activeCase.translateX!.value - width / 2,
+            translateX: translateX ? translateX.value - width / 2 : 0,
         };
     });
 

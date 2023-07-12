@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 import Animated from "react-native-reanimated";
-import BottomTabIconWrapper from "../../components/BottomTabIconWrapper";
+import BottomTabIconWrapper from "../../components/BottomTab/BottomTabIconWrapper";
 import { BottomTabIconSvgProp } from ".";
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);

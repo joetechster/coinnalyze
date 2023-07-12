@@ -3,28 +3,27 @@ import { View } from "react-native";
 import useStyles from "../../custom_hooks/useStyles";
 import BottomTabStyles from "./BottomTabStyles";
 import BottomTabSvg from "./BottomTabSvg";
-import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    FadeInDown,
-    SharedValue,
-    FadeOutDown,
-} from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, FadeInDown, FadeOutDown } from "react-native-reanimated";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import BottomTabItemList from "./BottomTabItemList";
-import { BottomTabIconSvgProp } from "@assets/bottomTab";
-import { BottomTabIconProps } from "@components/BottomTabIconWrapper";
+import { BottomTabIconProps } from "@components/BottomTab/BottomTabIconWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { init, selectTranslateX } from "@redux_schema/bottomTab/bottomTabSlice";
 
-export interface activeCaseType {
-    width: number;
-    translateX: SharedValue<number> | null;
+function useTabTranslate() {
+    const initialSharedValue = useSharedValue(0);
+    const dispatch = useDispatch();
+    let translateValue = useSelector(selectTranslateX);
+
+    React.useLayoutEffect(() => {
+        dispatch(init({ translateX: initialSharedValue }));
+    }, []);
+    return translateValue;
 }
 
 export default function BottomTab({ state, descriptors, navigation }: BottomTabBarProps) {
     const styles = useStyles(BottomTabStyles);
-    // memoize dictionary to prevent unnecessary rerenders of tab icons
-    const activeCase = React.useMemo<activeCaseType>(() => ({ width: 50, translateX: null }), []);
-    activeCase.translateX = useSharedValue(0);
+    const translateX = useTabTranslate();
 
     const Tabs = React.useMemo(() => {
         let activeIcon: React.FC<BottomTabIconProps>;
@@ -45,13 +44,13 @@ export default function BottomTab({ state, descriptors, navigation }: BottomTabB
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            transform: [{ translateX: activeCase.translateX!.value }, { translateY: -30 }],
+            transform: [{ translateX: translateX ? translateX.value : 0 }, { translateY: -30 }],
         };
     });
 
     return (
         <View style={styles.container}>
-            <BottomTabSvg activeCase={activeCase} height={55} />
+            <BottomTabSvg height={55} />
             <Animated.View style={[styles.activeIconCase, animatedStyle]}>
                 <Tabs.activeIcon
                     inActiveCase={true}
@@ -61,12 +60,11 @@ export default function BottomTab({ state, descriptors, navigation }: BottomTabB
                     width={25}
                     height={25}
                     strokeWidth={1}
-                    activeCase={activeCase}
                     entering={FadeInDown}
-                    exiting={FadeOutDown}
+                    exiting={FadeOutDown.duration(200)}
                 />
             </Animated.View>
-            <BottomTabItemList navigation={navigation} activeCase={activeCase} Tabs={Tabs} />
+            <BottomTabItemList navigation={navigation} Tabs={Tabs} />
         </View>
     );
 }

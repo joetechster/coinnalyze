@@ -4,22 +4,27 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Home/Home";
 import * as bottomTabIcons from "@assets/bottomTab";
 import Favourites from "./Favourites/Favourites";
-import { Dimensions, View } from "react-native";
+import { Dimensions, StatusBar, View } from "react-native";
+import { Platform } from "react-native";
 
 const TabNavigator = createBottomTabNavigator();
+const windowHeight =
+    Platform.OS === "ios"
+        ? Dimensions.get("screen").height
+        : Dimensions.get("screen").height - (StatusBar?.currentHeight ? StatusBar.currentHeight : 0);
 
 export default function Base() {
     return (
-        <View style={{ height: Dimensions.get("window").height }}>
+        <View style={{ height: windowHeight }}>
             <TabNavigator.Navigator
-                screenOptions={{ headerShown: false }}
+                screenOptions={{ headerShown: false, unmountOnBlur: false }}
                 tabBar={(props) => <BottomTab {...props} />}
-                initialRouteName="Events"
+                initialRouteName="Home"
             >
                 <TabNavigator.Screen
-                    name="Home"
+                    name="Book a Session"
                     component={Home}
-                    options={{ tabBarIcon: bottomTabIcons.HomeIcon }}
+                    options={{ tabBarIcon: bottomTabIcons.BookASessionIcon }}
                 />
                 <TabNavigator.Screen
                     name="Events"
@@ -27,9 +32,9 @@ export default function Base() {
                     options={{ tabBarIcon: bottomTabIcons.EventsIcon }}
                 />
                 <TabNavigator.Screen
-                    name="Book a Session"
+                    name="Home"
                     component={Home}
-                    options={{ tabBarIcon: bottomTabIcons.BookASessionIcon }}
+                    options={{ tabBarIcon: bottomTabIcons.HomeIcon }}
                 />
                 <TabNavigator.Screen
                     name="Community"

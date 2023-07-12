@@ -1,15 +1,15 @@
-import { activeCaseType } from "@components/BottomTab/BottomTab";
 import useIconAnimation from "@custom_hooks/useIconAnimation";
 import * as React from "react";
 import { View } from "react-native";
-import { updateIconDimensions } from "../utils/updateIconDimensions";
-import { BottomTabIconSvgProp } from "../assets/bottomTab";
+import { updateIconDimensions } from "../../utils/updateIconDimensions";
+import { BottomTabIconSvgProp } from "../../assets/bottomTab";
 import { withSpring } from "react-native-reanimated";
+import { useSelector } from "react-redux";
+import { selectTranslateX, selectWidth } from "@redux_schema/bottomTab/bottomTabSlice";
 
 export type BottomTabIconProps = {
     focused: boolean;
     inActiveCase: boolean;
-    activeCase: activeCaseType;
 } & BottomTabIconSvgProp;
 
 function BottomTabIconWrapper(BottomTabIconSvg: React.FC<BottomTabIconSvgProp>) {
@@ -19,10 +19,15 @@ function BottomTabIconWrapper(BottomTabIconSvg: React.FC<BottomTabIconSvgProp>) 
             pageX: 0,
             width: 0,
         });
+        const width = useSelector(selectWidth);
+        const sharedTranslateX = useSelector(selectTranslateX);
+
         React.useEffect(() => {
+            // If the current icon is focused update the translate shared value
             if (props.focused) {
-                let translateX = iconDimensions.pageX + iconDimensions.width / 2 - props.activeCase.width / 2;
-                props.activeCase.translateX!.value = withSpring(translateX, { damping: 11, velocity: 1 });
+                let translateX = iconDimensions.pageX + iconDimensions.width / 2 - width / 2;
+                if (sharedTranslateX)
+                    sharedTranslateX.value = withSpring(translateX, { damping: 11, velocity: 1 });
             }
         }, [iconDimensions, props.focused]);
         const animatedProps = useIconAnimation(props);

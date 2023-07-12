@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { ThemeKeys } from "../styles/themes";
-import { selectTheme } from "@redux_store/selectors";
+import { selectTheme } from "@redux_schema/theme/themeSlice";
 import { useSelector } from "react-redux";
 
 export type StyleType = TextStyle | ViewStyle | ImageStyle;

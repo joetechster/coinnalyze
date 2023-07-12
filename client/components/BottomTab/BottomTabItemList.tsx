@@ -4,8 +4,7 @@ import { View, Pressable } from "react-native";
 import useStyles from "../../custom_hooks/useStyles";
 import BottomTabStyles from "./BottomTabStyles";
 import { StyleSheet } from "react-native";
-import { NavigationHelpers, ParamListBase } from "@react-navigation/native";
-import { activeCaseType } from "./BottomTab";
+import { DrawerActions, NavigationHelpers, ParamListBase, useNavigation } from "@react-navigation/native";
 
 interface Props {
     navigation: NavigationHelpers<ParamListBase, BottomTabNavigationEventMap>;
@@ -17,26 +16,35 @@ interface Props {
         }[];
         activeIcon: any;
     };
-    activeCase: activeCaseType;
 }
 
-function BottomTabItemList({ navigation, Tabs, activeCase }: Props) {
+function BottomTabItemList({ navigation, Tabs }: Props) {
     const styles = useStyles(BottomTabStyles);
 
     return (
         <View style={[styles.itemsWrapper, StyleSheet.absoluteFill]}>
-            {Tabs.list.map((item: any, index: number) => (
-                <TabItem item={item} navigation={navigation} key={index} activeCase={activeCase} />
-            ))}
+            {Tabs.list.map((item: any, index: number) => {
+                const last: boolean = index === (Tabs.list as Array<any>).length - 1;
+                return <TabItem item={item} navigation={navigation} key={index} last={last} />;
+            })}
         </View>
     );
 }
 
-function TabItem({ item, navigation, activeCase }: any) {
+function TabItem({ item, navigation, last }: any) {
     const styles = useStyles(BottomTabStyles);
     const size = 20;
+    const drawerNavigation = useNavigation();
+
+    function onPressIn() {
+        if (last) {
+            drawerNavigation.dispatch(DrawerActions.toggleDrawer());
+        } else {
+            navigation.navigate(item.name);
+        }
+    }
     return (
-        <Pressable onPressIn={() => navigation.navigate(item.name)} style={styles.touchable}>
+        <Pressable onPressIn={onPressIn} style={styles.touchable}>
             <item.Icon
                 focused={item.isFocused}
                 fill={styles.icon.backgroundColor}
@@ -44,7 +52,6 @@ function TabItem({ item, navigation, activeCase }: any) {
                 width={size}
                 height={size}
                 strokeWidth={1}
-                activeCase={activeCase}
             />
         </Pressable>
     );

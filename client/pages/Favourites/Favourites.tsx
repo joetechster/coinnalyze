@@ -2,6 +2,8 @@ import * as React from "react";
 import { Text, View, TouchableNativeFeedback } from "react-native";
 import { gql, useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
 import LoadingSuspense from "@components/LoadingSuspense";
+import { useDispatch } from "react-redux";
+import { toggleTheme } from "@redux_schema/theme/themeSlice";
 
 const GET_USERS = gql`
     query {
@@ -29,9 +31,9 @@ type User = {
 };
 
 function Favourites() {
+    const dispatch = useDispatch();
     const [createUser, { error, data: newUserData }] = useMutation(CREATE_USER);
     const { data, loading } = useSubscription(USER_SUBSCRIPTION);
-    console.log(data);
 
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -53,7 +55,7 @@ function Favourites() {
             >
                 <TouchableNativeFeedback
                     onPress={() => {
-                        createUser();
+                        dispatch(toggleTheme());
                     }}
                     background={TouchableNativeFeedback.Ripple("#aaa", true)}
                 >

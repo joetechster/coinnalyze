@@ -14,6 +14,31 @@ type Candle {
     buyVolume: String
     quoteBuyVolume: String
 }
+type Ticker {
+    eventType: String
+    eventTime: Int
+    symbol: String
+    priceChange: String
+    priceChangePercent: String
+    weightedAvg: String
+    prevDayClose: String
+    curDayClose: String
+    closeTradeQuantity: String
+    bestBid: String
+    bestBidQnt: String
+    bestAsk: String
+    bestAskQnt: String
+    open: String
+    high: String
+    low: String
+    volume: String
+    volumeQuote: String
+    openTime: Int
+    closeTime: Int
+    firstTradeId: Int
+    lastTradeId: Int
+    totalTrades: Int
+}
 
 type User {
     name: String!
@@ -29,4 +54,5 @@ type Subscription {
     users: [User!]
     newUser: User!
     candle(symbol: String!): Candle
+    tickers(symbols: [String!]!): [Ticker!]!
 }

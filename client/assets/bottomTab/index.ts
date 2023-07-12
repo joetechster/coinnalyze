@@ -1,4 +1,4 @@
-import { ColorValue } from "react-native";
+import { ColorValue, ImageStyle } from "react-native";
 import { BaseAnimationBuilder, EntryExitAnimationFunction, Keyframe } from "react-native-reanimated";
 export { default as ApplicationToolsIcon } from "./ApplicationTools";
 export { default as BookASessionIcon } from "./BookASession";
@@ -25,4 +25,5 @@ export interface BottomTabIconSvgProp {
         | EntryExitAnimationFunction
         | Keyframe
         | undefined;
+    style?: ImageStyle;
 }

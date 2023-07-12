@@ -7,8 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import Drawer from "@components/Drawer/Drawer";
 import { useSelector, Provider } from "react-redux";
-import { store } from "@redux_store/store";
-import { selectTheme } from "@redux_store/selectors";
+import { store } from "@redux_schema/store";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import useSetRootBg from "@custom_hooks/useSetRootBg";
 import { domain } from "@utils/globals";
@@ -16,6 +15,7 @@ import { split, HttpLink } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
+import { selectTheme } from "@redux_schema/theme/themeSlice";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -32,8 +32,11 @@ function App() {
                     drawerContent={Drawer}
                     screenOptions={{
                         drawerPosition: "right",
-                        drawerType: "front",
+                        drawerType: "slide",
                         headerShown: false,
+                        drawerStyle: {
+                            width: "100%",
+                        },
                     }}
                 >
                     <DrawerNavigator.Screen name="Index" component={Base} />

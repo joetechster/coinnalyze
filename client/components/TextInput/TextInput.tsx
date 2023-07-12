@@ -4,7 +4,7 @@ import { Pressable, TextInput, View, TextInputProps } from "react-native";
 import TextInputStyles from "./TextInputStyles";
 import themes from "@styles/themes";
 import { useSelector } from "react-redux";
-import { selectTheme } from "@redux_store/selectors";
+import { selectTheme } from "@redux_schema/theme/themeSlice";
 
 type InputProps = {
     icon?: React.ReactNode;

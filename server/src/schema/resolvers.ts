@@ -1,12 +1,12 @@
 import { Context } from "context";
 import Binance, { Binance as BinanceType } from "binance-api-node";
-import { subscribe } from "diagnostics_channel";
 
 // @ts-ignore
 const client: BinanceType = Binance.default(); //this line having type issuse with ts-node
 let candleApiConnected = false;
+let tickerApiConnected = false;
 let users = [{ name: "dami" }, { name: "joseph" }];
-
+let tickSubscribers: { id: string; symbols: string[] }[] = [];
 const resolvers = {
     Query: {
         users: (parent, args, { pubsub }: Context) => {
@@ -50,6 +50,24 @@ const resolvers = {
                     }
                 }
                 return pubsub.asyncIterator(`${symbol}_SUBSCRIPTION`);
+            },
+        },
+        tickers: {
+            subscribe: (parent, { symbols }, { pubsub }: Context) => {
+                const id = Math.random().toString(36).slice(2);
+                tickSubscribers.push({ id, symbols });
+                if (!tickerApiConnected) {
+                    tickerApiConnected = true;
+                    client.ws.allTickers((tickers) => {
+                        tickSubscribers.forEach((subscriber) => {
+                            let _tickers = tickers.filter((ticker) =>
+                                subscriber.symbols.includes(ticker.symbol)
+                            );
+                            if (_tickers.length > 0) pubsub.publish(subscriber.id, { tickers: _tickers });
+                        });
+                    });
+                }
+                return pubsub.asyncIterator(id);
             },
         },
     },
