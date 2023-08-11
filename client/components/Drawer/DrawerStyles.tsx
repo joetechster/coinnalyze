@@ -16,10 +16,9 @@ interface HomeStyleType {
 export default function DrawerStyles(theme: ThemeKeys) {
     const styles: HomeStyleType = {
         container: {
-            ...screenPaddingVertical,
-            ...boxShadow,
             flex: 1,
             backgroundColor: themes[theme].drawer.background,
+            width: "100%",
         },
         topStrip: {
             ...screenPaddingHorizontal,

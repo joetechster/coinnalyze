@@ -25,5 +25,4 @@ export interface BottomTabIconSvgProp {
         | EntryExitAnimationFunction
         | Keyframe
         | undefined;
-    style?: ImageStyle;
 }

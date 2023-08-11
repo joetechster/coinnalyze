@@ -24,6 +24,9 @@ export interface StyleMap {
         backgroundColor: ColorValue;
         color: ColorValue;
     };
+    loading: {
+        backgroundColor: ColorValue;
+    };
 }
 
 // edit this to add a new theme to the app
@@ -54,12 +57,15 @@ const themes: Themes = {
             },
         },
         drawer: {
-            background: "#F2F2F2",
+            background: "white",
         },
         textInput: {
             placeholder: "#333",
             backgroundColor: "#f2f2f2",
             color: "#000",
+        },
+        loading: {
+            backgroundColor: "#F2F2F2",
         },
     },
     [ThemeKeys.Dark]: {
@@ -79,12 +85,15 @@ const themes: Themes = {
             },
         },
         drawer: {
-            background: "#333",
+            background: "black",
         },
         textInput: {
             placeholder: "#999",
             backgroundColor: "#333",
             color: "#fff",
+        },
+        loading: {
+            backgroundColor: "#333",
         },
     },
 };

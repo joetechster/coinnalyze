@@ -7,6 +7,6 @@ export const store = configureStore({
     reducer: {
         bottomTab: bottomTabSlice.reducer,
         theme: themeSlice.reducer,
-        tickers: tickerSlice.reducer,
+        tickerSlice: tickerSlice.reducer,
     },
 });

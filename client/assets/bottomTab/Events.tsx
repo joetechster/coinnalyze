@@ -15,7 +15,6 @@ const SVGComponent = (props: BottomTabIconSvgProp) => {
             height={props.height}
             entering={props.entering}
             exiting={props.exiting}
-            style={props.style}
             viewBox="0 0 17 20"
         >
             <Path

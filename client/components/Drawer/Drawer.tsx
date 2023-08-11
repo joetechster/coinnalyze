@@ -10,7 +10,7 @@ function Drawer(props: DrawerContentComponentProps) {
     const styles = useStyles(DrawerStyles);
 
     return (
-        <View style={styles.container}>
+        <>
             <View style={styles.topStrip}>
                 <View style={styles.userInfo}>
                     <Image source={require("../../assets/icon.png")} style={styles.profilePicture} />
@@ -28,7 +28,7 @@ function Drawer(props: DrawerContentComponentProps) {
             <DrawerContentScrollView {...props}>
                 <DrawerItemList {...props} />
             </DrawerContentScrollView>
-        </View>
+        </>
     );
 }
 

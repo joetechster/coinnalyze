@@ -16,12 +16,15 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { selectTheme } from "@redux_schema/theme/themeSlice";
+import useStyles from "@custom_hooks/useStyles";
+import DrawerStyles from "@components/Drawer/DrawerStyles";
 
 const DrawerNavigator = createDrawerNavigator();
 
 function App() {
     const theme = useSelector(selectTheme);
     const statusBarTheme = useStatusBarStyle(theme);
+    const drawerStyles = useStyles(DrawerStyles);
     useSetRootBg();
 
     return (
@@ -34,9 +37,7 @@ function App() {
                         drawerPosition: "right",
                         drawerType: "slide",
                         headerShown: false,
-                        drawerStyle: {
-                            width: "100%",
-                        },
+                        drawerStyle: drawerStyles.container,
                     }}
                 >
                     <DrawerNavigator.Screen name="Index" component={Base} />
