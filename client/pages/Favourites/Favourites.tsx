@@ -4,6 +4,7 @@ import { gql, useLazyQuery, useMutation, useQuery, useSubscription } from "@apol
 import LoadingSuspense from "@components/LoadingSuspense";
 import { useDispatch } from "react-redux";
 import { toggleTheme } from "@redux_schema/theme/themeSlice";
+import { domain } from "@utils/globals";
 
 const GET_USERS = gql`
     query {
@@ -32,8 +33,8 @@ type User = {
 
 function Favourites() {
     const dispatch = useDispatch();
-    const [createUser, { error, data: newUserData }] = useMutation(CREATE_USER);
-    const { data, loading } = useSubscription(USER_SUBSCRIPTION);
+    // const [createUser, { error, data: newUserData }] = useMutation(CREATE_USER);
+    const { data, loading, error } = useSubscription(USER_SUBSCRIPTION);
 
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>

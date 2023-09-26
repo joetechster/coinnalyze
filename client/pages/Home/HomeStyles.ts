@@ -7,6 +7,7 @@ interface HomeStyleType {
     container: ViewStyle;
     button: StyleType;
     text: TextStyle;
+    searchInput: ViewStyle;
 }
 
 export default function HomeStyles(theme: ThemeKeys) {
@@ -26,6 +27,12 @@ export default function HomeStyles(theme: ThemeKeys) {
         text: {
             color: themes[theme].color,
             fontSize: 30,
+        },
+        searchInput: {
+            ...screenPaddingHorizontal,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 10,
         },
     };
     return styles;

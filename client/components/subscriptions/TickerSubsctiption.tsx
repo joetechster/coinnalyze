@@ -15,18 +15,20 @@ const TICKER_SUBSCRIPTION = gql`
 
 function TickerSubscription() {
     const symbolsWatched = useSelector(selectSymbols); // returns a list of symbols the user cares about
-    const { data, loading, error } = useSubscription(TICKER_SUBSCRIPTION, {
+    const { data, loading } = useSubscription(TICKER_SUBSCRIPTION, {
         variables: { symbols: symbolsWatched },
         shouldResubscribe: true,
     });
     const dispatch = useDispatch();
+    const [_, startTransition] = React.useTransition();
 
     // dispatch action to add new tick to the store
     React.useEffect(() => {
-        console.log("still loading tickers: ", loading);
-        dispatch(updateTickersLoading({ loading }));
-        dispatch(updateTickers(data));
-    }, [data, loading, error]);
+        startTransition(() => {
+            dispatch(updateTickersLoading({ loading }));
+            dispatch(updateTickers(data));
+        });
+    }, [data, loading]);
     return null;
 }
 
