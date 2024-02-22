@@ -45,7 +45,9 @@ const resolvers = {
                     candleApiConnected = true;
                     try {
                         client.ws.candles(symbol, "1m", (candle) => {
-                            pubsub.publish(`${symbol}_SUBSCRIPTION`, { candle });
+                            pubsub.publish(`${symbol}_SUBSCRIPTION`, {
+                                candle,
+                            });
                         });
                     } catch {
                         console.log("could not connect to binance api");

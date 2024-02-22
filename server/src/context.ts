@@ -7,7 +7,10 @@ export type Context = {
 };
 
 const pubsub = new PubSub();
-const contextFunc: ContextFunction<[ExpressContextFunctionArgument], Context> = async ({ req, res }) => ({
+const contextFunc: ContextFunction<
+    [ExpressContextFunctionArgument],
+    Context
+> = async ({ req, res }) => ({
     pubsub,
 });
 

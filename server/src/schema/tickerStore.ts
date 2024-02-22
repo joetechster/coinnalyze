@@ -18,7 +18,9 @@ export default class TickerStore {
     }
 
     getTickers = (symbols: string[]) => {
-        return symbols.map((symbol) => this.store[symbol]).filter((ticker) => Boolean(ticker));
+        return symbols
+            .map((symbol) => this.store[symbol])
+            .filter((ticker) => Boolean(ticker));
     };
 
     addTickers = (tickers: Ticker[]) => {
