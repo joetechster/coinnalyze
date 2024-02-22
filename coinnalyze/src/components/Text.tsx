@@ -17,7 +17,7 @@ export default function CustomText(props: CustomTextProps) {
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     text: {
-      fontFamily: 'Montserrat',
+      fontFamily: 'Montserrat-Medium',
       fontSize: 14,
       fontWeight: '400',
       color: onBackground(theme),
