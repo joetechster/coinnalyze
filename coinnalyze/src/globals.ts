@@ -7,14 +7,16 @@ export const themes = {
 
 export type Theme = (typeof themes)[keyof typeof themes];
 
-export const background = (theme: Theme): ColorValue =>
-  theme === themes.dark ? 'green' : 'white';
+export const primary = '#38E078';
 
-export const onBackground = (theme: Theme): ColorValue =>
-  theme === themes.dark ? 'white' : 'black';
+export const background = (theme: Theme) =>
+  theme === themes.dark ? '#141414' : '#FFFFFF';
 
-export const surface = (theme: Theme): ColorValue =>
-  theme === themes.dark ? 'green' : 'white';
+export const onBackground = (theme: Theme) =>
+  theme === themes.dark ? '#FFFFFF' : '#141414';
 
-export const onSurface = (theme: Theme): ColorValue =>
-  theme === themes.dark ? 'white' : 'black';
+export const surface = (theme: Theme) =>
+  theme === themes.dark ? '#292929' : '#F5F5F5';
+
+export const onSurface = (theme: Theme) =>
+  theme === themes.dark ? '#FFFFFF' : '#141414';

@@ -1,10 +1,21 @@
 import React, {PropsWithChildren, useContext, useMemo, useState} from 'react';
-import {Pressable, StatusBar, StyleSheet} from 'react-native';
-
+import {Appearance, StatusBar, StyleSheet} from 'react-native';
 import ThemeContext from './context/ThemeContext';
-import {Theme, background, themes} from './globals';
 import useTheme from './hooks/useTheme';
-import Text from './components/Text';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
+import Home from './screens/Home';
+import News from './screens/News';
+import {
+  Theme,
+  background,
+  onBackground,
+  onSurface,
+  primary,
+  surface,
+  themes,
+} from './globals';
+import {SearchBar} from '@rneui/themed';
 
 function App(): React.JSX.Element {
   const style = useTheme(styleDecorator);
@@ -15,11 +26,6 @@ function App(): React.JSX.Element {
         barStyle={theme === themes.dark ? 'light-content' : 'dark-content'}
         backgroundColor={style.statusBar.backgroundColor}
       />
-      <Text>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, odit
-        voluptate aspernatur rem sint saepe dolore omnis voluptatibus ab a
-        dolorem asperiores perferendis odio alias aut sequi facere autem eaque!
-      </Text>
     </>
   );
 }
@@ -33,11 +39,16 @@ function styleDecorator(theme: Theme) {
 }
 
 export default function AppWrapper(props: PropsWithChildren) {
-  const [theme, setTheme] = useState<Theme>(themes.light);
+  const [theme, setTheme] = useState<Theme>(
+    (Appearance.getColorScheme() as Theme) || themes.dark,
+  );
   const themeValue = useMemo(() => ({theme, setTheme}), [theme, setTheme]);
+
   return (
     <ThemeContext.Provider value={themeValue}>
-      <App />
+      <SafeAreaProvider>
+        <App />
+      </SafeAreaProvider>
     </ThemeContext.Provider>
   );
 }

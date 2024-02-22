@@ -1,14 +1,17 @@
-import {Text, TextProps, StyleSheet} from 'react-native';
+import {Text, TextProps, StyleSheet, TextStyle} from 'react-native';
 import {Theme, onBackground} from '../globals';
 import useTheme from '../hooks/useTheme';
 
-interface CustomTextProps extends TextProps {}
+interface CustomTextProps extends TextProps {
+  style?: TextStyle;
+}
 
 export default function CustomText(props: CustomTextProps) {
   const styles = useTheme(styleDecorator);
+  const {style, ...propsNoStyle} = props;
 
   return (
-    <Text {...props} style={styles.text}>
+    <Text style={{...styles.text, ...style}} {...propsNoStyle}>
       {props.children}
     </Text>
   );
@@ -17,7 +20,7 @@ export default function CustomText(props: CustomTextProps) {
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     text: {
-      fontFamily: 'Montserrat-Medium',
+      fontFamily: 'Inter-Medium',
       fontSize: 14,
       fontWeight: '400',
       color: onBackground(theme),
