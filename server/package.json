@@ -12,6 +12,7 @@
     "type": "module",
     "dependencies": {
         "@apollo/server": "^4.7.5",
+        "@binance/connector": "^3.2.0",
         "@graphql-tools/schema": "^10.0.0",
         "binance-api-node": "^0.12.6",
         "body-parser": "^1.20.2",
