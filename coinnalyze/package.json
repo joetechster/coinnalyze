@@ -11,11 +11,13 @@
     "react-devtools": "adb reverse tcp:8097 tcp:8097 && react-devtools"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.5",
     "@react-navigation/bottom-tabs": "^6.5.12",
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/stack": "^6.3.21",
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.8",
+    "graphql": "^16.8.1",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-gesture-handler": "^2.15.0",

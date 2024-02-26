@@ -7,11 +7,13 @@ export type Context = {
 };
 
 const pubsub = new PubSub();
-const contextFunc: ContextFunction<
-    [ExpressContextFunctionArgument],
-    Context
-> = async ({ req, res }) => ({
-    pubsub,
-});
+
+// This function creates an initial state for the context object when the server starts
+const contextFunc: ContextFunction<[ExpressContextFunctionArgument], Context> =
+    async function ({ req, res }) {
+        return {
+            pubsub,
+        };
+    };
 
 export default contextFunc;

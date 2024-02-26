@@ -1,18 +1,15 @@
 type Candle {
-    eventType: String
-    eventTime: String
-    symbol: String
+    openTime: String
     open: String
     high: String
     low: String
     close: String
     volume: String
-    trades: Int
-    interval: String
-    isFinal: Boolean
+    closeTime: String
     quoteVolume: String
-    buyVolume: String
-    quoteBuyVolume: String
+    trades: Int
+    baseAssetVolume: String
+    quoteAssetVolume: String
 }
 type Ticker {
     eventType: String
@@ -40,19 +37,9 @@ type Ticker {
     totalTrades: Int
 }
 
-type User {
-    name: String!
-}
 type Query {
-    users: [User!]
     candles(symbol: String!): [Candle!]
 }
-type Mutation {
-    addUser(name: String!): User
-}
 type Subscription {
-    users: [User!]
-    newUser: User!
-    candle(symbol: String!): Candle
-    tickers(symbols: [String!]!): [Ticker!]!
+    ticker(symbols: [String]!): Ticker!
 }

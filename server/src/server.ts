@@ -25,6 +25,7 @@ const app = express();
 const httpServer = createServer(app);
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
+
 const server = new ApolloServer<Context>({
     schema,
     plugins: [

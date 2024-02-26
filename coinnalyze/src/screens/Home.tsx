@@ -3,6 +3,7 @@ import Text, {BoldText, LightText, MediumText} from '../components/Text';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Theme,
+  api_uri,
   onBackground,
   onBackgroundFaint,
   primary,
