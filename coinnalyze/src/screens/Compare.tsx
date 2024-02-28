@@ -1,5 +1,6 @@
 import Text, {BoldText, MediumText} from '../components/Text';
 import {
+  GRAPH_WIDTH,
   Theme,
   disabled,
   onBackground,
@@ -14,36 +15,11 @@ import AddButton from '../components/AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import RightArrow from '../../assets/icons/right-icon.svg';
 import CurvedChart from '../components/CurvedChart';
+import CompareCurvedChart from '../components/CompareCurvedChart';
 
 export default function Compare() {
   const {style, theme} = useTheme(styleDecorator);
-  const data = [
-    {
-      value: 248,
-      date: '10 Apr 2022',
-      label: '1H',
-    },
-    {
-      value: 240,
-      date: '10 Apr 2022',
-      label: '1D',
-    },
-    {
-      value: 900,
-      date: '20 Apr 2022',
-      label: '1W',
-    },
-    {
-      value: 200,
-      date: '30 Apr 2022',
-      label: '1M',
-    },
-    {
-      value: 400,
-      date: '30 Apr 2022',
-      label: '1Y',
-    },
-  ];
+
   return (
     <ScrollView>
       <View style={style.container}>
@@ -85,14 +61,9 @@ export default function Compare() {
               </Text>
             </View>
           </View>
-          <CurvedChart
-            data={data}
-            width={
-              Dimensions.get('window').width -
-              (style.container.paddingHorizontal as number) * 2 -
-              2
-            }
-            spacing={4.56}
+          <CompareCurvedChart
+            symbols={['BTCUSDT', 'ETHUSDT']}
+            width={GRAPH_WIDTH - screenPadding.paddingHorizontal * 2}
           />
         </View>
       </View>

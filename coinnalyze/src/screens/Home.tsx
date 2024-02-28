@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Text, {BoldText, LightText, MediumText} from '../components/Text';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
@@ -11,8 +10,10 @@ import {
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import CurvedChart from '../components/CurvedChart';
-import Favourites from '../components/Favourites';
-import Featured from '../components/Featured';
+import CoinsSection from '../components/CoinsSection';
+import KPI from '../components/KPI';
+import {Suspense} from 'react';
+import CompareCurvedChart from '../components/CompareCurvedChart';
 
 export default function Home() {
   const {style, theme} = useTheme(styleDecorator);
@@ -47,16 +48,13 @@ export default function Home() {
   return (
     <ScrollView style={style.scrollView}>
       <View style={style.container}>
-        <View style={{paddingHorizontal: screenPadding.paddingHorizontal}}>
-          <MediumText>Bitcoin</MediumText>
-          <BoldText style={{fontSize: 32}}>$30,300</BoldText>
-          <Text style={style.lastDays}>
-            Last 30 days <Text style={{color: primary(theme)}}>+15%</Text>
-          </Text>
-        </View>
-        <CurvedChart data={data} />
-        <Favourites />
-        <Featured />
+        <Suspense fallback={<Text>Loading</Text>}>
+          <KPI />
+        </Suspense>
+        <Suspense fallback={<Text>Loading chart</Text>}>
+          <CurvedChart symbol="BTCUSDT" />
+        </Suspense>
+        <CoinsSection />
       </View>
     </ScrollView>
   );
@@ -72,9 +70,6 @@ function styleDecorator(theme: Theme) {
       gap: 20,
       color: onBackground(theme),
       paddingVertical: screenPadding.paddingVertical,
-    },
-    lastDays: {
-      color: onBackgroundFaint(theme),
     },
   });
 }

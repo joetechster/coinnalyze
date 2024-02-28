@@ -8,10 +8,40 @@ import ThemeContext from './src/context/ThemeContext';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import {split, HttpLink} from '@apollo/client';
+import {getMainDefinition} from '@apollo/client/utilities';
+import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
+import {createClient} from 'graphql-ws';
 
+const httpLink = new HttpLink({
+  uri: api_uri,
+});
+
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: api_uri,
+  }),
+);
+
+// The split function takes three parameters:
+//
+// * A function that's called for each operation to execute
+// * The Link to use for an operation if the function returns a "truthy" value
+// * The Link to use for an operation if the function returns a "falsy" value
+const splitLink = split(
+  ({query}) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: api_uri,
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 

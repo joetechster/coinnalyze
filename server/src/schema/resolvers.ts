@@ -1,21 +1,25 @@
-import { Context } from "context";
 import Binance, { Binance as BinanceType, Ticker } from "binance-api-node";
-import { Console } from "console";
 import { PubSub, withFilter } from "graphql-subscriptions";
+import { Spot } from "@binance/connector";
 
 let client: BinanceType;
 // @ts-ignore
 client = Binance.default(); //this line having type issues with ts-node
-
+const oclient = new Spot();
 let tickerApiConnected = false;
 const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
     candles: async (parent, { symbol }) => {
-      return await client.candles({ symbol, interval: "1d", limit: 6 });
+      return await client.candles({ symbol, interval: "1d", limit: 7 });
+    },
+    tickers: async (parent, { symbols }) => {
+      const { data } = await oclient.ticker24hr("", symbols);
+      return data;
     },
   },
+
   Subscription: {
     ticker: {
       subscribe: withFilter(
@@ -24,7 +28,6 @@ const resolvers = {
             tickerApiConnected = true;
             try {
               client.ws.allTickers((tickers) => {
-                console.log(tickers.length);
                 tickers.forEach((ticker) => {
                   pubsub.publish("TICK", { ticker });
                 });

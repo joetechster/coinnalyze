@@ -1,45 +1,68 @@
 type Candle {
-    openTime: String
-    open: String
-    high: String
-    low: String
-    close: String
-    volume: String
-    closeTime: String
-    quoteVolume: String
-    trades: Int
-    baseAssetVolume: String
-    quoteAssetVolume: String
+  openTime: String
+  open: Float
+  high: Float
+  low: Float
+  close: Float
+  volume: String
+  closeTime: String
+  quoteVolume: String
+  trades: Int
+  baseAssetVolume: String
+  quoteAssetVolume: String
 }
 type Ticker {
-    eventType: String
-    eventTime: Int
-    symbol: String
-    priceChange: String
-    priceChangePercent: String
-    weightedAvg: String
-    prevDayClose: String
-    curDayClose: String
-    closeTradeQuantity: String
-    bestBid: String
-    bestBidQnt: String
-    bestAsk: String
-    bestAskQnt: String
-    open: String
-    high: String
-    low: String
-    volume: String
-    volumeQuote: String
-    openTime: Int
-    closeTime: Int
-    firstTradeId: Int
-    lastTradeId: Int
-    totalTrades: Int
+  eventType: String
+  eventTime: Int
+  symbol: String
+  priceChange: String
+  priceChangePercent: Float
+  weightedAvg: String
+  prevDayClose: Float
+  curDayClose: Float
+  closeTradeQuantity: String
+  bestBid: String
+  bestBidQnt: String
+  bestAsk: String
+  bestAskQnt: String
+  open: Float
+  high: Float
+  low: Float
+  volume: String
+  volumeQuote: String
+  openTime: String
+  closeTime: String
+  firstTradeId: Int
+  lastTradeId: Int
+  totalTrades: Int
 }
-
+type TickerOfficial {
+  symbol: String
+  priceChange: Float
+  priceChangePercent: Float
+  weightedAvgPrice: Float
+  prevClosePrice: Float
+  lastPrice: Float
+  lastQty: Float
+  bidPrice: Float
+  bidQty: Float
+  askPrice: Float
+  askQty: Float
+  openPrice: Float
+  highPrice: Float
+  lowPrice: Float
+  volume: Float
+  quoteVolume: Float
+  openTime: String
+  closeTime: String
+  firstId: String
+  lastId: String
+  count: String
+}
 type Query {
-    candles(symbol: String!): [Candle!]
+  candles(symbol: String): [Candle!]!
+  tickers(symbols: [String!]!): [TickerOfficial!]!
 }
 type Subscription {
-    ticker(symbols: [String]!): Ticker!
+  ticker(symbols: [String!]!): Ticker!
 }

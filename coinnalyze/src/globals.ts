@@ -1,4 +1,5 @@
-import {ViewStyle} from 'react-native';
+import {Dimensions, ViewStyle} from 'react-native';
+import {gql} from './__generated__';
 
 export const themes = {
   light: 'light',
@@ -13,6 +14,7 @@ export const fontFamilies = {
   light: 'Inter-Light',
   regular: 'Inter-Regular',
 } as const;
+
 export type FontFamiily = (typeof fontFamilies)[keyof typeof fontFamilies];
 
 export type Theme = (typeof themes)[keyof typeof themes];
@@ -20,7 +22,7 @@ export type Theme = (typeof themes)[keyof typeof themes];
 export const primary = (theme: Theme) =>
   theme === themes.dark ? '#38E078' : '#17994A';
 
-export const screenPadding: ViewStyle = {
+export const screenPadding = {
   paddingHorizontal: 16,
   paddingVertical: 20,
 };
@@ -43,4 +45,40 @@ export const onSurface = (theme: Theme) =>
 export const disabled = (theme: Theme) =>
   theme === themes.dark ? '#C4C4C4' : '#737373';
 
-export const api_uri = __DEV__ ? 'http://192.168.0.3:4000/graphql' : '';
+export const api_uri = __DEV__ ? 'http://192.168.0.2:4000/graphql' : '';
+
+export const GRAPH_HEIGHT = 250;
+
+export const GRAPH_WIDTH = Dimensions.get('window').width;
+
+export const TICKER_SUBSCRIPTION = gql(/* GraphQL */ `
+  subscription subscribeToTickers($symbols: [String!]!) {
+    ticker(symbols: $symbols) {
+      curDayClose
+      closeTime
+      prevDayClose
+      priceChangePercent
+      symbol
+    }
+  }
+`);
+
+export const TICKER_QUERY = gql(/* GraphQL */ `
+  query getTickers($symbols: [String!]!) {
+    tickers(symbols: $symbols) {
+      lastPrice
+      prevClosePrice
+      priceChangePercent
+      symbol
+    }
+  }
+`);
+
+export const CANDLES_QUERY = gql(/* GraphQL */ `
+  query getCandles($symbol: String!) {
+    candles(symbol: $symbol) {
+      close
+      closeTime
+    }
+  }
+`);
