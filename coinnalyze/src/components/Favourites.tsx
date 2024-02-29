@@ -3,28 +3,18 @@ import {Theme, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import AddButton from './AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
-import storage from '../storage';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense} from 'react';
 import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
+import {selectFavourites} from '../redux_schema/favouritesSlice';
+import {useAppSelector} from '../redux_schema/hooks';
 
-interface FavouritesProps {
-  show: boolean;
-}
-export default function Favourites({show}: FavouritesProps) {
-  const [symbols, setSymbols] = useState<string[] | null>(null);
+export default function Favourites() {
+  const symbols: string[] = useAppSelector(selectFavourites);
   const {style} = useTheme(styleDecorator);
-  useEffect(() => {
-    storage
-      .load({key: 'favourites'})
-      .then(res => {
-        setSymbols(res);
-      })
-      .catch(e => console.log(e));
-  }, []);
-  if (!symbols) return null;
+  if (symbols.length < 1) return null;
 
   return (
-    <View style={[style.container, !show ? {display: 'none'} : null]}>
+    <View style={style.container}>
       <View style={style.listWrapper}>
         {symbols.map((symbol, i) => (
           <Suspense key={symbol} fallback={<SymbolListItemLoading />}>

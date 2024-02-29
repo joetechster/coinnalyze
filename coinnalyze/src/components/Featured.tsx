@@ -1,23 +1,19 @@
-import {FlatList, StatusBar, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Theme, screenPadding} from '../globals';
-import {BoldText, MediumText} from './Text';
 import useTheme from '../hooks/useTheme';
 import AddButton from './AddButton';
-import ListItem from './ListItem';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
 import {Suspense} from 'react';
+import {useSelector} from 'react-redux';
+import {selectFeatured} from '../redux_schema/featuredSlice';
 
-const symbols = ['BTCUSDT', 'ETHUSDT', 'LTCUSDT'];
-
-interface FeaturedProps {
-  show: boolean;
-}
-
-export default function Featured({show}: FeaturedProps) {
+export default function Featured() {
+  const symbols = useSelector(selectFeatured);
   const {style} = useTheme(styleDecorator);
+  if (symbols.length < 0) return null;
   return (
-    <View style={[style.container, !show ? {display: 'none'} : null]}>
+    <View style={style.container}>
       <View style={style.listWrapper}>
         {symbols.map((symbol, i) => (
           <Suspense key={symbol + i} fallback={<SymbolListItemLoading />}>

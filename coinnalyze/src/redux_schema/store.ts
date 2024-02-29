@@ -1,9 +1,15 @@
 import {configureStore} from '@reduxjs/toolkit';
 import themeReducer from './themeSlice';
+import favouritesReducer from './favouritesSlice';
+import kpiReducer from './kpiSlice';
+import featuredReducer from './featuredSlice';
 
 const store = configureStore({
   reducer: {
     theme: themeReducer,
+    favourites: favouritesReducer,
+    kpi: kpiReducer,
+    featured: featuredReducer,
   },
 });
 

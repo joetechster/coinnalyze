@@ -7,6 +7,7 @@ import Text, {BoldText} from './Text';
 import Favourites from './Favourites';
 import Featured from './Featured';
 
+const Tabs = [<Featured />, <Favourites />];
 export default function CoinsSection() {
   const {style} = useTheme(styleDecorator);
   const [index, setIndex] = useState(0);
@@ -25,8 +26,7 @@ export default function CoinsSection() {
           selected={index === 1}
         />
       </View>
-      <Favourites show={index === 1} />
-      <Featured show={index === 0} />
+      {Tabs[index]}
     </>
   );
 }

@@ -11,8 +11,7 @@ import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
 import {createClient} from 'graphql-ws';
 import {Provider} from 'react-redux';
 import store from './src/redux_schema/store';
-import storage from './src/storage';
-import Text from './src/components/Text';
+import './src/redux_schema/setup';
 import ThemedStatusBar from './src/components/ThemedStatusBar';
 
 const httpLink = new HttpLink({

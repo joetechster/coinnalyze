@@ -12,7 +12,7 @@ import {
 import useTheme from '../hooks/useTheme';
 import {useQuery, useSuspenseQuery} from '@apollo/client';
 import {useEffect} from 'react';
-import {formatPercent, formatPrice} from './KPI';
+import {formatPercent, formatPrice, formatSymbol} from './KPI';
 
 interface ListItemProps {
   symbol: string;
@@ -53,7 +53,7 @@ export default function SymbolListItem({symbol, Left}: ListItemProps) {
       {Left}
       <View style={style.middleSection}>
         <MediumText style={style.title} numberOfLines={1}>
-          {symbol}
+          {formatSymbol(symbol, theme)}
         </MediumText>
         <Text style={style.subTitle}>{'Binance'}</Text>
       </View>

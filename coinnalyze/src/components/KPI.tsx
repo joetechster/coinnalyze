@@ -55,7 +55,7 @@ export default function KPI({symbol}: KPIProps) {
   }, []);
   return (
     <View style={style.container}>
-      <MediumText>{symbol}</MediumText>
+      <MediumText>{formatSymbol(symbol, theme)}</MediumText>
       <BoldText style={style.price}>{formatPrice(ticker.lastPrice)}</BoldText>
       <Text style={style.desc}>
         Last 24 hours {formatPercent(theme, ticker.priceChangePercent)}
@@ -106,4 +106,17 @@ export function formatPercent(theme: Theme, percent?: number | null) {
 
 export function formatPrice(price?: number | null) {
   return '$' + price?.toLocaleString('en-US', {maximumFractionDigits: 0});
+}
+
+export function formatSymbol(symbol: string, theme: Theme) {
+  const splitter = 'USDT';
+  const quote = symbol.split(splitter);
+  return (
+    <>
+      {quote}
+      <LightText style={{fontSize: 10, color: onBackgroundFaint(theme)}}>
+        {' /' + splitter}
+      </LightText>
+    </>
+  );
 }

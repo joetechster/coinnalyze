@@ -72,7 +72,6 @@ function styleDecorator(theme: Theme) {
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingVertical: 20,
-      gap: 2,
       flexWrap: 'wrap',
     },
   });

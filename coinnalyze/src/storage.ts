@@ -22,10 +22,26 @@ const storage = new Storage({
   // the corresponding sync method will be invoked returning
   // the latest data.
   sync: {
+    kpi: async () => {
+      const initial = 'BTCUSDT';
+      storage.save({
+        key: 'kpi',
+        data: initial,
+      });
+      return initial;
+    },
     favourites: async () => {
       const symbols = ['BTCUSDT', 'BNBUSDT', 'ETHUSDT', 'LTCUSDT'];
       storage.save({
         key: 'favourites',
+        data: symbols,
+      });
+      return symbols;
+    },
+    featured: async () => {
+      const symbols = ['BTCUSDT', 'ETHUSDT'];
+      storage.save({
+        key: 'featured',
         data: symbols,
       });
       return symbols;

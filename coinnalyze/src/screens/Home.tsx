@@ -1,30 +1,25 @@
-import Text from '../components/Text';
+import {Suspense} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Theme, onBackground, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import CurvedChart, {CurvedChartLoading} from '../components/CurvedChart';
 import CoinsSection from '../components/CoinsSection';
 import KPI, {LoadingKPI} from '../components/KPI';
-import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
-import {useOnMounted} from '../hooks/useOnMounted';
+import {useAppSelector} from '../redux_schema/hooks';
+import {selectKpi} from '../redux_schema/kpiSlice';
 
 export default function Home() {
   const {style} = useTheme(styleDecorator);
-  const {mounted} = useOnMounted();
-
-  // Do some setup here (initial setup for local storage)
-  if (!mounted /* and is we have gotten the initial state */) {
-    return <Text>Loading</Text>; //OR <LoaderComponent />;
-  }
+  const kpi = useAppSelector(selectKpi);
 
   return (
     <ScrollView style={style.scrollView}>
       <View style={style.container}>
         <Suspense fallback={<LoadingKPI />}>
-          <KPI symbol="BTCUSDT" />
+          {kpi ? <KPI symbol={kpi} /> : <LoadingKPI />}
         </Suspense>
         <Suspense fallback={<CurvedChartLoading />}>
-          <CurvedChart symbol="BTCUSDT" />
+          {kpi ? <CurvedChart symbol={kpi} /> : <CurvedChartLoading />}
         </Suspense>
         <CoinsSection />
       </View>
