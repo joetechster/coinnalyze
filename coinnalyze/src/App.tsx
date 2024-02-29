@@ -1,5 +1,5 @@
-import React from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import React, {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import useTheme from './hooks/useTheme';
 import Home from './screens/Home';
 import News from './screens/News';
@@ -28,6 +28,7 @@ import {
 } from '@react-navigation/stack';
 import Profile from './screens/Profile';
 import Comopare from './screens/Compare';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 type StackParamList = {
   MyTabNavigator: undefined;
@@ -41,6 +42,40 @@ type TabParamList = {
 };
 const Stack = createStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
+
+export default function App(): React.JSX.Element {
+  const {style, theme} = useTheme(styleDecorator);
+  const MyTheme = useMemo(
+    () => ({
+      ...DefaultTheme,
+      colors: {
+        ...DefaultTheme.colors,
+        color: onBackground(theme),
+        background: background(theme),
+      },
+    }),
+    [theme],
+  );
+  return (
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: style.header,
+          headerTitleAlign: 'center',
+          headerTitle: ({children}) => (
+            <BoldText style={style.headerTitle}>{children}</BoldText>
+          ),
+        }}>
+        <Stack.Screen
+          name="MyTabNavigator"
+          component={MyTabNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 function MyTabNavigator({
   navigation: stackNavigation,
@@ -101,39 +136,8 @@ function MyTabNavigator({
   );
 }
 
-export default function App(): React.JSX.Element {
-  const {style, theme} = useTheme(styleDecorator);
-
-  return (
-    <>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: style.header,
-          headerTitleAlign: 'center',
-          headerTitle: ({children}) => (
-            <BoldText style={style.headerTitle}>{children}</BoldText>
-          ),
-        }}>
-        <Stack.Screen
-          name="MyTabNavigator"
-          component={MyTabNavigator}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen name="Profile" component={Profile} />
-      </Stack.Navigator>
-      <StatusBar
-        barStyle={theme === themes.dark ? 'light-content' : 'dark-content'}
-        backgroundColor={style.statusBar.backgroundColor}
-      />
-    </>
-  );
-}
-
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
-    statusBar: {
-      backgroundColor: background(theme),
-    },
     header: {
       elevation: 0,
       backgroundColor: background(theme),

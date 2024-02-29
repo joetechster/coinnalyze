@@ -82,3 +82,9 @@ export const CANDLES_QUERY = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const SYMBOLS_QUERY = gql(/* GraphQL */ `
+  query getSymbols {
+    symbols
+  }
+`);

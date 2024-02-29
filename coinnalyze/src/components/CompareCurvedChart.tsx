@@ -27,7 +27,6 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
 
   width = width || style.container.width;
   const height = style.container.height;
-  const leftPadding = style.container.paddingHorizontal;
   const paddingBottom = style.container.paddingBottom;
 
   const {

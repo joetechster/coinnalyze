@@ -3,30 +3,34 @@ import {
   TICKER_QUERY,
   TICKER_SUBSCRIPTION,
   Theme,
+  onBackground,
   onBackgroundFaint,
   primary,
   screenPadding,
+  surface,
 } from '../globals';
-import Text, {BoldText, MediumText} from './Text';
+import Text, {BoldText, LightText, MediumText} from './Text';
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
 import {useEffect} from 'react';
 import {TickerOfficial} from '../__generated__/graphql';
 
-interface KPIProps {}
-export default function KPI({}: KPIProps) {
+interface KPIProps {
+  symbol: string;
+}
+
+export default function KPI({symbol}: KPIProps) {
   const {style, theme} = useTheme(styleDecorator);
 
   const {data, subscribeToMore} = useSuspenseQuery(TICKER_QUERY, {
-    variables: {symbols: ['BTCUSDT']},
+    variables: {symbols: [symbol]},
   });
   const ticker = data.tickers[0];
-  // Subscribe to ticker websocket when the components mounts
-  // (This should only run once)
+
   useEffect(() => {
     subscribeToMore({
       document: TICKER_SUBSCRIPTION,
-      variables: {symbols: ['BTCUSDT']},
+      variables: {symbols: [symbol]},
       updateQuery: (prev, {subscriptionData}) => {
         // Check if data is empty
         if (!subscriptionData.data) return prev;
@@ -51,27 +55,26 @@ export default function KPI({}: KPIProps) {
   }, []);
   return (
     <View style={style.container}>
-      <MediumText>BTCUSDT</MediumText>
-      <BoldText style={style.price}>
-        ${ticker.lastPrice?.toLocaleString('en-US')}
-      </BoldText>
+      <MediumText>{symbol}</MediumText>
+      <BoldText style={style.price}>{formatPrice(ticker.lastPrice)}</BoldText>
       <Text style={style.desc}>
-        Last 24 hours{' '}
-        <Text
-          style={{
-            color: ticker.priceChangePercent
-              ? ticker.priceChangePercent < 0
-                ? 'red'
-                : primary(theme)
-              : '',
-          }}>
-          {formatPercent(ticker.priceChangePercent)}
-        </Text>
+        Last 24 hours {formatPercent(theme, ticker.priceChangePercent)}
       </Text>
     </View>
   );
 }
 
+export function LoadingKPI() {
+  const {style, theme} = useTheme(styleDecorator);
+
+  return (
+    <View style={[style.container, {gap: 10, height: 86.3}]}>
+      <View style={{width: 90, flex: 1, ...style.loadingBg}}></View>
+      <View style={{width: 180, flex: 2.26, ...style.loadingBg}}></View>
+      <View style={{width: 180, flex: 0.98, ...style.loadingBg}}></View>
+    </View>
+  );
+}
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {paddingHorizontal: screenPadding.paddingHorizontal},
@@ -79,8 +82,28 @@ function styleDecorator(theme: Theme) {
     desc: {
       color: onBackgroundFaint(theme),
     },
+    loadingBg: {
+      backgroundColor: surface(theme),
+      borderRadius: 5,
+    },
   });
 }
-function formatPercent(percent?: number | null) {
-  if (percent) return (percent < 0 ? '-' : '+') + percent.toString() + '%';
+
+export function formatPercent(theme: Theme, percent?: number | null) {
+  const color = percent
+    ? percent < 0
+      ? 'red'
+      : primary(theme)
+    : onBackground(theme);
+  if (percent !== null && percent !== undefined) {
+    return (
+      <LightText style={{color}}>
+        {(percent > 0 ? '+' : '') + percent.toFixed(2) + '%'}
+      </LightText>
+    );
+  }
+}
+
+export function formatPrice(price?: number | null) {
+  return '$' + price?.toLocaleString('en-US', {maximumFractionDigits: 0});
 }

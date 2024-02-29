@@ -62,6 +62,7 @@ type TickerOfficial {
 type Query {
   candles(symbol: String): [Candle!]!
   tickers(symbols: [String!]!): [TickerOfficial!]!
+  symbols: [String]
 }
 type Subscription {
   ticker(symbols: [String!]!): Ticker!

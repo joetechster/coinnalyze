@@ -1,63 +1,31 @@
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StatusBar, StyleSheet, View} from 'react-native';
 import {Theme, screenPadding} from '../globals';
 import {BoldText, MediumText} from './Text';
 import useTheme from '../hooks/useTheme';
 import AddButton from './AddButton';
 import ListItem from './ListItem';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
-const data = [
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-  {
-    title: 'I am a title',
-    rightText: '4040',
-    rightSubText: 'Sub',
-    subTitle: 'Coinbase',
-  },
-];
-export default function Featured() {
+import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
+import {Suspense} from 'react';
+
+const symbols = ['BTCUSDT', 'ETHUSDT', 'LTCUSDT'];
+
+interface FeaturedProps {
+  show: boolean;
+}
+
+export default function Featured({show}: FeaturedProps) {
   const {style} = useTheme(styleDecorator);
   return (
-    <View style={style.container}>
-      <View style={{flexDirection: 'row'}}>
-        <BoldText style={style.header}>Featured</BoldText>
-        {/* <AddButton style={style.addButton} /> */}
-      </View>
+    <View style={[style.container, !show ? {display: 'none'} : null]}>
       <View style={style.listWrapper}>
-        {data.map((item, i) => (
-          <ListItem
-            {...item}
-            key={i}
-            Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
-          />
+        {symbols.map((symbol, i) => (
+          <Suspense key={symbol + i} fallback={<SymbolListItemLoading />}>
+            <SymbolListItem
+              symbol={symbol}
+              Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
+            />
+          </Suspense>
         ))}
       </View>
     </View>

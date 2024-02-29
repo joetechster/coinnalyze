@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   CANDLES_QUERY,
   GRAPH_HEIGHT,
@@ -10,6 +10,7 @@ import {
   fontFamilies,
   onBackground,
   screenPadding,
+  surface,
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import {Candle, GetCandlesQuery} from '../__generated__/graphql';
@@ -78,8 +79,8 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
               key={i}
               strokeWidth={0}
               fill={onBackground(theme)}
-              fontSize="14"
-              fontFamily={fontFamilies.light}
+              fontSize="11"
+              fontFamily={fontFamilies.regular}
               x={graph?.x(date)}
               y={paddingBottom}
               textAnchor="middle">
@@ -92,6 +93,10 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
   );
 }
 
+export function CurvedChartLoading() {
+  const {style} = useTheme(styleDecorator);
+  return <View style={style.loadingContainer}></View>;
+}
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {
@@ -102,12 +107,18 @@ function styleDecorator(theme: Theme) {
       paddingTop: 20,
       color: onBackground(theme),
     },
+    loadingContainer: {
+      height: GRAPH_HEIGHT,
+      backgroundColor: surface(theme),
+      borderRadius: 10,
+      marginHorizontal: screenPadding.paddingHorizontal,
+    },
   });
 }
 
 export const makeGraph = (
   candles: Candle[],
-  style: ReturnType<typeof styleDecorator>,
+  style: ReturnType<typeof styleDecorator> | any,
   width?: number,
 ) => {
   const firstCandle = candles[0];

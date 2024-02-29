@@ -1,57 +1,29 @@
-import Text, {BoldText, LightText, MediumText} from '../components/Text';
+import Text from '../components/Text';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {
-  Theme,
-  api_uri,
-  onBackground,
-  onBackgroundFaint,
-  primary,
-  screenPadding,
-} from '../globals';
+import {Theme, onBackground, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
-import CurvedChart from '../components/CurvedChart';
+import CurvedChart, {CurvedChartLoading} from '../components/CurvedChart';
 import CoinsSection from '../components/CoinsSection';
-import KPI from '../components/KPI';
-import {Suspense} from 'react';
-import CompareCurvedChart from '../components/CompareCurvedChart';
+import KPI, {LoadingKPI} from '../components/KPI';
+import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
+import {useOnMounted} from '../hooks/useOnMounted';
 
 export default function Home() {
-  const {style, theme} = useTheme(styleDecorator);
-  const data = [
-    {
-      value: 248,
-      date: '10 Apr 2022',
-      label: '1H',
-    },
-    {
-      value: 240,
-      date: '10 Apr 2022',
-      label: '1D',
-    },
-    {
-      value: 900,
-      date: '20 Apr 2022',
-      label: '1W',
-    },
-    {
-      value: 200,
-      date: '30 Apr 2022',
-      label: '1M',
-    },
-    {
-      value: 400,
-      date: '30 Apr 2022',
-      label: '1Y',
-    },
-  ];
+  const {style} = useTheme(styleDecorator);
+  const {mounted} = useOnMounted();
+
+  // Do some setup here (initial setup for local storage)
+  if (!mounted /* and is we have gotten the initial state */) {
+    return <Text>Loading</Text>; //OR <LoaderComponent />;
+  }
 
   return (
     <ScrollView style={style.scrollView}>
       <View style={style.container}>
-        <Suspense fallback={<Text>Loading</Text>}>
-          <KPI />
+        <Suspense fallback={<LoadingKPI />}>
+          <KPI symbol="BTCUSDT" />
         </Suspense>
-        <Suspense fallback={<Text>Loading chart</Text>}>
+        <Suspense fallback={<CurvedChartLoading />}>
           <CurvedChart symbol="BTCUSDT" />
         </Suspense>
         <CoinsSection />

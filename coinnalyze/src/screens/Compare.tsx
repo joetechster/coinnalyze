@@ -8,18 +8,25 @@ import {
   primary,
   screenPadding,
 } from '../globals';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import useTheme from '../hooks/useTheme';
 import ListItem from '../components/ListItem';
 import AddButton from '../components/AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import RightArrow from '../../assets/icons/right-icon.svg';
-import CurvedChart from '../components/CurvedChart';
 import CompareCurvedChart from '../components/CompareCurvedChart';
+import {useOnMounted} from '../hooks/useOnMounted';
+import {Suspense} from 'react';
+import {CurvedChartLoading} from '../components/CurvedChart';
+import KPI from '../components/KPI';
 
 export default function Compare() {
   const {style, theme} = useTheme(styleDecorator);
+  const {mounted} = useOnMounted();
 
+  if (!mounted) {
+    return <Text>Loading</Text>; //OR <LoaderComponent />;
+  }
   return (
     <ScrollView>
       <View style={style.container}>
@@ -36,36 +43,13 @@ export default function Compare() {
             }
           />
         ))}
-        <View style={style.card}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 15,
-              paddingVertical: 20,
-              gap: 10,
-              flexWrap: 'wrap',
-            }}>
-            <View>
-              <MediumText>Bitcoin</MediumText>
-              <BoldText style={{fontSize: 32}}>$30,300</BoldText>
-              <Text style={style.lastDays}>
-                Last 30 days <Text style={{color: primary(theme)}}>+15%</Text>
-              </Text>
-            </View>
-            <View>
-              <MediumText>Bitcoin</MediumText>
-              <BoldText style={{fontSize: 32}}>$30,300</BoldText>
-              <Text style={style.lastDays}>
-                Last 30 days <Text style={{color: primary(theme)}}>+15%</Text>
-              </Text>
-            </View>
-          </View>
-          <CompareCurvedChart
-            symbols={['BTCUSDT', 'ETHUSDT']}
-            width={GRAPH_WIDTH - screenPadding.paddingHorizontal * 2}
-          />
+        <View style={style.kpiWrapper}>
+          <KPI symbol="BTCUSDT" />
+          <KPI symbol="ETHUSDT" />
         </View>
+        <Suspense fallback={<CurvedChartLoading />}>
+          <CompareCurvedChart symbols={['BTCUSDT', 'ETHUSDT']} />
+        </Suspense>
       </View>
     </ScrollView>
   );
@@ -73,7 +57,7 @@ export default function Compare() {
 
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
-    container: {...screenPadding, gap: 10},
+    container: {gap: 10},
     card: {
       borderRadius: 8,
       borderStyle: 'solid',
@@ -83,6 +67,13 @@ function styleDecorator(theme: Theme) {
     },
     lastDays: {
       color: onBackgroundFaint(theme),
+    },
+    kpiWrapper: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 20,
+      gap: 2,
+      flexWrap: 'wrap',
     },
   });
 }

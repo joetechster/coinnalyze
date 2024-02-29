@@ -1,8 +1,8 @@
-import {useContext} from 'react';
-import {Theme, themes} from '../globals';
-import ThemeContext from '../context/ThemeContext';
+import {Theme} from '../globals';
+import {useSelector} from 'react-redux';
+import {selectTheme} from '../redux_schema/themeSlice';
 
 export default function useTheme<T>(styleDecorator: (theme: Theme) => T) {
-  const {theme} = useContext(ThemeContext);
+  const theme = useSelector(selectTheme);
   return {style: styleDecorator(theme), theme};
 }

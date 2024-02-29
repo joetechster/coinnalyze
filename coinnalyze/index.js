@@ -1,17 +1,19 @@
 import 'react-native-gesture-handler';
-import {AppRegistry, Appearance} from 'react-native';
+import {AppRegistry, Appearance, View} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
-import {useMemo, useState} from 'react';
-import {api_uri, background, onBackground, themes} from './src/globals';
-import ThemeContext from './src/context/ThemeContext';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {api_uri} from './src/globals';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import {split, HttpLink} from '@apollo/client';
 import {getMainDefinition} from '@apollo/client/utilities';
 import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
 import {createClient} from 'graphql-ws';
+import {Provider} from 'react-redux';
+import store from './src/redux_schema/store';
+import storage from './src/storage';
+import Text from './src/components/Text';
+import ThemedStatusBar from './src/components/ThemedStatusBar';
 
 const httpLink = new HttpLink({
   uri: api_uri,
@@ -40,38 +42,21 @@ const splitLink = split(
   httpLink,
 );
 // Initialize Apollo Client
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link: splitLink,
   cache: new InMemoryCache(),
 });
 
-function AppWrapper(props) {
-  const [theme, setTheme] = useState(
-    Appearance.getColorScheme() || themes.dark,
-  );
-  const themeValue = useMemo(() => ({theme, setTheme}), [theme, setTheme]);
-  const MyTheme = useMemo(
-    () => ({
-      ...DefaultTheme,
-      colors: {
-        ...DefaultTheme.colors,
-        color: onBackground(theme),
-        background: background(theme),
-      },
-    }),
-    [theme],
-  );
-
+function AppWrapper() {
   return (
-    <ThemeContext.Provider value={themeValue}>
+    <Provider store={store}>
+      <ThemedStatusBar />
       <ApolloProvider client={client}>
         <SafeAreaProvider>
-          <NavigationContainer theme={MyTheme}>
-            <App />
-          </NavigationContainer>
+          <App />
         </SafeAreaProvider>
       </ApolloProvider>
-    </ThemeContext.Provider>
+    </Provider>
   );
 }
 
