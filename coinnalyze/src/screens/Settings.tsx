@@ -5,7 +5,7 @@ import useTheme from '../hooks/useTheme';
 import CoinsSection from '../components/CoinsSection';
 import {useOnMounted} from '../hooks/useOnMounted';
 
-export default function Profile() {
+export default function Settings() {
   const {style, theme} = useTheme(styleDecorator);
   const {mounted} = useOnMounted();
 

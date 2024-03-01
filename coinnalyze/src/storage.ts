@@ -46,6 +46,16 @@ const storage = new Storage({
       });
       return symbols;
     },
+    compare: async () => {
+      const symbols = await storage
+        .load({key: 'featured'})
+        .then(featured => (featured as Array<string>).slice(0, 2));
+      storage.save({
+        key: 'compare',
+        data: symbols,
+      });
+      return symbols;
+    },
     symbols: async () => {
       console.log('Fetching all symbols');
       const allSymbols = await client.query({

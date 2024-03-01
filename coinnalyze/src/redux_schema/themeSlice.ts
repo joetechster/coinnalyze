@@ -14,7 +14,7 @@ export const themeSlice = createSlice({
     toggleTheme: state => (state === themes.dark ? themes.light : themes.dark),
     // Use the PayloadAction type to declare the contents of `action.payload`
     updateTheme: (state, action: PayloadAction<Theme>) => {
-      state = action.payload;
+      return action.payload;
     },
   },
 });

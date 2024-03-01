@@ -5,26 +5,29 @@ import storage from '../storage';
 // Define the initial state using that type
 const initialState: string[] = [];
 
-export const featuredSlice = createSlice({
-  name: 'featured',
+export const compareSlice = createSlice({
+  name: 'compare',
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    updateFeatured: (state, action: PayloadAction<string | string[]>) => {
+    updateCompare: (
+      state,
+      action: PayloadAction<{symbol: string; index: number} | string[]>,
+    ) => {
       if (Array.isArray(action.payload)) {
         state = action.payload;
       } else {
-        state.push(action.payload);
+        state[action.payload.index] = action.payload.symbol;
       }
-      storage.save({key: 'featured', data: state});
+      storage.save({key: 'compare', data: state});
       return state;
     },
   },
 });
 
-export const {updateFeatured} = featuredSlice.actions;
+export const {updateCompare} = compareSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectFeatured = (state: RootState) => state.featured;
+export const selectCompare = (state: RootState) => state.compare;
 
-export default featuredSlice.reducer;
+export default compareSlice.reducer;

@@ -3,6 +3,7 @@ import themeReducer from './themeSlice';
 import favouritesReducer from './favouritesSlice';
 import kpiReducer from './kpiSlice';
 import featuredReducer from './featuredSlice';
+import compareReducer from './compareSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     favourites: favouritesReducer,
     kpi: kpiReducer,
     featured: featuredReducer,
+    compare: compareReducer,
   },
 });
 

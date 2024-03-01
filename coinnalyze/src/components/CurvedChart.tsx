@@ -196,7 +196,7 @@ export function Graph({
       <Defs>
         <LinearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
           <Stop offset="0" stopColor={disabled(theme)} stopOpacity={0.1} />
-          <Stop offset="1" stopColor={background(theme)} />
+          <Stop offset="1" stopColor={background(theme)} stopOpacity={0.1} />
         </LinearGradient>
       </Defs>
       <Path d={area} fill="url(#grad)" strokeWidth={0} />
@@ -213,7 +213,6 @@ export function Graph({
         stroke={background(theme)}
         fill={onBackground(theme)}
         fontSize="10"
-        fontFamily={fontFamilies.medium}
         x={left ? leftPadding : width - leftPadding}
         y={currentPriceScaled - 5}
         textAnchor={left ? 'start' : 'end'}>

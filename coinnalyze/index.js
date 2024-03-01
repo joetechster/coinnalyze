@@ -1,9 +1,9 @@
 import 'react-native-gesture-handler';
-import {AppRegistry, Appearance, View} from 'react-native';
+import {AppRegistry} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
 import {api_uri} from './src/globals';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import {split, HttpLink} from '@apollo/client';
 import {getMainDefinition} from '@apollo/client/utilities';
@@ -11,8 +11,8 @@ import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
 import {createClient} from 'graphql-ws';
 import {Provider} from 'react-redux';
 import store from './src/redux_schema/store';
-import './src/redux_schema/setup';
 import ThemedStatusBar from './src/components/ThemedStatusBar';
+import './src/redux_schema/setup'; // Import file so initial state can be set
 
 const httpLink = new HttpLink({
   uri: api_uri,

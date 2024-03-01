@@ -1,16 +1,26 @@
-import {StyleSheet, View} from 'react-native';
+import {
+  GestureResponderEvent,
+  GestureResponderHandlers,
+  Pressable,
+  PressableAndroidRippleConfig,
+  RippleBackgroundPropType,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Text, {BoldText, MediumText} from './Text';
 import AddButton from './AddButton';
-import {Theme, disabled} from '../globals';
+import {Theme, disabled, onSurface, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
+import {useMemo} from 'react';
 
 interface ListItemProps {
-  title: string;
+  title: string | React.ReactNode;
   subTitle?: string;
   Left?: React.ReactNode;
   Right?: React.ReactNode;
   rightText?: string;
   rightSubText?: string;
+  onPress?: (e: GestureResponderEvent) => void;
 }
 
 export default function ListItem({
@@ -20,14 +30,15 @@ export default function ListItem({
   subTitle,
   rightText,
   rightSubText,
+  onPress,
 }: ListItemProps) {
-  const {style} = useTheme(styleDecorator);
+  const {style, theme} = useTheme(styleDecorator);
   return (
-    <View style={style.container}>
+    <Pressable style={style.container} onPress={onPress}>
       {Left}
       <View style={style.middleSection}>
         <MediumText style={style.title} numberOfLines={1}>
-          {title + title + title}
+          {title}
         </MediumText>
         <Text style={style.subTitle}>{subTitle}</Text>
       </View>
@@ -45,7 +56,7 @@ export default function ListItem({
           </Text>
         </View>
       )}
-    </View>
+    </Pressable>
   );
 }
 

@@ -68,10 +68,28 @@ export function LoadingKPI() {
   const {style, theme} = useTheme(styleDecorator);
 
   return (
-    <View style={[style.container, {gap: 10, height: 86.3}]}>
-      <View style={{width: 90, flex: 1, ...style.loadingBg}}></View>
-      <View style={{width: 180, flex: 2.26, ...style.loadingBg}}></View>
-      <View style={{width: 180, flex: 0.98, ...style.loadingBg}}></View>
+    <View style={[style.container, {gap: 10, height: 86.3, flex: 1}]}>
+      <View
+        style={{
+          width: 90,
+          maxWidth: '100%',
+          flex: 1,
+          ...style.loadingBg,
+        }}></View>
+      <View
+        style={{
+          width: 180,
+          maxWidth: '100%',
+          flex: 2.26,
+          ...style.loadingBg,
+        }}></View>
+      <View
+        style={{
+          width: 180,
+          maxWidth: '100%',
+          flex: 0.98,
+          ...style.loadingBg,
+        }}></View>
     </View>
   );
 }

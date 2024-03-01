@@ -3,20 +3,17 @@ import {StyleSheet} from 'react-native';
 import useTheme from './hooks/useTheme';
 import Home from './screens/Home';
 import News from './screens/News';
-import {
-  Theme,
-  background,
-  onBackground,
-  onSurface,
-  surface,
-  themes,
-} from './globals';
+import Comopare from './screens/Compare';
+import Markets from './screens/Markets';
+import Settings from './screens/Settings';
 import {BoldText} from './components/Text';
 import TabBarIcon from './components/TabBarIcon';
 import HomeIcon from '../assets/icons/home-icon.svg';
-import ChartIcon from '../assets/icons/chart-icon.svg';
 import CompareIcon from '../assets/icons/compare-icon.svg';
-import ProfileIcon from '../assets/icons/profile-icon.svg';
+import NewsIcon from '../assets/icons/news-icon.svg';
+import MarketIcon from '../assets/icons/bar-icon.svg';
+import SettingsIcon from '../assets/icons/settings-icon.svg';
+import {Theme, background, onBackground, surface} from './globals';
 import {
   createBottomTabNavigator,
   BottomTabScreenProps,
@@ -26,20 +23,22 @@ import {
   StackNavigationProp,
   StackScreenProps,
 } from '@react-navigation/stack';
-import Profile from './screens/Profile';
-import Comopare from './screens/Compare';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 type StackParamList = {
   MyTabNavigator: undefined;
-  Profile: undefined;
+  Settings: undefined;
+  Markets: undefined;
 };
+
 type TabParamList = {
   Home: undefined;
-  Profile: undefined;
   Compare: undefined;
   News: undefined;
+  Markets: undefined;
+  Settings: undefined;
 };
+
 const Stack = createStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -71,7 +70,8 @@ export default function App(): React.JSX.Element {
           component={MyTabNavigator}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Markets" component={Markets} />
+        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -109,7 +109,7 @@ function MyTabNavigator({
         options={{
           title: 'Market News',
           tabBarIcon: props => (
-            <TabBarIcon Icon={ChartIcon} {...props} title="News" />
+            <TabBarIcon Icon={NewsIcon} {...props} title="News" />
           ),
         }}
       />
@@ -123,12 +123,22 @@ function MyTabNavigator({
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={NavigateToStack(stackNavigation)}
+        name="Markets"
+        component={NavigateToStack(stackNavigation, 'Markets')}
         options={{
           lazy: false,
           tabBarIcon: props => (
-            <TabBarIcon Icon={ProfileIcon} {...props} title="Profile" />
+            <TabBarIcon Icon={MarketIcon} {...props} title="Markets" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={NavigateToStack(stackNavigation, 'Settings')}
+        options={{
+          lazy: false,
+          tabBarIcon: props => (
+            <TabBarIcon Icon={SettingsIcon} {...props} title="Settings" />
           ),
         }}
       />
@@ -155,12 +165,13 @@ function styleDecorator(theme: Theme) {
 
 function NavigateToStack(
   stackNavigation: StackNavigationProp<StackParamList, 'MyTabNavigator'>,
+  title: keyof StackParamList,
 ) {
-  return ({navigation}: BottomTabScreenProps<TabParamList, 'Profile'>) => {
+  return ({navigation}: BottomTabScreenProps<TabParamList>) => {
     React.useLayoutEffect(() => {
       const unsubscribe = navigation.addListener('tabPress', e => {
         e.preventDefault();
-        stackNavigation.navigate('Profile');
+        stackNavigation.navigate(title);
       });
       return unsubscribe;
     }, []);

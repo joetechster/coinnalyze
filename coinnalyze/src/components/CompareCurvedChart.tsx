@@ -24,7 +24,6 @@ interface CurvedChartProps {
 
 export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
   const {style, theme} = useTheme(styleDecorator);
-
   width = width || style.container.width;
   const height = style.container.height;
   const paddingBottom = style.container.paddingBottom;
