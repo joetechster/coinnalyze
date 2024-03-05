@@ -45,7 +45,7 @@ export const onSurface = (theme: Theme) =>
 export const disabled = (theme: Theme) =>
   theme === themes.dark ? '#C4C4C4' : '#737373';
 
-export const api_uri = __DEV__ ? 'http://192.168.0.2:4000/graphql' : '';
+export const api_uri = __DEV__ ? 'http://192.168.0.3:4000/graphql' : '';
 
 export const GRAPH_HEIGHT = 250;
 
@@ -84,7 +84,11 @@ export const CANDLES_QUERY = gql(/* GraphQL */ `
 `);
 
 export const SYMBOLS_QUERY = gql(/* GraphQL */ `
-  query getSymbols {
-    symbols
+  query getSymbols($symbols: [String]) {
+    symbols(symbols: $symbols) {
+      symbol
+      lastPrice
+      priceChangePercent
+    }
   }
 `);

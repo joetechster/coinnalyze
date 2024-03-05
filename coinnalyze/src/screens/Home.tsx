@@ -3,15 +3,18 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {Theme, onBackground, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import CurvedChart, {CurvedChartLoading} from '../components/CurvedChart';
-import CoinsSection from '../components/CoinsSection';
+import CoinsSection from '../components/CoinsPreviewSection';
 import KPI, {LoadingKPI} from '../components/KPI';
 import {useAppSelector} from '../redux_schema/hooks';
 import {selectKpi} from '../redux_schema/kpiSlice';
+import {useOnMounted} from '../hooks/useOnMounted';
+import Loading from '../components/Loading';
 
 export default function Home() {
   const {style} = useTheme(styleDecorator);
   const kpi = useAppSelector(selectKpi);
-
+  const {mounted} = useOnMounted();
+  if (!mounted) return <Loading />;
   return (
     <ScrollView style={style.scrollView}>
       <View style={style.container}>

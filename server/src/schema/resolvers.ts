@@ -18,9 +18,11 @@ const resolvers = {
       const { data } = await oclient.ticker24hr("", symbols);
       return data;
     },
-    symbols: async () => {
-      const symbols = await client.prices();
-      return Object.keys(symbols);
+    symbols: async (parent, { symbols }: { symbols: string[] }) => {
+      if (symbols && symbols.length > 0) {
+        return (await oclient.ticker24hr("", symbols)).data;
+      }
+      return (await oclient.ticker24hr()).data;
     },
   },
 

@@ -4,6 +4,9 @@ import favouritesReducer from './favouritesSlice';
 import kpiReducer from './kpiSlice';
 import featuredReducer from './featuredSlice';
 import compareReducer from './compareSlice';
+import symbolsReducer from './symbolsSlice';
+import gainersReducer from './gainersSlice';
+import loosersReducer from './loosersSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +15,9 @@ const store = configureStore({
     kpi: kpiReducer,
     featured: featuredReducer,
     compare: compareReducer,
+    symbols: symbolsReducer,
+    gainers: gainersReducer,
+    loosers: loosersReducer,
   },
 });
 

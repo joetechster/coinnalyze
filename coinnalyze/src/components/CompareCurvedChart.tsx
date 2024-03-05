@@ -58,6 +58,8 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
     });
+  }, [symbols[0]]);
+  useEffect(() => {
     secondSymbolSubscribe({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbols[1]]},
@@ -71,7 +73,7 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
     });
-  }, []);
+  }, [symbols[1]]);
 
   return (
     <Svg width={width} height={height} stroke={disabled(theme)}>
@@ -79,13 +81,17 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
         <Graph
           {...firstGraph}
           left={true}
-          candles={firstSymbolCandles}
+          candles={firstGraph.formatedCandles}
           width={width}
         />
-        <Graph {...secondGraph} candles={secondSymbolCandles} width={width} />
+        <Graph
+          {...secondGraph}
+          candles={secondGraph.formatedCandles}
+          width={width}
+        />
       </G>
       <G y={height - paddingBottom}>
-        {firstSymbolCandles.map((candle, i) => {
+        {firstGraph.formatedCandles.map((candle, i) => {
           const date = new Date(parseFloat(candle.closeTime!));
           const now = i === firstSymbolCandles.length - 1 && 'Now';
           return (

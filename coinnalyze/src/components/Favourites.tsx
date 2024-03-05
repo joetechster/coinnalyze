@@ -1,45 +1,54 @@
-import {StyleSheet, View} from 'react-native';
-import {Theme, screenPadding} from '../globals';
-import useTheme from '../hooks/useTheme';
-import AddButton from './AddButton';
-import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import {Suspense} from 'react';
-import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
-import {selectFavourites} from '../redux_schema/favouritesSlice';
+import {
+  selectFavourites,
+  selectFavouritesPreview,
+} from '../redux_schema/favouritesSlice';
+import {Theme, screenPadding} from '../globals';
+import AddButton from './AddButton';
+import useTheme from '../hooks/useTheme';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {useAppSelector} from '../redux_schema/hooks';
+import DollarIcon from '../../assets/icons/dollar-icon.svg';
+import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
+import styleDecorator from '../styles/List_styles';
+import {TickerOfficial} from '../__generated__/graphql';
 
-export default function Favourites() {
-  const symbols: string[] = useAppSelector(selectFavourites);
+interface FavouritesProps {
+  preview?: boolean;
+}
+
+export default function Favourites({preview = false}: FavouritesProps) {
+  const symbols: TickerOfficial[] = useAppSelector(
+    preview ? selectFavouritesPreview : selectFavourites,
+  );
   const {style} = useTheme(styleDecorator);
   if (symbols.length < 1) return null;
 
-  return (
-    <View style={style.container}>
+  if (preview)
+    return (
       <View style={style.listWrapper}>
-        {symbols.map((symbol, i) => (
-          <Suspense key={symbol} fallback={<SymbolListItemLoading />}>
+        {symbols.map((ticker, i) => (
+          <Suspense key={ticker.symbol} fallback={<SymbolListItemLoading />}>
             <SymbolListItem
-              symbol={symbol}
+              symbol={ticker.symbol!}
               Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
             />
           </Suspense>
         ))}
       </View>
-    </View>
+    );
+  return (
+    <FlatList
+      data={symbols}
+      contentContainerStyle={style.listWrapper}
+      renderItem={({item}) => (
+        <Suspense key={item.symbol} fallback={<SymbolListItemLoading />}>
+          <SymbolListItem
+            symbol={item.symbol!}
+            Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
+          />
+        </Suspense>
+      )}
+    />
   );
-}
-
-function styleDecorator(theme: Theme) {
-  return StyleSheet.create({
-    container: {
-      paddingHorizontal: screenPadding.paddingHorizontal,
-      gap: 10,
-    },
-    addButton: {
-      marginLeft: 'auto',
-    },
-    listWrapper: {
-      gap: 10,
-    },
-  });
 }

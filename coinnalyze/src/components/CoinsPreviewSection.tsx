@@ -3,17 +3,17 @@ import {Theme, primary, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import {useState} from 'react';
 import {Pressable} from 'react-native';
-import Text, {BoldText} from './Text';
+import {BoldText} from './Text';
 import Favourites from './Favourites';
 import Featured from './Featured';
 
-const Tabs = [<Featured />, <Favourites />];
-export default function CoinsSection() {
+const Tabs = [<Featured preview />, <Favourites preview />];
+export default function CoinsPreviewSection() {
   const {style} = useTheme(styleDecorator);
   const [index, setIndex] = useState(0);
 
   return (
-    <>
+    <View style={style.container}>
       <View style={style.header}>
         <Option
           title="Hot"
@@ -27,7 +27,7 @@ export default function CoinsSection() {
         />
       </View>
       {Tabs[index]}
-    </>
+    </View>
   );
 }
 
@@ -48,10 +48,13 @@ function Option({title, onPress, selected}: OptionProps) {
 
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
+    container: {
+      gap: 10,
+    },
     header: {
+      paddingHorizontal: screenPadding.paddingHorizontal,
       flexDirection: 'row',
       gap: 10,
-      paddingHorizontal: screenPadding.paddingHorizontal,
     },
     optionSelected: {
       borderBottomColor: primary(theme),

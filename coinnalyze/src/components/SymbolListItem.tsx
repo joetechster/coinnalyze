@@ -1,31 +1,33 @@
 import {StyleSheet, View} from 'react-native';
-import Text, {BoldText, MediumText} from './Text';
-import AddButton from './AddButton';
+import Text, {MediumText} from './Text';
 import {
   TICKER_QUERY,
   TICKER_SUBSCRIPTION,
   Theme,
   disabled,
-  onSurface,
+  onBackgroundFaint,
+  primary,
   surface,
 } from '../globals';
 import useTheme from '../hooks/useTheme';
-import {useQuery, useSuspenseQuery} from '@apollo/client';
-import {useEffect} from 'react';
-import {formatPercent, formatPrice, formatSymbol} from './KPI';
+import {useSuspenseQuery} from '@apollo/client';
+import {memo, useEffect} from 'react';
 
 interface ListItemProps {
   symbol: string;
   Left?: React.ReactNode;
+  subscribe?: boolean;
 }
 
-export default function SymbolListItem({symbol, Left}: ListItemProps) {
+function SymbolListItem({symbol, Left, subscribe = true}: ListItemProps) {
   const {style, theme} = useTheme(styleDecorator);
   const {data, subscribeToMore} = useSuspenseQuery(TICKER_QUERY, {
     variables: {symbols: [symbol]},
   });
+
   const {lastPrice, priceChangePercent} = data.tickers[0];
   useEffect(() => {
+    if (!subscribe) return;
     subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
@@ -53,22 +55,30 @@ export default function SymbolListItem({symbol, Left}: ListItemProps) {
       {Left}
       <View style={style.middleSection}>
         <MediumText style={style.title} numberOfLines={1}>
-          {formatSymbol(symbol, theme)}
+          {symbol.slice(0, symbol.length - 4)}
+          <MediumText style={style.small}> /USDT</MediumText>
         </MediumText>
         <Text style={style.subTitle}>{'Binance'}</Text>
       </View>
 
       <View style={style.rightSection}>
-        <Text style={style.rightSubText} numberOfLines={1}>
-          {formatPercent(theme, priceChangePercent)}
+        <Text
+          style={[
+            style.rightSubText,
+            priceChangePercent! < 0 ? style.negative : style.positive,
+          ]}
+          numberOfLines={1}>
+          {priceChangePercent + '%'}
         </Text>
         <Text style={style.rightText} numberOfLines={1}>
-          {formatPrice(lastPrice)}
+          {lastPrice}
         </Text>
       </View>
     </View>
   );
 }
+
+export default memo(SymbolListItem);
 
 export function SymbolListItemLoading() {
   const {style, theme} = useTheme(styleDecorator);
@@ -112,12 +122,14 @@ export function SymbolListItemLoading() {
     </View>
   );
 }
-function styleDecorator(theme: Theme) {
+
+export function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
       gap: 10,
       alignItems: 'flex-end',
+      paddingBottom: 10,
     },
     title: {
       fontSize: 16,
@@ -129,6 +141,9 @@ function styleDecorator(theme: Theme) {
     middleSection: {
       flex: 2.5,
     },
-    rightSection: {flex: 1, marginLeft: 'auto', alignItems: 'flex-end'},
+    small: {fontSize: 12, color: onBackgroundFaint(theme)},
+    negative: {color: 'red'},
+    positive: {color: primary(theme)},
+    rightSection: {flex: 2, marginLeft: 'auto', alignItems: 'flex-end'},
   });
 }

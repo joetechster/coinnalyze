@@ -63,7 +63,7 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
     });
-  }, []);
+  }, [symbol]);
 
   return (
     <Svg width={width} height={height} stroke={disabled(theme)}>
@@ -71,7 +71,7 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
         <Graph {...graph} candles={candles} />
       </G>
       <G y={height - paddingBottom}>
-        {candles.map((candle, i) => {
+        {graph.formatedCandles.map((candle, i) => {
           const date = new Date(parseFloat(candle.closeTime!));
           const now = i === candles!.length - 1 && 'Now';
           return (
@@ -97,6 +97,7 @@ export function CurvedChartLoading() {
   const {style} = useTheme(styleDecorator);
   return <View style={style.loadingContainer}></View>;
 }
+
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {
@@ -121,14 +122,15 @@ export const makeGraph = (
   style: ReturnType<typeof styleDecorator> | any,
   width?: number,
 ) => {
+  candles = formatCandles(candles);
   const firstCandle = candles[0];
   const lastCandle = candles[candles.length - 1];
   const max = Math.max(...candles.map(candle => candle.close!));
   const min = Math.min(...candles.map(candle => candle.close!));
-  const paddingHorizontal = style.container.paddingHorizontal as number;
+  const paddingHorizontal = style.container.paddingHorizontal;
 
   const y = scaleLinear()
-    .domain([min, max])
+    .domain([min, max || 1])
     .range([GRAPH_HEIGHT, style.container.paddingTop + 30]);
 
   const x = scaleTime()
@@ -156,9 +158,44 @@ export const makeGraph = (
     min,
     area: curvedArea!,
     curve: curvedLine!,
+    formatedCandles: candles,
   };
 };
 
+function formatCandles(candles: Candle[], interval?: string): Candle[] {
+  switch (interval) {
+    default:
+      // Daily
+      const currentDate = new Date(Date.now());
+      let lowerBoundDate = addDays(currentDate, -6);
+      const datesArray = [];
+      while (lowerBoundDate <= currentDate) {
+        datesArray.push(new Date(lowerBoundDate));
+        lowerBoundDate = addDays(lowerBoundDate, 1);
+      }
+      const newCandles = [];
+      return datesArray.map((date, i): Candle => {
+        const candleDate = new Date(parseInt(candles[i].closeTime!));
+        if (
+          date.getUTCDate() === candleDate.getUTCDate() &&
+          date.getUTCMonth() == candleDate.getUTCMonth() &&
+          date.getUTCFullYear() === candleDate.getUTCFullYear()
+        ) {
+          return candles[i];
+        } else
+          return {
+            ...candles[i],
+            close: 0,
+            closeTime: date.valueOf().toString(),
+          };
+      });
+  }
+}
+function addDays(date: Date, days: number) {
+  date = new Date(date.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
 interface GraphProps extends ReturnType<typeof makeGraph> {
   candles: Candle[];
   left?: boolean;
@@ -216,7 +253,7 @@ export function Graph({
         x={left ? leftPadding : width - leftPadding}
         y={currentPriceScaled - 5}
         textAnchor={left ? 'start' : 'end'}>
-        {currentPrice.toLocaleString('en-US')}
+        {currentPrice}
       </Text>
     </>
   );

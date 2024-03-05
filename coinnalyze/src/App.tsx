@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import useTheme from './hooks/useTheme';
 import Home from './screens/Home';
 import News from './screens/News';
@@ -24,14 +24,14 @@ import {
   StackScreenProps,
 } from '@react-navigation/stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import SymbolPicker from './screens/SymbolPicker';
 
-type StackParamList = {
+export type StackParamList = {
   MyTabNavigator: undefined;
-  Settings: undefined;
-  Markets: undefined;
+  'Pick Symbol': {callback: (symbol: string) => any};
 };
 
-type TabParamList = {
+export type TabParamList = {
   Home: undefined;
   Compare: undefined;
   News: undefined;
@@ -55,10 +55,12 @@ export default function App(): React.JSX.Element {
     }),
     [theme],
   );
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
         screenOptions={{
+          freezeOnBlur: false,
           headerStyle: style.header,
           headerTitleAlign: 'center',
           headerTitle: ({children}) => (
@@ -70,8 +72,11 @@ export default function App(): React.JSX.Element {
           component={MyTabNavigator}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Markets" component={Markets} />
-        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen
+          name="Pick Symbol"
+          component={SymbolPicker}
+          options={{presentation: 'modal', freezeOnBlur: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -85,6 +90,7 @@ function MyTabNavigator({
   return (
     <Tab.Navigator
       screenOptions={{
+        freezeOnBlur: true,
         headerStyle: style.header,
         headerTitleAlign: 'center',
         headerTitle: ({children}) => (
@@ -92,6 +98,9 @@ function MyTabNavigator({
         ),
         tabBarStyle: style.tabBar,
         tabBarShowLabel: false,
+        tabBarButton: props => (
+          <Pressable {...props} android_ripple={{color: background(theme)}} />
+        ),
       }}>
       <Tab.Screen
         name="Home"
@@ -124,9 +133,8 @@ function MyTabNavigator({
       />
       <Tab.Screen
         name="Markets"
-        component={NavigateToStack(stackNavigation, 'Markets')}
+        component={Markets}
         options={{
-          lazy: false,
           tabBarIcon: props => (
             <TabBarIcon Icon={MarketIcon} {...props} title="Markets" />
           ),
@@ -134,9 +142,8 @@ function MyTabNavigator({
       />
       <Tab.Screen
         name="Settings"
-        component={NavigateToStack(stackNavigation, 'Settings')}
+        component={Settings}
         options={{
-          lazy: false,
           tabBarIcon: props => (
             <TabBarIcon Icon={SettingsIcon} {...props} title="Settings" />
           ),
@@ -161,20 +168,4 @@ function styleDecorator(theme: Theme) {
       height: 55,
     },
   });
-}
-
-function NavigateToStack(
-  stackNavigation: StackNavigationProp<StackParamList, 'MyTabNavigator'>,
-  title: keyof StackParamList,
-) {
-  return ({navigation}: BottomTabScreenProps<TabParamList>) => {
-    React.useLayoutEffect(() => {
-      const unsubscribe = navigation.addListener('tabPress', e => {
-        e.preventDefault();
-        stackNavigation.navigate(title);
-      });
-      return unsubscribe;
-    }, []);
-    return null;
-  };
 }

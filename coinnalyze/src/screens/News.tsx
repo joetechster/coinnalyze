@@ -15,6 +15,7 @@ import MySeearchBar from '../components/SearchBar';
 import {FlatList} from 'react-native-gesture-handler';
 import ListItem from '../components/ListItem';
 import {useOnMounted} from '../hooks/useOnMounted';
+import Loading from '../components/Loading';
 
 const BASE_URI = 'https://source.unsplash.com/random?sig=';
 
@@ -24,9 +25,8 @@ export default function News() {
   const [loadingNews, setLoadingNews] = useState(false);
   const {mounted} = useOnMounted();
 
-  if (!mounted) {
-    return <Text>Loading</Text>; //OR <LoaderComponent />;
-  }
+  if (!mounted) return <Loading />;
+
   const updateNews = (e: GestureResponderEvent) => {
     // Update logic here
     setTimeout(() => setLoadingNews(prev => !prev), 1000);

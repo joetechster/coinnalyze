@@ -2,6 +2,7 @@ import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {client} from '..';
 import {SYMBOLS_QUERY} from './globals';
+import {TickerOfficial} from './__generated__/graphql';
 
 const storage = new Storage({
   // maximum capacity, default 1000 key-ids
@@ -31,40 +32,58 @@ const storage = new Storage({
       return initial;
     },
     favourites: async () => {
-      const symbols = ['BTCUSDT', 'BNBUSDT', 'ETHUSDT', 'LTCUSDT'];
+      const initial = ['BTCUSDT', 'BNBUSDT', 'ETHUSDT', 'LTCUSDT'];
+      const symbols = (
+        await client.query({
+          query: SYMBOLS_QUERY,
+          variables: {symbols: initial},
+        })
+      ).data.symbols;
       storage.save({
         key: 'favourites',
         data: symbols,
+        expires: 1,
       });
       return symbols;
     },
     featured: async () => {
-      const symbols = ['BTCUSDT', 'ETHUSDT'];
+      const initial = ['BTCUSDT', 'ETHUSDT'];
+      const symbols = (
+        await client.query({
+          query: SYMBOLS_QUERY,
+          variables: {symbols: initial},
+        })
+      ).data.symbols;
       storage.save({
         key: 'featured',
         data: symbols,
+        expires: 1,
       });
       return symbols;
     },
     compare: async () => {
       const symbols = await storage
-        .load({key: 'featured'})
-        .then(featured => (featured as Array<string>).slice(0, 2));
+        .load<TickerOfficial[]>({key: 'featured'})
+        .then(featured => featured.slice(0, 2).map(ticker => ticker.symbol));
       storage.save({
         key: 'compare',
         data: symbols,
+        expires: null,
       });
       return symbols;
     },
     symbols: async () => {
-      console.log('Fetching all symbols');
-      const allSymbols = await client.query({
-        query: SYMBOLS_QUERY,
-      });
-      console.log('All symbols gotten', allSymbols);
+      console.log('syncing symbols');
+      const allSymbols = (
+        await client.query({
+          query: SYMBOLS_QUERY,
+        })
+      ).data.symbols.filter(ticker => ticker.symbol?.includes('USDT'));
+
       storage.save({
         key: 'symbols',
-        data: allSymbols.data.symbols,
+        data: allSymbols,
+        expires: 1,
       });
       return allSymbols;
     },

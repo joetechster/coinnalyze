@@ -107,7 +107,11 @@ function styleDecorator(theme: Theme) {
   });
 }
 
-export function formatPercent(theme: Theme, percent?: number | null) {
+export function formatPercent(
+  theme: Theme,
+  percent?: number | null,
+  sigfig = 2,
+) {
   const color = percent
     ? percent < 0
       ? 'red'
@@ -116,25 +120,28 @@ export function formatPercent(theme: Theme, percent?: number | null) {
   if (percent !== null && percent !== undefined) {
     return (
       <LightText style={{color}}>
-        {(percent > 0 ? '+' : '') + percent.toFixed(2) + '%'}
+        {(percent > 0 ? '+' : '') + percent.toFixed(sigfig) + '%'}
       </LightText>
     );
   }
 }
 
-export function formatPrice(price?: number | null) {
-  return '$' + price?.toLocaleString('en-US', {maximumFractionDigits: 0});
+export function formatPrice(price?: number | null, sigfig: number = 0) {
+  return '$' + price?.toLocaleString('en-US', {maximumFractionDigits: sigfig});
 }
 
 export function formatSymbol(symbol: string, theme: Theme) {
   const splitter = 'USDT';
   const quote = symbol.split(splitter);
+
   return (
     <>
       {quote}
-      <LightText style={{fontSize: 10, color: onBackgroundFaint(theme)}}>
-        {' /' + splitter}
-      </LightText>
+      {symbol.includes(splitter) && (
+        <LightText style={{fontSize: 10, color: onBackgroundFaint(theme)}}>
+          {' /' + splitter}
+        </LightText>
+      )}
     </>
   );
 }

@@ -19,7 +19,7 @@ export const compareSlice = createSlice({
       } else {
         state[action.payload.index] = action.payload.symbol;
       }
-      storage.save({key: 'compare', data: state});
+      storage.save({key: 'compare', data: state, expires: null});
       return state;
     },
   },
