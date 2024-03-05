@@ -10,10 +10,11 @@ import {Theme, onBackgroundFaint, onSurface, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
 
 interface ListItemProps {
-  title: string | React.ReactNode;
+  title?: string | React.ReactNode;
   subTitle?: string;
   Left?: React.ReactNode;
   Right?: React.ReactNode;
+  Middle?: React.ReactNode;
   rightText?: string;
   rightSubText?: string;
   onPress?: (e: GestureResponderEvent) => void;
@@ -23,6 +24,7 @@ interface ListItemProps {
 export default function ListItem({
   Left,
   Right,
+  Middle,
   title,
   subTitle,
   rightText,
@@ -35,9 +37,12 @@ export default function ListItem({
     <Pressable style={[style.container, foreignStyle]} onPress={onPress}>
       {Left}
       <View style={style.middleSection}>
-        <MediumText style={style.title} numberOfLines={1}>
-          {title}
-        </MediumText>
+        {title && (
+          <MediumText style={style.title} numberOfLines={1}>
+            {title}
+          </MediumText>
+        )}
+        {Middle}
         {subTitle && <Text style={style.subTitle}>{subTitle}</Text>}
       </View>
       {Right}

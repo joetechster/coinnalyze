@@ -1,11 +1,11 @@
-import {StyleSheet, View} from 'react-native';
-import Text, {BoldText, LightText, MediumText} from './Text';
-import {Theme, disabled, onBackgroundFaint, primary} from '../globals';
+import {View} from 'react-native';
+import Text, {MediumText} from './Text';
 import useTheme from '../hooks/useTheme';
 import {memo} from 'react';
 import AddButton from './AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import {styleDecorator} from './SymbolListItem';
+import Symbol from './Symbol';
 
 interface ListItemProps {
   symbol: string;
@@ -19,16 +19,13 @@ function SymbolListItemPure({
   lastPrice,
   priceChangePercent,
 }: ListItemProps) {
-  const {style, theme} = useTheme(styleDecorator);
+  const {style} = useTheme(styleDecorator);
 
   return (
     <View style={style.container}>
       <AddButton height={48} width={48} Icon={DollarIcon} />
       <View style={style.middleSection}>
-        <MediumText style={style.title} numberOfLines={1}>
-          {symbol.slice(0, symbol.length - 4)}
-          <MediumText style={style.small}> /USDT</MediumText>
-        </MediumText>
+        <Symbol symbol={symbol} />
         <Text style={style.subTitle}>{'Binance'}</Text>
       </View>
 
