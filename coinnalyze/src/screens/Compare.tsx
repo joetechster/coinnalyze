@@ -1,6 +1,5 @@
 import {
   Theme,
-  disabled,
   onBackground,
   onBackgroundFaint,
   screenPadding,
@@ -103,7 +102,7 @@ function styleDecorator(theme: Theme) {
       borderRadius: 8,
       borderStyle: 'solid',
       borderWidth: 0.2,
-      borderColor: disabled(theme),
+      borderColor: onBackgroundFaint(theme),
     },
     lastDays: {
       color: onBackgroundFaint(theme),

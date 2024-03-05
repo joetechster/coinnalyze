@@ -5,9 +5,9 @@ import {
   GRAPH_WIDTH,
   TICKER_SUBSCRIPTION,
   Theme,
-  disabled,
   fontFamilies,
   onBackground,
+  onBackgroundFaint,
   screenPadding,
 } from '../globals';
 import useTheme from '../hooks/useTheme';
@@ -76,7 +76,7 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
   }, [symbols[1]]);
 
   return (
-    <Svg width={width} height={height} stroke={disabled(theme)}>
+    <Svg width={width} height={height} stroke={onBackgroundFaint(theme)}>
       <G y={-paddingBottom}>
         <Graph
           {...firstGraph}

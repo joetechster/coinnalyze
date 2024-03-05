@@ -4,7 +4,6 @@ import {
   TICKER_QUERY,
   TICKER_SUBSCRIPTION,
   Theme,
-  disabled,
   onBackgroundFaint,
   primary,
   surface,
@@ -135,7 +134,7 @@ export function styleDecorator(theme: Theme) {
       fontSize: 16,
       flex: 1,
     },
-    subTitle: {color: disabled(theme), flex: 1},
+    subTitle: {color: onBackgroundFaint(theme), flex: 1},
     rightText: {textAlign: 'right', fontSize: 16},
     rightSubText: {textAlign: 'right'},
     middleSection: {

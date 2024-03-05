@@ -68,7 +68,6 @@ const storage = new Storage({
       storage.save({
         key: 'compare',
         data: symbols,
-        expires: null,
       });
       return symbols;
     },

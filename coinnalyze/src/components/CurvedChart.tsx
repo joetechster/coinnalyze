@@ -6,7 +6,7 @@ import {
   TICKER_SUBSCRIPTION,
   Theme,
   background,
-  disabled,
+  onBackgroundFaint,
   fontFamilies,
   onBackground,
   screenPadding,
@@ -14,7 +14,15 @@ import {
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import {Candle, GetCandlesQuery} from '../__generated__/graphql';
-import {area, curveBasis, line, scaleLinear, scaleTime, style} from 'd3';
+import {
+  area,
+  curveBasis,
+  curveCardinal,
+  line,
+  scaleLinear,
+  scaleTime,
+  style,
+} from 'd3';
 import {useSuspenseQuery} from '@apollo/client';
 import {
   Circle,
@@ -66,7 +74,7 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
   }, [symbol]);
 
   return (
-    <Svg width={width} height={height} stroke={disabled(theme)}>
+    <Svg width={width} height={height} stroke={onBackgroundFaint(theme)}>
       <G y={-paddingBottom}>
         <Graph {...graph} candles={candles} />
       </G>
@@ -105,7 +113,7 @@ function styleDecorator(theme: Theme) {
       height: GRAPH_HEIGHT,
       width: GRAPH_WIDTH,
       paddingBottom: 20,
-      paddingTop: 20,
+      paddingTop: 0,
       color: onBackground(theme),
     },
     loadingContainer: {
@@ -143,13 +151,13 @@ export const makeGraph = (
   const curvedLine = area<Candle>()
     .x(d => x(new Date(parseFloat(d.closeTime!))))
     .y(d => y(d.close!))
-    .curve(curveBasis)(candles);
+    .curve(curveCardinal.tension(0.2))(candles);
 
   const curvedArea = area<Candle>()
     .x(d => x(new Date(parseFloat(d.closeTime!))))
     .y0(d => y(d.close!))
     .y1(y(min))
-    .curve(curveBasis)(candles);
+    .curve(curveCardinal.tension(0.2))(candles);
 
   return {
     x,
@@ -173,7 +181,6 @@ function formatCandles(candles: Candle[], interval?: string): Candle[] {
         datesArray.push(new Date(lowerBoundDate));
         lowerBoundDate = addDays(lowerBoundDate, 1);
       }
-      const newCandles = [];
       return datesArray.map((date, i): Candle => {
         const candleDate = new Date(parseInt(candles[i].closeTime!));
         if (
@@ -226,24 +233,28 @@ export function Graph({
         y1={currentPriceScaled}
         x2={width - leftPadding}
         y2={currentPriceScaled}
-        stroke={disabled(theme)}
+        stroke={onBackgroundFaint(theme)}
         strokeWidth="0.4"
         strokeDasharray={1}
       />
       <Defs>
         <LinearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <Stop offset="0" stopColor={disabled(theme)} stopOpacity={0.1} />
+          <Stop
+            offset="0"
+            stopColor={onBackgroundFaint(theme)}
+            stopOpacity={0.1}
+          />
           <Stop offset="1" stopColor={background(theme)} stopOpacity={0.1} />
         </LinearGradient>
       </Defs>
       <Path d={area} fill="url(#grad)" strokeWidth={0} />
-      <Path d={curve} strokeWidth="2" stroke={disabled(theme)} />
+      <Path d={curve} strokeWidth="2" stroke={onBackgroundFaint(theme)} />
       <Circle
         cx={currentDateScaled}
         cy={currentPriceScaled}
         r="2"
         strokeWidth="0"
-        fill={disabled(theme)}
+        fill={onBackgroundFaint(theme)}
       />
       <Text
         strokeWidth={0}

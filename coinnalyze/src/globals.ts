@@ -31,7 +31,7 @@ export const background = (theme: Theme) =>
   theme === themes.dark ? '#141414' : '#FFFFFF';
 
 export const onBackgroundFaint = (theme: Theme) =>
-  theme === themes.dark ? '#C4C4C4' : '#737373';
+  theme === themes.dark ? '#C4C4C4' : '#939393';
 
 export const onBackground = (theme: Theme) =>
   theme === themes.dark ? '#FFFFFF' : '#141414';
@@ -41,9 +41,6 @@ export const surface = (theme: Theme) =>
 
 export const onSurface = (theme: Theme) =>
   theme === themes.dark ? '#FFFFFF' : '#141414';
-
-export const disabled = (theme: Theme) =>
-  theme === themes.dark ? '#C4C4C4' : '#737373';
 
 export const api_uri = __DEV__ ? 'http://192.168.0.3:4000/graphql' : '';
 

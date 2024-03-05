@@ -1,17 +1,13 @@
 import {
   GestureResponderEvent,
-  GestureResponderHandlers,
   Pressable,
-  PressableAndroidRippleConfig,
-  RippleBackgroundPropType,
   StyleSheet,
   View,
+  ViewStyle,
 } from 'react-native';
-import Text, {BoldText, MediumText} from './Text';
-import AddButton from './AddButton';
-import {Theme, disabled, onSurface, surface} from '../globals';
+import Text, {MediumText} from './Text';
+import {Theme, onBackgroundFaint, onSurface, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
-import {useMemo} from 'react';
 
 interface ListItemProps {
   title: string | React.ReactNode;
@@ -21,6 +17,7 @@ interface ListItemProps {
   rightText?: string;
   rightSubText?: string;
   onPress?: (e: GestureResponderEvent) => void;
+  style?: ViewStyle;
 }
 
 export default function ListItem({
@@ -31,16 +28,17 @@ export default function ListItem({
   rightText,
   rightSubText,
   onPress,
+  style: foreignStyle,
 }: ListItemProps) {
-  const {style, theme} = useTheme(styleDecorator);
+  const {style} = useTheme(styleDecorator);
   return (
-    <Pressable style={style.container} onPress={onPress}>
+    <Pressable style={[style.container, foreignStyle]} onPress={onPress}>
       {Left}
       <View style={style.middleSection}>
         <MediumText style={style.title} numberOfLines={1}>
           {title}
         </MediumText>
-        <Text style={style.subTitle}>{subTitle}</Text>
+        {subTitle && <Text style={style.subTitle}>{subTitle}</Text>}
       </View>
       {Right}
 
@@ -65,13 +63,13 @@ function styleDecorator(theme: Theme) {
     container: {
       flexDirection: 'row',
       gap: 10,
-      alignItems: 'flex-end',
+      alignItems: 'center',
     },
     title: {
       fontSize: 16,
       flex: 1,
     },
-    subTitle: {color: disabled(theme), flex: 1},
+    subTitle: {color: onBackgroundFaint(theme), flex: 1},
     rightText: {textAlign: 'right', fontSize: 16},
     rightSubText: {textAlign: 'right'},
     middleSection: {

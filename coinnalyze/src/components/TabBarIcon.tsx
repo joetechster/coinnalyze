@@ -1,6 +1,6 @@
 import React from 'react';
 import {SvgProps} from 'react-native-svg';
-import {Theme, disabled, onSurface, primary} from '../globals';
+import {Theme, onBackgroundFaint, primary} from '../globals';
 import useTheme from '../hooks/useTheme';
 import {StyleSheet, View} from 'react-native';
 import Text, {MediumText, ThinText} from './Text';
@@ -17,7 +17,7 @@ export default function TabBarIcon({Icon, focused, title}: TabBarIconProps) {
   return (
     <View style={style.container}>
       <Icon
-        fill={focused ? primary(theme) : disabled(theme)}
+        fill={focused ? primary(theme) : onBackgroundFaint(theme)}
         height={20}
         width={20}
       />
@@ -25,7 +25,7 @@ export default function TabBarIcon({Icon, focused, title}: TabBarIconProps) {
         numberOfLines={1}
         style={[
           style.label,
-          {color: focused ? primary(theme) : disabled(theme)},
+          {color: focused ? primary(theme) : onBackgroundFaint(theme)},
         ]}>
         {title}
       </MediumText>

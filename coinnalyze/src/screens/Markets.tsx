@@ -54,7 +54,8 @@ function styleDecorator(theme: Theme) {
     },
     tabBarLabelStyle: {
       color: onBackground(theme),
-      fontFamily: fontFamilies.medium,
+      fontFamily: fontFamilies.bold,
+      fontSize: 12,
     },
     tabBarIndicatorStyle: {backgroundColor: primary(theme)},
     tabBarIndicatorContainerStyle: {

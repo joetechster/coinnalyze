@@ -14,15 +14,8 @@ import NewsIcon from '../assets/icons/news-icon.svg';
 import MarketIcon from '../assets/icons/bar-icon.svg';
 import SettingsIcon from '../assets/icons/settings-icon.svg';
 import {Theme, background, onBackground, surface} from './globals';
-import {
-  createBottomTabNavigator,
-  BottomTabScreenProps,
-} from '@react-navigation/bottom-tabs';
-import {
-  createStackNavigator,
-  StackNavigationProp,
-  StackScreenProps,
-} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import SymbolPicker from './screens/SymbolPicker';
 
@@ -66,6 +59,7 @@ export default function App(): React.JSX.Element {
           headerTitle: ({children}) => (
             <BoldText style={style.headerTitle}>{children}</BoldText>
           ),
+          headerTintColor: onBackground(theme),
         }}>
         <Stack.Screen
           name="MyTabNavigator"
