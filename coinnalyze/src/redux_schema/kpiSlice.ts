@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from './store';
+import storage from '../storage';
 
 // Define the initial state using that type
 const initialState = '';
@@ -10,6 +11,7 @@ export const kpiSlice = createSlice({
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
     updateKpi: (state, action: PayloadAction<string>) => {
+      storage.save({key: 'kpi', data: action.payload});
       return action.payload;
     },
   },

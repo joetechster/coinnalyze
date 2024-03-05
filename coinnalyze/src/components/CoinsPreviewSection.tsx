@@ -7,7 +7,7 @@ import {BoldText} from './Text';
 import Favourites from './Favourites';
 import Featured from './Featured';
 
-const Tabs = [<Featured preview />, <Favourites preview />];
+const Tabs = [<Favourites preview />, <Featured preview />];
 export default function CoinsPreviewSection() {
   const {style} = useTheme(styleDecorator);
   const [index, setIndex] = useState(0);
@@ -16,12 +16,12 @@ export default function CoinsPreviewSection() {
     <View style={style.container}>
       <View style={style.header}>
         <Option
-          title="Hot"
+          title="Favourites"
           onPress={() => setIndex(0)}
           selected={index === 0}
         />
         <Option
-          title="Favourites"
+          title="Featured"
           onPress={() => setIndex(1)}
           selected={index === 1}
         />

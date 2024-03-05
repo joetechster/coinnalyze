@@ -31,6 +31,7 @@ const storage = new Storage({
       });
       return initial;
     },
+
     favourites: async () => {
       const initial = ['BTCUSDT', 'BNBUSDT', 'ETHUSDT', 'LTCUSDT'];
       const symbols = (
@@ -42,10 +43,10 @@ const storage = new Storage({
       storage.save({
         key: 'favourites',
         data: symbols,
-        expires: 1,
       });
       return symbols;
     },
+
     featured: async () => {
       const initial = ['BTCUSDT', 'ETHUSDT'];
       const symbols = (
@@ -72,7 +73,6 @@ const storage = new Storage({
       return symbols;
     },
     symbols: async () => {
-      console.log('syncing symbols');
       const allSymbols = (
         await client.query({
           query: SYMBOLS_QUERY,

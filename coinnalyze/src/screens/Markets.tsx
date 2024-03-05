@@ -30,8 +30,8 @@ export default function Markets() {
         tabBarIndicatorStyle: style.tabBarIndicatorStyle,
         tabBarIndicatorContainerStyle: style.tabBarIndicatorContainerStyle,
       }}>
-      <Tab.Screen name="Hot" component={Featured} />
       <Tab.Screen name="Favourites" component={Favourites} />
+      <Tab.Screen name="Featured" component={Featured} />
       <Tab.Screen name="Gainers" component={Symbols} />
       <Tab.Screen name="Loosers" component={Loosers} />
     </Tab.Navigator>

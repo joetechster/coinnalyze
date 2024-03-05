@@ -12,6 +12,7 @@ import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
 import styleDecorator from '../styles/List_styles';
 import {TickerOfficial} from '../__generated__/graphql';
+import {Link} from '@react-navigation/native';
 
 interface FavouritesProps {
   preview?: boolean;
@@ -35,6 +36,7 @@ export default function Favourites({preview = false}: FavouritesProps) {
             />
           </Suspense>
         ))}
+        <Link to={'/Markets/Favourites'}>See More</Link>
       </View>
     );
   return (

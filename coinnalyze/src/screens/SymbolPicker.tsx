@@ -10,6 +10,7 @@ import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from '../components/Loading';
 import {StackScreenProps} from '@react-navigation/stack';
 import {StackParamList} from '../App';
+import Symbol from '../components/Symbol';
 
 export default function SymbolPicker({
   route,
@@ -36,7 +37,7 @@ const Item = memo(({ticker, onPress}: ItemType) => {
   const {style} = useTheme(styleDecorator);
   return (
     <Pressable style={style.item} onPress={() => onPress(ticker.symbol!)}>
-      <Text>{ticker.symbol}</Text>
+      <Symbol symbol={ticker.symbol!} />
       <Text>{ticker.lastPrice}</Text>
     </Pressable>
   );

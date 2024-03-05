@@ -1,4 +1,6 @@
+import {client} from '../..';
 import {TickerOfficial} from '../__generated__/graphql';
+import {SYMBOLS_QUERY} from '../globals';
 import storage from '../storage';
 import {updateCompare} from './compareSlice';
 import {updateFavourites} from './favouritesSlice';
@@ -18,8 +20,23 @@ const dispatch = store.dispatch;
     dispatch(updateKpi(kpi));
   });
   // Setup initial favourites from local storage
-  storage.load({key: 'favourites'}).then(favourites => {
+  storage.load<TickerOfficial[]>({key: 'favourites'}).then(favourites => {
     dispatch(updateFavourites(favourites));
+    // Update the info in the store asynchronously
+    const symbols = favourites.map(ticker => ticker.symbol!);
+    client
+      .query({
+        query: SYMBOLS_QUERY,
+        variables: {symbols},
+      })
+      .then(res => {
+        const rearrangedTickers = symbols.map(symbol => {
+          return res.data.symbols.find(
+            ticker => ticker.symbol === symbol,
+          ) as TickerOfficial;
+        });
+        dispatch(updateFavourites(rearrangedTickers));
+      });
   });
   // Setup initial featured from local storage
   storage.load({key: 'featured'}).then(featured => {
