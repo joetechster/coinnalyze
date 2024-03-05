@@ -47,20 +47,22 @@ const dispatch = store.dispatch;
     dispatch(updateCompare(compare));
   });
   // Setup initial symbols from local storage
-  storage.load({key: 'symbols'}).then((symbols: TickerOfficial[]) => {
-    dispatch(updateSymbols(symbols));
-    // Setup initial gainers
-    const symbolsSorted = sortByGain(symbols).filter(
-      ticker => ticker.priceChangePercent !== 0,
-    );
-    const firstNegativeIndex = symbolsSorted.findIndex(
-      ticker => ticker.priceChangePercent! < 0,
-    );
-    const gainers = symbolsSorted.slice(0, firstNegativeIndex);
-    const loosers = symbolsSorted.slice(firstNegativeIndex).reverse();
-    dispatch(updateGainers(gainers));
-    dispatch(updateLoosers(loosers));
-  });
+  storage
+    .load({key: 'symbols', syncInBackground: false})
+    .then((symbols: TickerOfficial[]) => {
+      dispatch(updateSymbols(symbols));
+      // Setup initial gainers
+      const symbolsSorted = sortByGain(symbols).filter(
+        ticker => ticker.priceChangePercent !== 0,
+      );
+      const firstNegativeIndex = symbolsSorted.findIndex(
+        ticker => ticker.priceChangePercent! < 0,
+      );
+      const gainers = symbolsSorted.slice(0, firstNegativeIndex);
+      const loosers = symbolsSorted.slice(firstNegativeIndex).reverse();
+      dispatch(updateGainers(gainers));
+      dispatch(updateLoosers(loosers));
+    });
 })();
 
 function sortByGain(symbols: TickerOfficial[]) {
