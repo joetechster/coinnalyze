@@ -13,6 +13,8 @@ import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
 import styleDecorator from '../styles/List_styles';
 import {TickerOfficial} from '../__generated__/graphql';
 import {Link} from '@react-navigation/native';
+import {useOnMounted} from '../hooks/useOnMounted';
+import Loading from './Loading';
 
 interface FavouritesProps {
   preview?: boolean;
@@ -23,7 +25,10 @@ export default function Favourites({preview = false}: FavouritesProps) {
     preview ? selectFavouritesPreview : selectFavourites,
   );
   const {style} = useTheme(styleDecorator);
+  const {mounted} = useOnMounted();
+
   if (symbols.length < 1) return null;
+  if (!mounted) return <Loading />;
 
   if (preview)
     return (
