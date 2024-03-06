@@ -1,7 +1,14 @@
 import {FlatList, Image, StyleSheet, View} from 'react-native';
 import sample from '../Sample_Report.json';
 import {ExtraBoldText, MediumText} from './Text';
-import {Theme, background, screenPadding, surface} from '../globals';
+import {
+  Theme,
+  background,
+  onBackgroundFaint,
+  onSurface,
+  screenPadding,
+  surface,
+} from '../globals';
 import useTheme from '../hooks/useTheme';
 const news = sample.results.filter(singleNews => singleNews.image_url);
 
@@ -42,7 +49,7 @@ function styleDecorator(theme: Theme) {
       width: '100%',
       aspectRatio: 1.6,
       borderRadius: 10,
-      backgroundColor: background(theme),
+      backgroundColor: surface(theme),
     },
   });
 }
