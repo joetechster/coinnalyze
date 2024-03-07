@@ -12,63 +12,48 @@ import { createServer } from "http";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
-import contextFunc, { Context } from "./context.js";
-
+import contextFunc from "./context.js";
 const { json } = bodyParser;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const typeDefs = fs.readFileSync(path.join(__dirname, "schema/types.gql"), {
-  encoding: "utf8",
+    encoding: "utf8",
 });
-
 const app = express();
 const httpServer = createServer(app);
-
 const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-const server = new ApolloServer<Context>({
-  schema,
-  plugins: [
-    // Proper shutdown for the HTTP server.
-    ApolloServerPluginDrainHttpServer({ httpServer }),
-
-    // Proper shutdown for the WebSocket server.
-    {
-      serverWillStart: async () => {
-        return {
-          drainServer: async () => {
-            await serverCleanup.dispose();
-          },
-        };
-      },
-    },
-  ],
+const server = new ApolloServer({
+    schema,
+    plugins: [
+        // Proper shutdown for the HTTP server.
+        ApolloServerPluginDrainHttpServer({ httpServer }),
+        // Proper shutdown for the WebSocket server.
+        {
+            serverWillStart: async () => {
+                return {
+                    drainServer: async () => {
+                        await serverCleanup.dispose();
+                    },
+                };
+            },
+        },
+    ],
 });
-
 await server.start();
-
-app.use(
-  "/graphql",
-  cors<cors.CorsRequest>(),
-  json(),
-  expressMiddleware<Context>(server, { context: contextFunc })
-);
+app.use("/graphql", cors(), json(), expressMiddleware(server, { context: contextFunc }));
 let wsServer;
-
 try {
-  wsServer = new WebSocketServer({
-    server: httpServer,
-    path: "/graphql",
-  });
-} catch (e) {
-  console.log(e);
+    wsServer = new WebSocketServer({
+        server: httpServer,
+        path: "/graphql",
+    });
 }
-const serverCleanup = useServer(
-  {
+catch (e) {
+    console.log(e);
+}
+const serverCleanup = useServer({
     schema,
     context: contextFunc,
-  },
-  wsServer
-);
-await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
+}, wsServer);
+await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
 console.log(`🚀 Server ready at http://localhost:4000/graphql`);

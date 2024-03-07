@@ -1,4 +1,4 @@
-import Binance, { Binance as BinanceType, Ticker } from "binance-api-node";
+import Binance, { Binance as BinanceType } from "binance-api-node";
 import { PubSub, withFilter } from "graphql-subscriptions";
 import { Spot } from "@binance/connector";
 import fetch from "node-fetch";
