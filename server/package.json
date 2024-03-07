@@ -7,9 +7,10 @@
     "start": "nodemon",
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist"
+    "add-build": "git add dist",
+    "prepare": "cd .. && husky install server/.husky"
   },
-  "pre-commit": [
+  "precommit": [
     "ts.check",
     "build",
     "add-build"
@@ -36,9 +37,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
+    "husky": "^9.0.11",
     "nodemon": "^2.0.22",
-    "pre-commit": "^1.2.2",
-    "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }
