@@ -59,10 +59,40 @@ type TickerOfficial {
   lastId: String
   count: String
 }
+type News {
+  article_id: String
+  title: String
+  link: String
+  keywords: [String]
+  creator: [String]
+  video_url: String
+  description: String
+  content: String
+  pubDate: String
+  image_url: String
+  source_id: String
+  source_url: String
+  source_icon: String
+  source_priority: Int
+  country: [String]
+  category: [String]
+  language: String
+  ai_tag: String
+  sentiment: String
+  sentiment_stats: String
+  ai_region: String
+}
+type NewsResponse {
+  status: String
+  totalResults: Int
+  results: [News]
+  nextPage: String
+}
 type Query {
   candles(symbol: String): [Candle!]!
   tickers(symbols: [String!]!): [TickerOfficial!]!
   symbols(symbols: [String]): [TickerOfficial!]!
+  news(nextPage: String): NewsResponse
 }
 type Subscription {
   ticker(symbols: [String!]!): Ticker!

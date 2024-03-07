@@ -9,7 +9,7 @@ import {useAppSelector} from '../redux_schema/hooks';
 import {selectKpi} from '../redux_schema/kpiSlice';
 import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from '../components/Loading';
-import NewsCarousel from '../components/NewsCarousel';
+import NewsCarousel, {NewsCarouselLoading} from '../components/NewsCarousel';
 
 export default function Home() {
   const {style} = useTheme(styleDecorator);
@@ -25,7 +25,9 @@ export default function Home() {
         <Suspense fallback={<CurvedChartLoading />}>
           {kpi ? <CurvedChart symbol={kpi} /> : <CurvedChartLoading />}
         </Suspense>
-        <NewsCarousel />
+        <Suspense fallback={<NewsCarouselLoading />}>
+          <NewsCarousel />
+        </Suspense>
         <CoinsSection />
       </View>
     </ScrollView>

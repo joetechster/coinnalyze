@@ -14,7 +14,7 @@ import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
 import {G, Svg, Text} from 'react-native-svg';
 import {useEffect} from 'react';
-import {makeGraph} from './CurvedChart';
+import {makeGraph, styleDecorator} from './CurvedChart';
 import {Graph} from './CurvedChart';
 
 interface CurvedChartProps {
@@ -111,17 +111,4 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
       </G>
     </Svg>
   );
-}
-
-function styleDecorator(theme: Theme) {
-  return StyleSheet.create({
-    container: {
-      ...screenPadding,
-      height: GRAPH_HEIGHT,
-      width: GRAPH_WIDTH,
-      paddingBottom: 20,
-      paddingTop: 20,
-      color: onBackground(theme),
-    },
-  });
 }

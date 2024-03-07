@@ -1,8 +1,7 @@
 import {memo} from 'react';
 import {
+  NEWS_QUERY,
   Theme,
-  background,
-  onBackground,
   onBackgroundFaint,
   screenPadding,
   surface,
@@ -12,28 +11,28 @@ import useTheme from '../hooks/useTheme';
 import {FlatList} from 'react-native-gesture-handler';
 import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from '../components/Loading';
-import sample from '../Sample_Report.json';
-import Text, {BoldText} from '../components/Text';
-
-const news = sample.results.filter(singleNews => singleNews.image_url);
+import Text, {BoldText, LightText} from '../components/Text';
+import {useQuery} from '@apollo/client';
+import {News as NewsType} from '../__generated__/graphql';
 
 const BASE_URI = 'https://source.unsplash.com/random?sig=';
 
 export default function News() {
   const {style} = useTheme(styleDecorator);
   const {mounted} = useOnMounted();
+  const {data, loading} = useQuery(NEWS_QUERY);
 
-  if (!mounted) return <Loading />;
+  if (!mounted || loading) return <Loading />;
 
   return (
     <FlatList
       contentContainerStyle={style.container}
-      data={news}
-      renderItem={({item}) => <NewsItem singleNews={item} />}
+      data={data?.news?.results?.filter(n => n?.image_url)}
+      renderItem={({item}) => <NewsItem singleNews={item!} />}
     />
   );
 }
-const NewsItem = memo(({singleNews}: {singleNews: (typeof news)[0]}) => {
+const NewsItem = memo(({singleNews}: {singleNews: NewsType}) => {
   const {style, theme} = useTheme(styleDecorator);
 
   return (
@@ -43,6 +42,9 @@ const NewsItem = memo(({singleNews}: {singleNews: (typeof news)[0]}) => {
         style={style.newsImage}
       />
       <View style={style.subSection}>
+        <LightText style={style.date}>
+          {new Date(singleNews.pubDate!).toDateString()}
+        </LightText>
         <BoldText numberOfLines={3}>{singleNews.title}</BoldText>
         <Text numberOfLines={2} style={style.newsDescription}>
           {singleNews.description}
@@ -71,6 +73,10 @@ function styleDecorator(theme: Theme) {
     },
     subSection: {
       padding: 10,
+    },
+    date: {
+      fontSize: 10,
+      textAlign: 'right',
     },
   });
 }

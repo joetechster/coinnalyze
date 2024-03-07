@@ -31,9 +31,43 @@ export type Candle = {
   volume?: Maybe<Scalars['String']['output']>;
 };
 
+export type News = {
+  __typename?: 'News';
+  ai_region?: Maybe<Scalars['String']['output']>;
+  ai_tag?: Maybe<Scalars['String']['output']>;
+  article_id?: Maybe<Scalars['String']['output']>;
+  category?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  content?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  creator?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  description?: Maybe<Scalars['String']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  language?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  pubDate?: Maybe<Scalars['String']['output']>;
+  sentiment?: Maybe<Scalars['String']['output']>;
+  sentiment_stats?: Maybe<Scalars['String']['output']>;
+  source_icon?: Maybe<Scalars['String']['output']>;
+  source_id?: Maybe<Scalars['String']['output']>;
+  source_priority?: Maybe<Scalars['Int']['output']>;
+  source_url?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  video_url?: Maybe<Scalars['String']['output']>;
+};
+
+export type NewsResponse = {
+  __typename?: 'NewsResponse';
+  nextPage?: Maybe<Scalars['String']['output']>;
+  results?: Maybe<Array<Maybe<News>>>;
+  status?: Maybe<Scalars['String']['output']>;
+  totalResults?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   candles: Array<Candle>;
+  news?: Maybe<NewsResponse>;
   symbols: Array<TickerOfficial>;
   tickers: Array<TickerOfficial>;
 };
@@ -41,6 +75,11 @@ export type Query = {
 
 export type QueryCandlesArgs = {
   symbol?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryNewsArgs = {
+  nextPage?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -143,8 +182,16 @@ export type GetSymbolsQueryVariables = Exact<{
 
 export type GetSymbolsQuery = { __typename?: 'Query', symbols: Array<{ __typename?: 'TickerOfficial', symbol?: string | null, lastPrice?: number | null, priceChangePercent?: number | null }> };
 
+export type GetNewsQueryVariables = Exact<{
+  nextPage?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetNewsQuery = { __typename?: 'Query', news?: { __typename?: 'NewsResponse', nextPage?: string | null, results?: Array<{ __typename?: 'News', title?: string | null, image_url?: string | null, description?: string | null, pubDate?: string | null } | null> | null } | null };
+
 
 export const SubscribeToTickersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"subscribeToTickers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ticker"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbols"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"curDayClose"}},{"kind":"Field","name":{"kind":"Name","value":"closeTime"}},{"kind":"Field","name":{"kind":"Name","value":"prevDayClose"}},{"kind":"Field","name":{"kind":"Name","value":"priceChangePercent"}},{"kind":"Field","name":{"kind":"Name","value":"symbol"}}]}}]}}]} as unknown as DocumentNode<SubscribeToTickersSubscription, SubscribeToTickersSubscriptionVariables>;
 export const GetTickersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getTickers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tickers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbols"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastPrice"}},{"kind":"Field","name":{"kind":"Name","value":"prevClosePrice"}},{"kind":"Field","name":{"kind":"Name","value":"priceChangePercent"}},{"kind":"Field","name":{"kind":"Name","value":"symbol"}}]}}]}}]} as unknown as DocumentNode<GetTickersQuery, GetTickersQueryVariables>;
 export const GetCandlesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getCandles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbol"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"candles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbol"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbol"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"close"}},{"kind":"Field","name":{"kind":"Name","value":"closeTime"}}]}}]}}]} as unknown as DocumentNode<GetCandlesQuery, GetCandlesQueryVariables>;
 export const GetSymbolsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getSymbols"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}},"type":{"kind":"ListType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"symbols"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbols"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"symbol"}},{"kind":"Field","name":{"kind":"Name","value":"lastPrice"}},{"kind":"Field","name":{"kind":"Name","value":"priceChangePercent"}}]}}]}}]} as unknown as DocumentNode<GetSymbolsQuery, GetSymbolsQueryVariables>;
+export const GetNewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getNews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nextPage"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"news"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"nextPage"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nextPage"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"results"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image_url"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"pubDate"}}]}},{"kind":"Field","name":{"kind":"Name","value":"nextPage"}}]}}]}}]} as unknown as DocumentNode<GetNewsQuery, GetNewsQueryVariables>;

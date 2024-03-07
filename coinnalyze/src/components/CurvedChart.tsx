@@ -106,14 +106,14 @@ export function CurvedChartLoading() {
   return <View style={style.loadingContainer}></View>;
 }
 
-function styleDecorator(theme: Theme) {
+export function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {
       ...screenPadding,
       height: GRAPH_HEIGHT,
       width: GRAPH_WIDTH,
       paddingBottom: 20,
-      paddingTop: 0,
+      paddingTop: 10,
       color: onBackground(theme),
     },
     loadingContainer: {

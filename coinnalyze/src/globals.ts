@@ -89,3 +89,17 @@ export const SYMBOLS_QUERY = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const NEWS_QUERY = gql(/* GraphQL */ `
+  query getNews($nextPage: String) {
+    news(nextPage: $nextPage) {
+      results {
+        title
+        image_url
+        description
+        pubDate
+      }
+      nextPage
+    }
+  }
+`);
