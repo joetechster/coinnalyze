@@ -1,35 +1,45 @@
 {
-    "name": "server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "nodemon"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "type": "module",
-    "dependencies": {
-        "@apollo/server": "^4.7.5",
-        "@binance/connector": "^3.2.0",
-        "@graphql-tools/schema": "^10.0.0",
-        "binance-api-node": "^0.12.7",
-        "body-parser": "^1.20.2",
-        "cors": "^2.8.5",
-        "es6-promise": "^4.2.8",
-        "express": "^4.18.2",
-        "graphql": "^16.7.1",
-        "graphql-subscriptions": "^2.0.0",
-        "graphql-ws": "^5.14.0",
-        "node-binance-api": "^0.13.1",
-        "node-fetch": "^3.3.2",
-        "ws": "^8.13.0"
-    },
-    "devDependencies": {
-        "@types/node": "^20.3.3",
-        "nodemon": "^2.0.22",
-        "ts-node": "^10.9.1",
-        "typescript": "^5.1.6"
-    }
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist"
+  },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.7.5",
+    "@binance/connector": "^3.2.0",
+    "@graphql-tools/schema": "^10.0.0",
+    "binance-api-node": "^0.12.7",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "es6-promise": "^4.2.8",
+    "express": "^4.18.2",
+    "graphql": "^16.7.1",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.14.0",
+    "node-binance-api": "^0.13.1",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "nodemon": "^2.0.22",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
 }
