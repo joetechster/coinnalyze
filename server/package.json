@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon",
     "ts.check": "tsc --project tsconfig.json",
-    "build": "rimraf api && tsc",
+    "build": "rimraf api && tsc && cp ./src/schema/types.gql ./api/schema/types.gql",
     "add-build": "git add dist"
   },
   "keywords": [],
