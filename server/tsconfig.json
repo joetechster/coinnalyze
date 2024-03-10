@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "rootDirs": ["src"],
-    "outDir": "dist",
+    "outDir": "api",
     "lib": ["es2020"],
     "target": "ES2020",
     "module": "esnext",
