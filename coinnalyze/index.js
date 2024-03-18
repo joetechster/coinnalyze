@@ -13,6 +13,13 @@ import {Provider} from 'react-redux';
 import store from './src/redux_schema/store';
 import ThemedStatusBar from './src/components/ThemedStatusBar';
 import './src/redux_schema/setup'; // Import file so initial state can be set
+import {loadErrorMessages, loadDevMessages} from '@apollo/client/dev';
+
+if (__DEV__) {
+  // Adds messages only in a dev environment
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 const httpLink = new HttpLink({
   uri: api_uri,

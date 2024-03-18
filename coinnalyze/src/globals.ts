@@ -42,9 +42,9 @@ export const surface = (theme: Theme) =>
 export const onSurface = (theme: Theme) =>
   theme === themes.dark ? '#FFFFFF' : '#141414';
 
-export const api_uri = __DEV__
+export const api_uri = false //__DEV__
   ? 'http://192.168.0.3:4000/graphql'
-  : 'https://coinnalyze.vercel.app/graphql';
+  : 'https://coinnalyze.onrender.com/graphql';
 
 export const GRAPH_HEIGHT = 250;
 

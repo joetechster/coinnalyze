@@ -18,6 +18,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import SymbolPicker from './screens/SymbolPicker';
+import Toast from 'react-native-toast-message';
+import {toastConfig} from './toast';
 
 export type StackParamList = {
   MyTabNavigator: undefined;
@@ -50,29 +52,32 @@ export default function App(): React.JSX.Element {
   );
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          freezeOnBlur: false,
-          headerStyle: style.header,
-          headerTitleAlign: 'center',
-          headerTitle: ({children}) => (
-            <BoldText style={style.headerTitle}>{children}</BoldText>
-          ),
-          headerTintColor: onBackground(theme),
-        }}>
-        <Stack.Screen
-          name="MyTabNavigator"
-          component={MyTabNavigator}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Pick Symbol"
-          component={SymbolPicker}
-          options={{presentation: 'modal', freezeOnBlur: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            freezeOnBlur: false,
+            headerStyle: style.header,
+            headerTitleAlign: 'center',
+            headerTitle: ({children}) => (
+              <BoldText style={style.headerTitle}>{children}</BoldText>
+            ),
+            headerTintColor: onBackground(theme),
+          }}>
+          <Stack.Screen
+            name="MyTabNavigator"
+            component={MyTabNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Pick Symbol"
+            component={SymbolPicker}
+            options={{presentation: 'modal', freezeOnBlur: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <Toast config={toastConfig} />
+    </>
   );
 }
 

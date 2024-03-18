@@ -14,6 +14,7 @@ import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
 import {useEffect} from 'react';
 import {TickerOfficial} from '../__generated__/graphql';
+import {showToast} from '../toast';
 
 interface KPIProps {
   symbol: string;
@@ -28,6 +29,7 @@ export default function KPI({symbol}: KPIProps) {
   const ticker = data.tickers[0];
 
   useEffect(() => {
+    showToast('Connection to server severed');
     subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
@@ -51,6 +53,7 @@ export default function KPI({symbol}: KPIProps) {
           ],
         };
       },
+      onError: () => showToast('Connection to server severed'),
     });
   }, []);
   return (
@@ -68,7 +71,7 @@ export function LoadingKPI() {
   const {style, theme} = useTheme(styleDecorator);
 
   return (
-    <View style={[style.container, {gap: 10, height: 86.3, flex: 1}]}>
+    <View style={[style.container, style.loadingContainer]}>
       <View
         style={{
           width: 90,
@@ -96,6 +99,7 @@ export function LoadingKPI() {
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {paddingHorizontal: screenPadding.paddingHorizontal},
+    loadingContainer: {gap: 10, height: 86.3, flex: 1},
     price: {fontSize: 32},
     desc: {
       color: onBackgroundFaint(theme),
