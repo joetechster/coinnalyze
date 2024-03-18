@@ -100,6 +100,7 @@ export const NEWS_QUERY = gql(/* GraphQL */ `
         image_url
         description
         pubDate
+        link
       }
       nextPage
     }

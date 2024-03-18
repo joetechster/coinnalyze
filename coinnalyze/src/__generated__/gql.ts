@@ -17,7 +17,7 @@ const documents = {
     "\n  query getTickers($symbols: [String!]!) {\n    tickers(symbols: $symbols) {\n      lastPrice\n      prevClosePrice\n      priceChangePercent\n      symbol\n    }\n  }\n": types.GetTickersDocument,
     "\n  query getCandles($symbol: String!) {\n    candles(symbol: $symbol) {\n      close\n      closeTime\n    }\n  }\n": types.GetCandlesDocument,
     "\n  query getSymbols($symbols: [String]) {\n    symbols(symbols: $symbols) {\n      symbol\n      lastPrice\n      priceChangePercent\n    }\n  }\n": types.GetSymbolsDocument,
-    "\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n      }\n      nextPage\n    }\n  }\n": types.GetNewsDocument,
+    "\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n        link\n      }\n      nextPage\n    }\n  }\n": types.GetNewsDocument,
 };
 
 /**
@@ -53,7 +53,7 @@ export function gql(source: "\n  query getSymbols($symbols: [String]) {\n    sym
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n      }\n      nextPage\n    }\n  }\n"): (typeof documents)["\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n      }\n      nextPage\n    }\n  }\n"];
+export function gql(source: "\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n        link\n      }\n      nextPage\n    }\n  }\n"): (typeof documents)["\n  query getNews($nextPage: String) {\n    news(nextPage: $nextPage) {\n      results {\n        title\n        image_url\n        description\n        pubDate\n        link\n      }\n      nextPage\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

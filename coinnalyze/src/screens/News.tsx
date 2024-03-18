@@ -6,7 +6,14 @@ import {
   screenPadding,
   surface,
 } from '../globals';
-import {Image, ListRenderItem, Pressable, StyleSheet, View} from 'react-native';
+import {
+  Image,
+  Linking,
+  ListRenderItem,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import useTheme from '../hooks/useTheme';
 import {FlatList} from 'react-native-gesture-handler';
 import {useOnMounted} from '../hooks/useOnMounted';
@@ -14,6 +21,7 @@ import Loading from '../components/Loading';
 import Text, {BoldText, LightText, MediumText} from '../components/Text';
 import {useQuery} from '@apollo/client';
 import {News as NewsType} from '../__generated__/graphql';
+import {showToast} from '../toast';
 
 export default function News() {
   const [loadingMore, setLoadingMore] = useState(false);
@@ -47,9 +55,11 @@ export default function News() {
 }
 const NewsItem = memo(({singleNews}: {singleNews: NewsType}) => {
   const {style} = useTheme(styleDecorator);
-
+  const handlePress = useCallback(async () => {
+    await Linking.openURL(singleNews.link!);
+  }, []);
   return (
-    <Pressable style={style.item}>
+    <Pressable style={style.item} onPress={handlePress}>
       <Image
         source={{uri: singleNews.image_url ?? undefined}}
         style={style.newsImage}

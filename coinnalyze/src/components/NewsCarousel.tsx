@@ -1,4 +1,12 @@
-import {FlatList, Image, ListRenderItem, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  Linking,
+  ListRenderItem,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {ExtraBoldText, MediumText} from './Text';
 import {NEWS_QUERY, Theme, screenPadding, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
@@ -29,12 +37,14 @@ export default function NewsCarousel() {
 
 const NewsItem = memo(({item}: {item: News}) => {
   const {style} = useTheme(styleDecorator);
-
+  const handlePress = useCallback(async () => {
+    await Linking.openURL(item.link!);
+  }, []);
   return (
-    <View style={style.item}>
+    <Pressable style={style.item} onPress={handlePress}>
       <Image source={{uri: item?.image_url!}} style={style.image} />
       <MediumText numberOfLines={1}>{item?.title}</MediumText>
-    </View>
+    </Pressable>
   );
 });
 function styleDecorator(theme: Theme) {
