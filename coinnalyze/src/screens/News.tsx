@@ -21,7 +21,6 @@ import Loading from '../components/Loading';
 import Text, {BoldText, LightText, MediumText} from '../components/Text';
 import {useQuery} from '@apollo/client';
 import {News as NewsType} from '../__generated__/graphql';
-import {showToast} from '../toast';
 
 export default function News() {
   const [loadingMore, setLoadingMore] = useState(false);
