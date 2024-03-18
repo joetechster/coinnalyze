@@ -85,7 +85,7 @@ type News {
 type NewsResponse {
   status: String
   totalResults: Int
-  results: [News]
+  results: [News!]
   nextPage: String
 }
 type Query {
