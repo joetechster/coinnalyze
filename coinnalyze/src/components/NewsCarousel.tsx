@@ -1,13 +1,18 @@
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {FlatList, Image, ListRenderItem, StyleSheet, View} from 'react-native';
 import {ExtraBoldText, MediumText} from './Text';
 import {NEWS_QUERY, Theme, screenPadding, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
-import {useState} from 'react';
+import {memo, useCallback, useState} from 'react';
+import {News} from '../__generated__/graphql';
 
 export default function NewsCarousel() {
   const {style} = useTheme(styleDecorator);
   const {data} = useSuspenseQuery(NEWS_QUERY);
+  const renderNewsItem: ListRenderItem<News> = useCallback(
+    ({item}) => <NewsItem item={item} />,
+    [],
+  );
 
   return (
     <>
@@ -16,17 +21,22 @@ export default function NewsCarousel() {
         horizontal
         contentContainerStyle={style.container}
         data={data.news?.results?.filter(singleNews => singleNews?.image_url)}
-        renderItem={({item}) => (
-          <View style={style.item}>
-            <Image source={{uri: item?.image_url!}} style={style.image} />
-            <MediumText numberOfLines={1}>{item?.title}</MediumText>
-          </View>
-        )}
+        renderItem={renderNewsItem}
       />
     </>
   );
 }
 
+const NewsItem = memo(({item}: {item: News}) => {
+  const {style} = useTheme(styleDecorator);
+
+  return (
+    <View style={style.item}>
+      <Image source={{uri: item?.image_url!}} style={style.image} />
+      <MediumText numberOfLines={1}>{item?.title}</MediumText>
+    </View>
+  );
+});
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {

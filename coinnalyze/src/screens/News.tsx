@@ -1,4 +1,4 @@
-import {memo} from 'react';
+import {memo, useCallback, useEffect, useState} from 'react';
 import {
   NEWS_QUERY,
   Theme,
@@ -6,34 +6,47 @@ import {
   screenPadding,
   surface,
 } from '../globals';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {Image, ListRenderItem, Pressable, StyleSheet, View} from 'react-native';
 import useTheme from '../hooks/useTheme';
 import {FlatList} from 'react-native-gesture-handler';
 import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from '../components/Loading';
-import Text, {BoldText, LightText} from '../components/Text';
+import Text, {BoldText, LightText, MediumText} from '../components/Text';
 import {useQuery} from '@apollo/client';
 import {News as NewsType} from '../__generated__/graphql';
 
-const BASE_URI = 'https://source.unsplash.com/random?sig=';
-
 export default function News() {
+  const [loadingMore, setLoadingMore] = useState(false);
   const {style} = useTheme(styleDecorator);
   const {mounted} = useOnMounted();
-  const {data, loading} = useQuery(NEWS_QUERY);
-
+  const {data, loading, fetchMore} = useQuery(NEWS_QUERY);
+  const renderItem: ListRenderItem<NewsType> = useCallback(
+    ({item}) => <NewsItem singleNews={item} />,
+    [],
+  );
+  const fetchMoreNews = useCallback(() => {
+    setLoadingMore(true);
+    fetchMore({variables: {nextPage: data?.news?.nextPage}}).finally(() =>
+      setLoadingMore(false),
+    );
+  }, []);
   if (!mounted || loading) return <Loading />;
 
   return (
     <FlatList
       contentContainerStyle={style.container}
       data={data?.news?.results?.filter(n => n?.image_url)}
-      renderItem={({item}) => <NewsItem singleNews={item!} />}
+      renderItem={renderItem}
+      ListFooterComponent={
+        <Pressable style={style.loadMore} onPress={fetchMoreNews}>
+          <MediumText>{loadingMore ? 'Loading...' : 'Load More'}</MediumText>
+        </Pressable>
+      }
     />
   );
 }
 const NewsItem = memo(({singleNews}: {singleNews: NewsType}) => {
-  const {style, theme} = useTheme(styleDecorator);
+  const {style} = useTheme(styleDecorator);
 
   return (
     <Pressable style={style.item}>
@@ -53,6 +66,7 @@ const NewsItem = memo(({singleNews}: {singleNews: NewsType}) => {
     </Pressable>
   );
 });
+
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
     container: {...screenPadding, gap: 10},
@@ -77,6 +91,13 @@ function styleDecorator(theme: Theme) {
     date: {
       fontSize: 10,
       textAlign: 'right',
+    },
+    loadMore: {
+      flex: 1,
+      backgroundColor: surface(theme),
+      padding: 10,
+      alignItems: 'center',
+      borderRadius: 10,
     },
   });
 }

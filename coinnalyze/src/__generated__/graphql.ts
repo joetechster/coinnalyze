@@ -59,7 +59,7 @@ export type News = {
 export type NewsResponse = {
   __typename?: 'NewsResponse';
   nextPage?: Maybe<Scalars['String']['output']>;
-  results?: Maybe<Array<Maybe<News>>>;
+  results?: Maybe<Array<News>>;
   status?: Maybe<Scalars['String']['output']>;
   totalResults?: Maybe<Scalars['Int']['output']>;
 };
@@ -187,7 +187,7 @@ export type GetNewsQueryVariables = Exact<{
 }>;
 
 
-export type GetNewsQuery = { __typename?: 'Query', news?: { __typename?: 'NewsResponse', nextPage?: string | null, results?: Array<{ __typename?: 'News', title?: string | null, image_url?: string | null, description?: string | null, pubDate?: string | null } | null> | null } | null };
+export type GetNewsQuery = { __typename?: 'Query', news?: { __typename?: 'NewsResponse', nextPage?: string | null, results?: Array<{ __typename?: 'News', title?: string | null, image_url?: string | null, description?: string | null, pubDate?: string | null }> | null } | null };
 
 
 export const SubscribeToTickersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"subscribeToTickers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ticker"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbols"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbols"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"curDayClose"}},{"kind":"Field","name":{"kind":"Name","value":"closeTime"}},{"kind":"Field","name":{"kind":"Name","value":"prevDayClose"}},{"kind":"Field","name":{"kind":"Name","value":"priceChangePercent"}},{"kind":"Field","name":{"kind":"Name","value":"symbol"}}]}}]}}]} as unknown as DocumentNode<SubscribeToTickersSubscription, SubscribeToTickersSubscriptionVariables>;

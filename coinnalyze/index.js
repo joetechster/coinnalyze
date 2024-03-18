@@ -50,7 +50,28 @@ const splitLink = split(
 // Initialize Apollo Client
 export const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          news: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              let results = incoming.results;
+              if (existing) {
+                results = [...existing.results, ...results];
+              }
+              return {
+                __typename: 'NewsResponse',
+                nextPage: incoming.nextPage,
+                results,
+              };
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 function AppWrapper() {
