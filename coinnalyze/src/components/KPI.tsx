@@ -14,7 +14,7 @@ import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
 import {useEffect} from 'react';
 import {TickerOfficial} from '../__generated__/graphql';
-import {showToast} from '../toast';
+import {showErrorToast, showToast} from '../toast';
 
 interface KPIProps {
   symbol: string;
@@ -53,7 +53,7 @@ export default function KPI({symbol}: KPIProps) {
         };
       },
       onError: () =>
-        showToast(
+        showErrorToast(
           'Connection to server severed',
           'Please check your connection and try again',
         ),

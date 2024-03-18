@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Suspense, useState} from 'react';
+import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {Theme, onBackground, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import CurvedChart, {CurvedChartLoading} from '../components/CurvedChart';
@@ -15,20 +15,34 @@ export default function Home() {
   const {style} = useTheme(styleDecorator);
   const kpi = useAppSelector(selectKpi);
   const {mounted} = useOnMounted();
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 2000);
+  };
+  console.log(refreshing);
   if (!mounted) return <Loading />;
   return (
-    <ScrollView style={style.scrollView}>
+    <ScrollView
+      style={style.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={style.container}>
         <Suspense fallback={<LoadingKPI />}>
-          {kpi ? <KPI symbol={kpi} /> : <LoadingKPI />}
+          {kpi && !refreshing ? <KPI symbol={kpi} /> : <LoadingKPI />}
         </Suspense>
         <Suspense fallback={<CurvedChartLoading />}>
-          {kpi ? <CurvedChart symbol={kpi} /> : <CurvedChartLoading />}
+          {kpi && !refreshing ? (
+            <CurvedChart symbol={kpi} />
+          ) : (
+            <CurvedChartLoading />
+          )}
         </Suspense>
         <Suspense fallback={<NewsCarouselLoading />}>
-          <NewsCarousel />
+          {!refreshing ? <NewsCarousel /> : <NewsCarouselLoading />}
         </Suspense>
-        <CoinsSection />
+        {!refreshing && <CoinsSection />}
       </View>
     </ScrollView>
   );

@@ -28,7 +28,7 @@ function MyErrorToast(props: any) {
 
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
-    container: {backgroundColor: surface(theme)},
+    container: {backgroundColor: surface(theme), borderLeftColor: 'red'},
     text1: {
       color: onSurface(theme),
       fontFamily: fontFamilies.bold,
@@ -42,12 +42,17 @@ function styleDecorator(theme: Theme) {
   });
 }
 
-export function showToast(message: string, moreInfo?: string) {
+export function showToast(type: string, message: string, moreInfo?: string) {
   Toast.show({
-    type: 'error',
+    type,
     text1: message,
     text2: moreInfo,
     visibilityTime: 10000,
     topOffset: 10,
   });
 }
+
+type func = (message: string, moreInfo?: string) => any;
+export const showErrorToast: func = (...args) => {
+  return showToast('error', ...args);
+};
