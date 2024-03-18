@@ -36,6 +36,7 @@ import {
   Text,
 } from 'react-native-svg';
 import {useEffect} from 'react';
+import {showToast} from '../toast';
 
 interface CurvedChartProps {
   symbol: string;
@@ -70,6 +71,11 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
         };
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
+      onError: () =>
+        showToast(
+          'Connection to server severed',
+          'Please check your connection and try again',
+        ),
     });
   }, [symbol]);
 

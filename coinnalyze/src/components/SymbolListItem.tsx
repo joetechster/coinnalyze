@@ -11,6 +11,7 @@ import {
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
 import {memo, useEffect} from 'react';
+import {showToast} from '../toast';
 
 interface ListItemProps {
   symbol: string;
@@ -46,6 +47,11 @@ function SymbolListItem({symbol, Left, subscribe = true}: ListItemProps) {
           ],
         };
       },
+      onError: () =>
+        showToast(
+          'Connection to server severed',
+          'Please check your connection and try again',
+        ),
     });
   }, []);
 

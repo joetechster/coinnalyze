@@ -16,6 +16,7 @@ import {G, Svg, Text} from 'react-native-svg';
 import {useEffect} from 'react';
 import {makeGraph, styleDecorator} from './CurvedChart';
 import {Graph} from './CurvedChart';
+import {showToast} from '../toast';
 
 interface CurvedChartProps {
   symbols: string[];
@@ -57,6 +58,11 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
         };
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
+      onError: () =>
+        showToast(
+          'Connection to server severed',
+          'Please check your connection and try again',
+        ),
     });
   }, [symbols[0]]);
   useEffect(() => {
@@ -72,6 +78,11 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
         };
         return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
       },
+      onError: () =>
+        showToast(
+          'Connection to server severed',
+          'Please check your connection and try again',
+        ),
     });
   }, [symbols[1]]);
 

@@ -29,7 +29,6 @@ export default function KPI({symbol}: KPIProps) {
   const ticker = data.tickers[0];
 
   useEffect(() => {
-    showToast('Connection to server severed');
     subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
@@ -53,7 +52,11 @@ export default function KPI({symbol}: KPIProps) {
           ],
         };
       },
-      onError: () => showToast('Connection to server severed'),
+      onError: () =>
+        showToast(
+          'Connection to server severed',
+          'Please check your connection and try again',
+        ),
     });
   }, []);
   return (

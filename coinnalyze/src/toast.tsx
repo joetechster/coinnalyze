@@ -1,6 +1,12 @@
 // App.jsx
 import Toast, {ErrorToast, ToastConfig} from 'react-native-toast-message';
-import {Theme, fontFamilies, onSurface, surface} from './globals';
+import {
+  Theme,
+  fontFamilies,
+  onBackgroundFaint,
+  onSurface,
+  surface,
+} from './globals';
 import useTheme from './hooks/useTheme';
 import {StyleSheet} from 'react-native';
 
@@ -29,17 +35,19 @@ function styleDecorator(theme: Theme) {
       fontSize: 17,
     },
     text2: {
-      color: onSurface(theme),
+      color: onBackgroundFaint(theme),
       fontFamily: fontFamilies.regular,
-      fontSize: 15,
+      fontSize: 14,
     },
   });
 }
 
-export function showToast(message: string) {
+export function showToast(message: string, moreInfo?: string) {
   Toast.show({
     type: 'error',
     text1: message,
+    text2: moreInfo,
     visibilityTime: 10000,
+    topOffset: 10,
   });
 }
