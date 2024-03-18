@@ -4,7 +4,6 @@ import useTheme from '../hooks/useTheme';
 
 export default function ThemedStatusBar() {
   const {style, theme} = useTheme(styleDecorator);
-  style.statusBar.backgroundColor = 'green';
   return (
     <StatusBar
       barStyle={theme === themes.dark ? 'light-content' : 'dark-content'}
