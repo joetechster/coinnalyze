@@ -15,6 +15,7 @@ import {TickerOfficial} from '../__generated__/graphql';
 import {Link} from '@react-navigation/native';
 import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from './Loading';
+import Text from './Text';
 
 interface FavouritesProps {
   preview?: boolean;
@@ -41,7 +42,9 @@ export default function Favourites({preview = false}: FavouritesProps) {
             />
           </Suspense>
         ))}
-        <Link to={'/Markets/Favourites'}>See More</Link>
+        <Link to={'/Markets/Favourites'}>
+          <Text>See More</Text>
+        </Link>
       </View>
     );
   return (

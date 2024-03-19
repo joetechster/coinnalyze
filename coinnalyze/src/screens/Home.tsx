@@ -18,9 +18,8 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 2000);
+    setTimeout(() => setRefreshing(false), 0);
   };
-  console.log(refreshing);
   if (!mounted) return <Loading />;
   return (
     <ScrollView

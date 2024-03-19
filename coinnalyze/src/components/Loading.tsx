@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {BoldText} from './Text';
 import {Theme, background} from '../globals';
 import useTheme from '../hooks/useTheme';

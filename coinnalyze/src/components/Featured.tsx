@@ -10,6 +10,7 @@ import {selectFeatured} from '../redux_schema/featuredSlice';
 import {FlatList} from 'react-native-gesture-handler';
 import styleDecorator from '../styles/List_styles';
 import {Link} from '@react-navigation/native';
+import Text from './Text';
 
 interface FeaturedProps {
   preview?: boolean;
@@ -30,7 +31,9 @@ export default function Featured({preview = false}: FeaturedProps) {
             />
           </Suspense>
         ))}
-        <Link to={'/Markets/Featured'}>See More</Link>
+        <Link to={'/Markets/Featured'}>
+          <Text>See More</Text>
+        </Link>
       </View>
     );
   return (
