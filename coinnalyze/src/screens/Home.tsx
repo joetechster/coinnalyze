@@ -51,7 +51,11 @@ export default function Home() {
             </Suspense>
           </ErrorBoundary>
         </Refreshable>
-        <ErrorBoundary>{!refreshing && <CoinsPreviewSection />}</ErrorBoundary>
+        <Refreshable refreshing={refreshing}>
+          <ErrorBoundary>
+            <CoinsPreviewSection />
+          </ErrorBoundary>
+        </Refreshable>
       </View>
     </ScrollView>
   );
