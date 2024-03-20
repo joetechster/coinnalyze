@@ -20,6 +20,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import SymbolPicker from './screens/SymbolPicker';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './toast';
+import styleDecorator from './styles/App_styles';
 
 export type StackParamList = {
   MyTabNavigator: undefined;
@@ -150,21 +151,4 @@ function MyTabNavigator({
       />
     </Tab.Navigator>
   );
-}
-
-function styleDecorator(theme: Theme) {
-  return StyleSheet.create({
-    header: {
-      elevation: 0,
-      backgroundColor: background(theme),
-    },
-    headerTitle: {
-      fontSize: 18,
-    },
-    tabBar: {
-      backgroundColor: surface(theme),
-      borderTopWidth: 0,
-      height: 55,
-    },
-  });
 }

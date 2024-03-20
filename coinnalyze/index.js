@@ -14,7 +14,7 @@ import store from './src/redux_schema/store';
 import ThemedStatusBar from './src/components/ThemedStatusBar';
 import './src/redux_schema/setup'; // Import file so initial state can be set
 import {loadErrorMessages, loadDevMessages} from '@apollo/client/dev';
-import {errorLink} from './src/errorHandling';
+import {ErrorBoundary, errorLink} from './src/errorHandling';
 
 if (__DEV__) {
   // Adds messages only in a dev environment
@@ -78,12 +78,14 @@ export const client = new ApolloClient({
 function AppWrapper() {
   return (
     <Provider store={store}>
-      <ThemedStatusBar />
-      <ApolloProvider client={client}>
-        <SafeAreaProvider>
-          <App />
-        </SafeAreaProvider>
-      </ApolloProvider>
+      <ErrorBoundary>
+        <ThemedStatusBar />
+        <ApolloProvider client={client}>
+          <SafeAreaProvider>
+            <App />
+          </SafeAreaProvider>
+        </ApolloProvider>
+      </ErrorBoundary>
     </Provider>
   );
 }
