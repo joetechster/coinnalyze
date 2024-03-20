@@ -36,7 +36,7 @@ export default function News() {
     fetchMore({variables: {nextPage: data?.news?.nextPage}}).finally(() =>
       setLoadingMore(false),
     );
-  }, []);
+  }, [data?.news?.nextPage]);
   if (!mounted || loading) return <Loading />;
 
   return (
