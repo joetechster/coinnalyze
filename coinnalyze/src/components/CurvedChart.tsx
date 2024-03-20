@@ -59,7 +59,7 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
 
   // subscribe to current prices
   useEffect(() => {
-    subscribeToMore({
+    return subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
       updateQuery: (prev, {subscriptionData}) => {

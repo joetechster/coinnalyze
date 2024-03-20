@@ -28,7 +28,7 @@ function SymbolListItem({symbol, Left, subscribe = true}: ListItemProps) {
   const {lastPrice, priceChangePercent} = data.tickers[0];
   useEffect(() => {
     if (!subscribe) return;
-    subscribeToMore({
+    return subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
       updateQuery: (prev, {subscriptionData}) => {

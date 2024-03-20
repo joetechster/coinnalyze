@@ -46,7 +46,7 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
 
   // subscribe to current prices
   useEffect(() => {
-    firstSymbolSubscribe({
+    return firstSymbolSubscribe({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbols[0]]},
       updateQuery: (prev, {subscriptionData}) => {
@@ -66,7 +66,7 @@ export default function CompareCurvedChart({symbols, width}: CurvedChartProps) {
     });
   }, [symbols[0]]);
   useEffect(() => {
-    secondSymbolSubscribe({
+    return secondSymbolSubscribe({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbols[1]]},
       updateQuery: (prev, {subscriptionData}) => {

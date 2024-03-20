@@ -29,7 +29,7 @@ export default function KPI({symbol}: KPIProps) {
   const ticker = data.tickers[0];
 
   useEffect(() => {
-    subscribeToMore({
+    return subscribeToMore({
       document: TICKER_SUBSCRIPTION,
       variables: {symbols: [symbol]},
       updateQuery: (prev, {subscriptionData}) => {
@@ -58,7 +58,6 @@ export default function KPI({symbol}: KPIProps) {
           'Please check your connection and try again',
         ),
     });
-    return () => console.log('kpi unmounted');
   }, []);
   return (
     <View style={style.container}>
