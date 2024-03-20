@@ -15,6 +15,8 @@ import ThemedStatusBar from './src/components/ThemedStatusBar';
 import './src/redux_schema/setup'; // Import file so initial state can be set
 import {loadErrorMessages, loadDevMessages} from '@apollo/client/dev';
 import {ErrorBoundary, errorLink} from './src/errorHandling';
+import {toastConfig} from './src/toast';
+import Toast from 'react-native-toast-message';
 
 if (__DEV__) {
   // Adds messages only in a dev environment
@@ -77,16 +79,17 @@ export const client = new ApolloClient({
 
 function AppWrapper() {
   return (
-    <Provider store={store}>
-      <ErrorBoundary>
+    <ErrorBoundary message="An Error occured">
+      <Provider store={store}>
         <ThemedStatusBar />
         <ApolloProvider client={client}>
           <SafeAreaProvider>
             <App />
           </SafeAreaProvider>
         </ApolloProvider>
-      </ErrorBoundary>
-    </Provider>
+        <Toast config={toastConfig} />
+      </Provider>
+    </ErrorBoundary>
   );
 }
 

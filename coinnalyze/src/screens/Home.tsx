@@ -3,13 +3,15 @@ import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {Theme, onBackground, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import CurvedChart, {CurvedChartLoading} from '../components/CurvedChart';
-import CoinsSection from '../components/CoinsPreviewSection';
+import CoinsPreviewSection from '../components/CoinsPreviewSection';
 import KPI, {LoadingKPI} from '../components/KPI';
 import {useAppSelector} from '../redux_schema/hooks';
 import {selectKpi} from '../redux_schema/kpiSlice';
 import {useOnMounted} from '../hooks/useOnMounted';
 import Loading from '../components/Loading';
 import NewsCarousel, {NewsCarouselLoading} from '../components/NewsCarousel';
+import {ErrorBoundary} from '../errorHandling';
+import Refreshable from '../components/Refreshable';
 
 export default function Home() {
   const {style} = useTheme(styleDecorator);
@@ -28,20 +30,28 @@ export default function Home() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       <View style={style.container}>
-        <Suspense fallback={<LoadingKPI />}>
-          {kpi && !refreshing ? <KPI symbol={kpi} /> : <LoadingKPI />}
-        </Suspense>
-        <Suspense fallback={<CurvedChartLoading />}>
-          {kpi && !refreshing ? (
-            <CurvedChart symbol={kpi} />
-          ) : (
-            <CurvedChartLoading />
-          )}
-        </Suspense>
-        <Suspense fallback={<NewsCarouselLoading />}>
-          {!refreshing ? <NewsCarousel /> : <NewsCarouselLoading />}
-        </Suspense>
-        {!refreshing && <CoinsSection />}
+        <Refreshable refreshing={refreshing} fallback={<LoadingKPI />}>
+          <ErrorBoundary fallback={<LoadingKPI />}>
+            <Suspense fallback={<LoadingKPI />}>
+              <KPI symbol={kpi} />
+            </Suspense>
+          </ErrorBoundary>
+        </Refreshable>
+        <Refreshable refreshing={refreshing} fallback={<CurvedChartLoading />}>
+          <ErrorBoundary fallback={<CurvedChartLoading />}>
+            <Suspense fallback={<CurvedChartLoading />}>
+              <CurvedChart symbol={kpi} />
+            </Suspense>
+          </ErrorBoundary>
+        </Refreshable>
+        <Refreshable refreshing={refreshing} fallback={<NewsCarouselLoading />}>
+          <ErrorBoundary fallback={<NewsCarouselLoading />}>
+            <Suspense fallback={<NewsCarouselLoading />}>
+              <NewsCarousel />
+            </Suspense>
+          </ErrorBoundary>
+        </Refreshable>
+        <ErrorBoundary>{!refreshing && <CoinsPreviewSection />}</ErrorBoundary>
       </View>
     </ScrollView>
   );

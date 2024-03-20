@@ -58,6 +58,7 @@ export default function KPI({symbol}: KPIProps) {
           'Please check your connection and try again',
         ),
     });
+    return () => console.log('kpi unmounted');
   }, []);
   return (
     <View style={style.container}>

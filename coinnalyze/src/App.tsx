@@ -13,13 +13,11 @@ import CompareIcon from '../assets/icons/compare-icon.svg';
 import NewsIcon from '../assets/icons/news-icon.svg';
 import MarketIcon from '../assets/icons/bar-icon.svg';
 import SettingsIcon from '../assets/icons/settings-icon.svg';
-import {Theme, background, onBackground, surface} from './globals';
+import {background, onBackground} from './globals';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import SymbolPicker from './screens/SymbolPicker';
-import Toast from 'react-native-toast-message';
-import {toastConfig} from './toast';
 import styleDecorator from './styles/App_styles';
 
 export type StackParamList = {
@@ -77,7 +75,6 @@ export default function App(): React.JSX.Element {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <Toast config={toastConfig} />
     </>
   );
 }

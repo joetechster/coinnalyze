@@ -20,6 +20,7 @@ import {SymbolListItemLoading} from '../components/SymbolListItem';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {StackParamList, TabParamList} from '../App';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {ErrorBoundary} from '../errorHandling';
 
 export default function Compare({
   navigation,
@@ -71,9 +72,11 @@ export default function Compare({
         <View style={style.kpiWrapper}>
           {compare.length > 0 ? (
             compare.map((symbol, i) => (
-              <Suspense key={i} fallback={<LoadingKPI />}>
-                <KPI symbol={symbol} />
-              </Suspense>
+              <ErrorBoundary key={i} fallback={<LoadingKPI />}>
+                <Suspense fallback={<LoadingKPI />}>
+                  <KPI symbol={symbol} />
+                </Suspense>
+              </ErrorBoundary>
             ))
           ) : (
             <>
@@ -83,9 +86,11 @@ export default function Compare({
           )}
         </View>
         {compare.length > 0 ? (
-          <Suspense fallback={<CurvedChartLoading />}>
-            <CompareCurvedChart symbols={compare} />
-          </Suspense>
+          <ErrorBoundary fallback={<CurvedChartLoading />}>
+            <Suspense fallback={<CurvedChartLoading />}>
+              <CompareCurvedChart symbols={compare} />
+            </Suspense>
+          </ErrorBoundary>
         ) : (
           <CurvedChartLoading />
         )}
