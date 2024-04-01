@@ -16,11 +16,12 @@ export const errorLink = onError(({graphQLErrors, networkError}) => {
   }
 });
 
-export class ErrorBoundary extends React.Component<{
-  children: React.ReactNode;
+export interface ErrorBoundaryProps {
+  children?: React.ReactNode;
   fallback?: React.ReactNode;
   message?: string;
-}> {
+}
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
   state = {hasError: false};
   static getDerivedStateFromError(error: Error) {
     return {hasError: true};

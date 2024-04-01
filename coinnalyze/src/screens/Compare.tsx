@@ -22,6 +22,8 @@ import {StackParamList, TabParamList} from '../App';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ErrorBoundary} from '../errorHandling';
 import Refreshable from '../components/Refreshable';
+import Symbol from '../components/Symbol';
+import Comparer, {ComparerLoading} from '../components/Comparer';
 
 export default function Compare({
   navigation,
@@ -59,7 +61,7 @@ export default function Compare({
             compare.map((symbol, i) => (
               <ListItem
                 key={i}
-                title={formatSymbol(symbol, theme)}
+                title={<Symbol symbol={symbol} />}
                 subTitle="Binance"
                 Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
                 Right={
@@ -113,6 +115,14 @@ export default function Compare({
           <CurvedChartLoading />
         )}
       </View>
+      <View style={style.comparer_wrapper}>
+        <Refreshable refreshing={refreshing} fallback={<ComparerLoading />}>
+          <Comparer compare={compare} />
+        </Refreshable>
+        <Refreshable refreshing={refreshing} fallback={<ComparerLoading />}>
+          <Comparer compare={[...compare].reverse()} />
+        </Refreshable>
+      </View>
     </ScrollView>
   );
 }
@@ -134,6 +144,12 @@ function styleDecorator(theme: Theme) {
       flexDirection: 'row',
       justifyContent: 'space-between',
       flexWrap: 'wrap',
+    },
+    comparer_wrapper: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      ...screenPadding,
+      gap: 10,
     },
   });
 }
