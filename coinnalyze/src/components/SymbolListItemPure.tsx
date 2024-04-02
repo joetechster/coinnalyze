@@ -6,6 +6,7 @@ import AddButton from './AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import {styleDecorator} from './SymbolListItem';
 import Symbol from './Symbol';
+import {formatPrice} from '../helpers/helpers';
 
 interface ListItemProps {
   symbol: string;
@@ -38,7 +39,7 @@ function SymbolListItemPure({
           {priceChangePercent + '%'}
         </Text>
         <Text style={style.rightText} numberOfLines={1}>
-          {lastPrice}
+          {formatPrice(lastPrice)}
         </Text>
       </View>
     </View>
