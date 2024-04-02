@@ -30,32 +30,10 @@ export default function Home() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       <View style={style.container}>
-        <Refreshable refreshing={refreshing} fallback={<LoadingKPI />}>
-          <ErrorBoundary fallback={<LoadingKPI />}>
-            <Suspense fallback={<LoadingKPI />}>
-              <KPI symbol={kpi} />
-            </Suspense>
-          </ErrorBoundary>
-        </Refreshable>
-        <Refreshable refreshing={refreshing} fallback={<CurvedChartLoading />}>
-          <ErrorBoundary fallback={<CurvedChartLoading />}>
-            <Suspense fallback={<CurvedChartLoading />}>
-              <CurvedChart symbol={kpi} />
-            </Suspense>
-          </ErrorBoundary>
-        </Refreshable>
-        <Refreshable refreshing={refreshing} fallback={<NewsCarouselLoading />}>
-          <ErrorBoundary fallback={<NewsCarouselLoading />}>
-            <Suspense fallback={<NewsCarouselLoading />}>
-              <NewsCarousel />
-            </Suspense>
-          </ErrorBoundary>
-        </Refreshable>
-        <Refreshable refreshing={refreshing}>
-          <ErrorBoundary>
-            <CoinsPreviewSection />
-          </ErrorBoundary>
-        </Refreshable>
+        <KPI refreshing={refreshing} symbol={kpi} />
+        <CurvedChart refreshing={refreshing} symbol={kpi} />
+        <NewsCarousel refreshing={refreshing} />
+        <CoinsPreviewSection refreshing={refreshing} />
       </View>
     </ScrollView>
   );

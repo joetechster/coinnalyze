@@ -11,10 +11,28 @@ import {ExtraBoldText, MediumText} from './Text';
 import {NEWS_QUERY, Theme, screenPadding, surface} from '../globals';
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
-import {memo, useCallback, useState} from 'react';
+import {Suspense, memo, useCallback, useState} from 'react';
 import {News} from '../__generated__/graphql';
+import Refreshable, {RefreshableProps} from './Refreshable';
+import {ErrorBoundary, ErrorBoundaryProps} from '../errorHandling';
 
-export default function NewsCarousel() {
+export default function NewsCarousel(
+  props: ErrorBoundaryProps & RefreshableProps,
+) {
+  return (
+    <Refreshable
+      refreshing={props.refreshing}
+      fallback={<NewsCarouselLoading />}>
+      <ErrorBoundary fallback={<NewsCarouselLoading />}>
+        <Suspense fallback={<NewsCarouselLoading />}>
+          <NewsCarouselInner />
+        </Suspense>
+      </ErrorBoundary>
+    </Refreshable>
+  );
+}
+
+function NewsCarouselInner() {
   const {style} = useTheme(styleDecorator);
   const {data} = useSuspenseQuery(NEWS_QUERY);
   const renderNewsItem: ListRenderItem<News> = useCallback(

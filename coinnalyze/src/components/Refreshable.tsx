@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface RefreshableProps {
+export interface RefreshableProps {
   refreshing: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   fallback?: React.ReactNode;
 }
 export default function Refreshable({

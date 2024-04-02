@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {RefreshControlProps, StyleSheet, View} from 'react-native';
 import {
   CANDLES_QUERY,
   GRAPH_HEIGHT,
@@ -35,14 +35,32 @@ import {
   Svg,
   Text,
 } from 'react-native-svg';
-import {useEffect} from 'react';
+import {Suspense, useCallback, useEffect} from 'react';
 import {showErrorToast, showToast} from '../toast';
+import Refreshable from './Refreshable';
+import {ErrorBoundary, ErrorBoundaryProps} from '../errorHandling';
+import {useFocusEffect} from '@react-navigation/native';
+import {formatPrice} from '../helpers/helpers';
 
 interface CurvedChartProps {
   symbol: string;
 }
-
-export default function CurvedChart({symbol}: CurvedChartProps) {
+export default function CurvedChart(
+  props: CurvedChartProps & ErrorBoundaryProps & RefreshControlProps,
+) {
+  return (
+    <Refreshable
+      refreshing={props.refreshing}
+      fallback={<CurvedChartLoading />}>
+      <ErrorBoundary fallback={<CurvedChartLoading />}>
+        <Suspense fallback={<CurvedChartLoading />}>
+          <CurvedChartInner symbol={props.symbol} />
+        </Suspense>
+      </ErrorBoundary>
+    </Refreshable>
+  );
+}
+function CurvedChartInner({symbol}: CurvedChartProps) {
   const {style, theme} = useTheme(styleDecorator);
   const width = style.container.width as number;
   const height = style.container.height as number;
@@ -58,31 +76,33 @@ export default function CurvedChart({symbol}: CurvedChartProps) {
   const graph = candles && makeGraph(candles, style);
 
   // subscribe to current prices
-  useEffect(() => {
-    return subscribeToMore({
-      document: TICKER_SUBSCRIPTION,
-      variables: {symbols: [symbol]},
-      updateQuery: (prev, {subscriptionData}) => {
-        if (!subscriptionData.data) return prev;
-        const newCandle = {
-          __typename: prev.candles[prev.candles.length - 1].__typename,
-          close: subscriptionData.data.ticker.curDayClose,
-          closeTime: prev.candles[prev.candles.length - 1].closeTime,
-        };
-        return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
-      },
-      onError: () =>
-        showErrorToast(
-          'Connection to server severed',
-          'Please check your connection and try again',
-        ),
-    });
-  }, [symbol]);
+  useFocusEffect(
+    useCallback(() => {
+      return subscribeToMore({
+        document: TICKER_SUBSCRIPTION,
+        variables: {symbols: [symbol]},
+        updateQuery: (prev, {subscriptionData}) => {
+          if (!subscriptionData.data) return prev;
+          const newCandle = {
+            __typename: prev.candles[prev.candles.length - 1].__typename,
+            close: subscriptionData.data.ticker.curDayClose,
+            closeTime: prev.candles[prev.candles.length - 1].closeTime,
+          };
+          return {...prev, candles: [...prev.candles.slice(0, -1), newCandle]};
+        },
+        onError: () =>
+          showErrorToast(
+            'Connection to server severed',
+            'Please check your connection and try again',
+          ),
+      });
+    }, [symbol]),
+  );
 
   return (
     <Svg width={width} height={height} stroke={onBackgroundFaint(theme)}>
       <G y={-paddingBottom}>
-        <Graph {...graph} candles={candles} />
+        <Graph {...graph} symbol={symbol} candles={candles} />
       </G>
       <G y={height - paddingBottom}>
         {graph.formatedCandles.map((candle, i) => {
@@ -204,22 +224,27 @@ function formatCandles(candles: Candle[], interval?: string): Candle[] {
       });
   }
 }
+
 function addDays(date: Date, days: number) {
   date = new Date(date.valueOf());
   date.setDate(date.getDate() + days);
   return date;
 }
+
 interface GraphProps extends ReturnType<typeof makeGraph> {
   candles: Candle[];
+  symbol?: string;
   left?: boolean;
   width?: number;
 }
+
 export function Graph({
   candles,
   x,
   y,
   curve,
   area,
+  symbol,
   width,
   left = false,
 }: GraphProps) {
@@ -270,7 +295,7 @@ export function Graph({
         x={left ? leftPadding : width - leftPadding}
         y={currentPriceScaled - 5}
         textAnchor={left ? 'start' : 'end'}>
-        {currentPrice}
+        {`${formatPrice(currentPrice, 10)} (${symbol})`}
       </Text>
     </>
   );

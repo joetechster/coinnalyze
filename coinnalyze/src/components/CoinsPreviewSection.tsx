@@ -6,9 +6,23 @@ import {Pressable} from 'react-native';
 import {BoldText} from './Text';
 import Favourites from './Favourites';
 import Featured from './Featured';
+import {ErrorBoundary, ErrorBoundaryProps} from '../errorHandling';
+import Refreshable, {RefreshableProps} from './Refreshable';
 
 const Tabs = [<Favourites preview />, <Featured preview />];
-export default function CoinsPreviewSection() {
+
+export default function CoinsPreviewSection(
+  props: ErrorBoundaryProps & RefreshableProps,
+) {
+  return (
+    <Refreshable refreshing={props.refreshing}>
+      <ErrorBoundary>
+        <CoinsPreviewSectionInner />
+      </ErrorBoundary>
+    </Refreshable>
+  );
+}
+function CoinsPreviewSectionInner() {
   const {style} = useTheme(styleDecorator);
   const [index, setIndex] = useState(0);
 

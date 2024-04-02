@@ -2,7 +2,6 @@ import {StyleSheet, View} from 'react-native';
 import {Theme, screenPadding} from '../globals';
 import useTheme from '../hooks/useTheme';
 import AddButton from './AddButton';
-import DollarIcon from '../../assets/icons/dollar-icon.svg';
 import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
 import {Suspense} from 'react';
 import {useSelector} from 'react-redux';
@@ -25,10 +24,7 @@ export default function Featured({preview = false}: FeaturedProps) {
       <View style={style.listWrapper}>
         {symbols.map((ticker, i) => (
           <Suspense key={ticker.symbol} fallback={<SymbolListItemLoading />}>
-            <SymbolListItem
-              symbol={ticker.symbol!}
-              Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
-            />
+            <SymbolListItem symbol={ticker.symbol!} />
           </Suspense>
         ))}
         <Link to={'/Markets/Featured'}>
@@ -42,10 +38,7 @@ export default function Featured({preview = false}: FeaturedProps) {
       data={symbols}
       renderItem={({item}) => (
         <Suspense key={item.symbol} fallback={<SymbolListItemLoading />}>
-          <SymbolListItem
-            symbol={item.symbol!}
-            Left={<AddButton height={48} width={48} Icon={DollarIcon} />}
-          />
+          <SymbolListItem symbol={item.symbol!} />
         </Suspense>
       )}
     />

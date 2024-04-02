@@ -13,7 +13,7 @@ import RightArrow from '../../assets/icons/right-icon.svg';
 import CompareCurvedChart from '../components/CompareCurvedChart';
 import {Suspense, useState} from 'react';
 import {CurvedChartLoading} from '../components/CurvedChart';
-import KPI, {LoadingKPI, formatSymbol} from '../components/KPI';
+import KPI, {LoadingKPI} from '../components/KPI';
 import {useAppDispatch, useAppSelector} from '../redux_schema/hooks';
 import {selectCompare, updateCompare} from '../redux_schema/compareSlice';
 import {SymbolListItemLoading} from '../components/SymbolListItem';
@@ -83,16 +83,7 @@ export default function Compare({
         <View style={style.kpiWrapper}>
           {compare.length > 0 ? (
             compare.map((symbol, i) => (
-              <Refreshable
-                key={i}
-                refreshing={refreshing}
-                fallback={<LoadingKPI />}>
-                <ErrorBoundary fallback={<LoadingKPI />}>
-                  <Suspense fallback={<LoadingKPI />}>
-                    <KPI symbol={symbol} />
-                  </Suspense>
-                </ErrorBoundary>
-              </Refreshable>
+              <KPI key={i} refreshing={refreshing} symbol={symbol} />
             ))
           ) : (
             <>
@@ -102,26 +93,14 @@ export default function Compare({
           )}
         </View>
         {compare.length > 0 ? (
-          <Refreshable
-            refreshing={refreshing}
-            fallback={<CurvedChartLoading />}>
-            <ErrorBoundary fallback={<CurvedChartLoading />}>
-              <Suspense fallback={<CurvedChartLoading />}>
-                <CompareCurvedChart symbols={compare} />
-              </Suspense>
-            </ErrorBoundary>
-          </Refreshable>
+          <CompareCurvedChart symbols={compare} refreshing={refreshing} />
         ) : (
           <CurvedChartLoading />
         )}
       </View>
       <View style={style.comparer_wrapper}>
-        <Refreshable refreshing={refreshing} fallback={<ComparerLoading />}>
-          <Comparer compare={compare} />
-        </Refreshable>
-        <Refreshable refreshing={refreshing} fallback={<ComparerLoading />}>
-          <Comparer compare={[...compare].reverse()} />
-        </Refreshable>
+        <Comparer compare={compare} refreshing={refreshing} />
+        <Comparer compare={[...compare].reverse()} refreshing={refreshing} />
       </View>
     </ScrollView>
   );

@@ -10,8 +10,13 @@ import {
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
-import {memo, useEffect} from 'react';
+import {memo, useCallback, useEffect} from 'react';
 import {showErrorToast, showToast} from '../toast';
+import {useFocusEffect} from '@react-navigation/native';
+import Symbol from './Symbol';
+import {formatPrice} from '../helpers/helpers';
+import AddButton from './AddButton';
+import DollarIcon from '../../assets/icons/dollar-icon.svg';
 
 interface ListItemProps {
   symbol: string;
@@ -19,50 +24,54 @@ interface ListItemProps {
   subscribe?: boolean;
 }
 
-function SymbolListItem({symbol, Left, subscribe = true}: ListItemProps) {
-  const {style, theme} = useTheme(styleDecorator);
+function SymbolListItem({
+  symbol,
+  Left = <AddButton height={48} width={48} Icon={DollarIcon} />,
+  subscribe = true,
+}: ListItemProps) {
+  const {style} = useTheme(styleDecorator);
   const {data, subscribeToMore} = useSuspenseQuery(TICKER_QUERY, {
     variables: {symbols: [symbol]},
   });
 
   const {lastPrice, priceChangePercent} = data.tickers[0];
-  useEffect(() => {
-    if (!subscribe) return;
-    return subscribeToMore({
-      document: TICKER_SUBSCRIPTION,
-      variables: {symbols: [symbol]},
-      updateQuery: (prev, {subscriptionData}) => {
-        if (!subscriptionData) return prev;
-        return {
-          __typename: prev.__typename,
-          tickers: [
-            {
-              __typename: 'TickerOfficial',
-              lastPrice: subscriptionData.data.ticker.curDayClose,
-              prevClosePrice: subscriptionData.data.ticker.prevDayClose,
-              priceChangePercent:
-                subscriptionData.data.ticker.priceChangePercent,
-              symbol: subscriptionData.data.ticker.symbol,
-            },
-          ],
-        };
-      },
-      onError: () =>
-        showErrorToast(
-          'Connection to server severed',
-          'Please check your connection and try again',
-        ),
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (!subscribe) return;
+
+      return subscribeToMore({
+        document: TICKER_SUBSCRIPTION,
+        variables: {symbols: [symbol]},
+        updateQuery: (prev, {subscriptionData}) => {
+          if (!subscriptionData) return prev;
+          return {
+            __typename: prev.__typename,
+            tickers: [
+              {
+                __typename: 'TickerOfficial',
+                lastPrice: subscriptionData.data.ticker.curDayClose,
+                prevClosePrice: subscriptionData.data.ticker.prevDayClose,
+                priceChangePercent:
+                  subscriptionData.data.ticker.priceChangePercent,
+                symbol: subscriptionData.data.ticker.symbol,
+              },
+            ],
+          };
+        },
+        onError: () =>
+          showErrorToast(
+            'Connection to server severed',
+            'Please check your connection and try again',
+          ),
+      });
+    }, []),
+  );
 
   return (
     <View style={style.container}>
       {Left}
       <View style={style.middleSection}>
-        <MediumText style={style.title} numberOfLines={1}>
-          {symbol.slice(0, symbol.length - 4)}
-          <MediumText style={style.small}> /USDT</MediumText>
-        </MediumText>
+        <Symbol symbol={symbol} />
         <Text style={style.subTitle}>{'Binance'}</Text>
       </View>
 
@@ -76,7 +85,7 @@ function SymbolListItem({symbol, Left, subscribe = true}: ListItemProps) {
           {priceChangePercent + '%'}
         </Text>
         <Text style={style.rightText} numberOfLines={1}>
-          {lastPrice}
+          {formatPrice(lastPrice, 10)}
         </Text>
       </View>
     </View>

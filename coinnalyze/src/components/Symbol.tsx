@@ -7,12 +7,14 @@ interface SymbolProps {
   symbol: string;
   size?: number;
   style?: TextStyle;
+  nosuffix?: boolean;
 }
 
 export default function Symbol({
   symbol,
   style: foreignStyle,
   size = 1,
+  nosuffix,
 }: SymbolProps) {
   const {style} = useTheme(styleDecorator);
   return (
@@ -24,11 +26,13 @@ export default function Symbol({
       ]}
       numberOfLines={1}>
       {symbol.slice(0, symbol.length - 4)}
-      <MediumText
-        style={[style.small, {fontSize: style.small.fontSize * size}]}>
-        {' '}
-        /USDT
-      </MediumText>
+      {!nosuffix && (
+        <MediumText
+          style={[style.small, {fontSize: style.small.fontSize * size}]}>
+          {' '}
+          /USDT
+        </MediumText>
+      )}
     </MediumText>
   );
 }
