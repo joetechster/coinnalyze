@@ -77,7 +77,9 @@ const storage = new Storage({
         await client.query({
           query: SYMBOLS_QUERY,
         })
-      ).data.symbols.filter(ticker => ticker.symbol?.includes('USDT'));
+      ).data.symbols.filter(
+        ticker => ticker.symbol?.slice(-4).toUpperCase() === 'USDT',
+      );
 
       storage.save({
         key: 'symbols',

@@ -39,7 +39,7 @@ function SymbolListItemPure({
           {priceChangePercent + '%'}
         </Text>
         <Text style={style.rightText} numberOfLines={1}>
-          {formatPrice(lastPrice)}
+          {formatPrice(lastPrice, 10)}
         </Text>
       </View>
     </View>
