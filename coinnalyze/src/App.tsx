@@ -113,6 +113,7 @@ function MyTabNavigator({
         name="News"
         component={News}
         options={{
+          unmountOnBlur: true,
           title: 'Market News',
           tabBarIcon: props => (
             <TabBarIcon Icon={NewsIcon} {...props} title="News" />
