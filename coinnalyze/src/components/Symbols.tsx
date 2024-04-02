@@ -17,18 +17,20 @@ import Loading from './Loading';
 interface SymbolsProps {
   preview?: boolean;
   selector?: (state: RootState) => any;
+  large?: boolean;
 }
 
 export default function Symbols({
   preview = false,
   selector = selectGainers,
+  large = true,
 }: SymbolsProps) {
   const {style} = useTheme(styleDecorator);
   const symbols: TickerOfficial[] = useAppSelector(
     preview ? selectSymbolsPreview : selector,
   );
   const renderItem = useCallback(
-    ({item}: {item: TickerOfficial}) => <Item ticker={item} />,
+    ({item}: {item: TickerOfficial}) => <Item ticker={item} large={large} />,
     [],
   );
   const {mounted} = useOnMounted();
@@ -63,10 +65,20 @@ const getItemLayout = (
   offset: 58 * index,
   index,
 });
-const Item = memo(({ticker}: {ticker: TickerOfficial}) => {
-  return (
-    <Suspense key={ticker.symbol} fallback={<SymbolListItemLoading />}>
-      <SymbolListItem symbol={ticker.symbol!} subscribe={false} />
-    </Suspense>
-  );
-});
+const Item = memo(
+  ({ticker, large}: {ticker: TickerOfficial; large: boolean}) => {
+    return (
+      <Suspense key={ticker.symbol} fallback={<SymbolListItemLoading />}>
+        {large ? (
+          <SymbolListItemPure
+            symbol={ticker.symbol!}
+            lastPrice={ticker.lastPrice!}
+            priceChangePercent={ticker.priceChangePercent!}
+          />
+        ) : (
+          <SymbolListItem symbol={ticker.symbol!} subscribe={false} />
+        )}
+      </Suspense>
+    );
+  },
+);

@@ -12,8 +12,8 @@ import {selectFavourites} from '../redux_schema/favouritesSlice';
 
 const Tab = createMaterialTopTabNavigator();
 const Loosers = () => <Symbols selector={selectLoosers} />;
-const Featured = () => <Symbols selector={selectFeatured} />;
-const Favourites = () => <Symbols selector={selectFavourites} />;
+const Featured = () => <Symbols selector={selectFeatured} large={false} />;
+const Favourites = () => <Symbols selector={selectFavourites} large={false} />;
 
 export default function Markets() {
   const {style} = useTheme(styleDecorator);

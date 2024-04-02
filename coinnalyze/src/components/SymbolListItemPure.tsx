@@ -9,7 +9,6 @@ import Symbol from './Symbol';
 
 interface ListItemProps {
   symbol: string;
-  Left?: React.ReactNode;
   lastPrice?: number;
   priceChangePercent?: number;
 }
