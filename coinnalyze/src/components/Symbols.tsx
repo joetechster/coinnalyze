@@ -66,7 +66,7 @@ const getItemLayout = (
 const Item = memo(({ticker}: {ticker: TickerOfficial}) => {
   return (
     <Suspense key={ticker.symbol} fallback={<SymbolListItemLoading />}>
-      <SymbolListItem symbol={ticker.symbol!} />
+      <SymbolListItem symbol={ticker.symbol!} subscribe={false} />
     </Suspense>
   );
 });
