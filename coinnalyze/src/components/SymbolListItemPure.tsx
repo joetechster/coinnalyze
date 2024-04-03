@@ -65,7 +65,6 @@ function Moment({closeTime}: {closeTime: number}) {
   useFocusEffect(
     useCallback(() => {
       setM(calcFromNow());
-      console.log('updating');
     }, [calcFromNow()]),
   );
   return <>{m}</>;
