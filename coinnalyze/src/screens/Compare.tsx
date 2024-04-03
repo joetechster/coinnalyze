@@ -121,7 +121,6 @@ function styleDecorator(theme: Theme) {
     },
     kpiWrapper: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       flexWrap: 'wrap',
     },
     comparer_wrapper: {

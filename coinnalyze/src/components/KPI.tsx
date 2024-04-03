@@ -105,7 +105,10 @@ export function LoadingKPI() {
 
 function styleDecorator(theme: Theme) {
   return StyleSheet.create({
-    container: {paddingHorizontal: screenPadding.paddingHorizontal},
+    container: {
+      paddingHorizontal: screenPadding.paddingHorizontal,
+      flexGrow: 1,
+    },
     loadingContainer: {gap: 10, height: 86.3, flex: 1},
     loadingSymbol: {
       width: 90,
