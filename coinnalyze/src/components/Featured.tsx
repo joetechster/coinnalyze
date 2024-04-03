@@ -1,7 +1,5 @@
-import {StyleSheet, View} from 'react-native';
-import {Theme, screenPadding} from '../globals';
+import {View} from 'react-native';
 import useTheme from '../hooks/useTheme';
-import AddButton from './AddButton';
 import SymbolListItem, {SymbolListItemLoading} from './SymbolListItem';
 import {Suspense} from 'react';
 import {useSelector} from 'react-redux';

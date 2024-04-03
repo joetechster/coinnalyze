@@ -60,6 +60,7 @@ function KPIInner({symbol}: KPIProps) {
             prevClosePrice: subscriptionData.data.ticker.prevDayClose,
             priceChangePercent: subscriptionData.data.ticker.priceChangePercent,
             symbol: subscriptionData.data.ticker.symbol,
+            closeTime: subscriptionData.data.ticker.closeTime,
           };
           return {
             ...prev,

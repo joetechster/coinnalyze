@@ -73,10 +73,11 @@ const Item = memo(
           <SymbolListItemPure
             symbol={ticker.symbol!}
             lastPrice={ticker.lastPrice!}
+            closeTime={parseInt(ticker.closeTime!)}
             priceChangePercent={ticker.priceChangePercent!}
           />
         ) : (
-          <SymbolListItem symbol={ticker.symbol!} subscribe={false} />
+          <SymbolListItem symbol={ticker.symbol!} />
         )}
       </Suspense>
     );

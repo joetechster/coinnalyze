@@ -10,13 +10,14 @@ import {
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import {useSuspenseQuery} from '@apollo/client';
-import {memo, useCallback, useEffect} from 'react';
+import {memo, useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {showErrorToast, showToast} from '../toast';
 import {useFocusEffect} from '@react-navigation/native';
 import Symbol from './Symbol';
 import {formatPrice} from '../helpers/helpers';
 import AddButton from './AddButton';
 import DollarIcon from '../../assets/icons/dollar-icon.svg';
+import moment from 'moment';
 
 interface ListItemProps {
   symbol: string;
@@ -34,7 +35,7 @@ function SymbolListItem({
     variables: {symbols: [symbol]},
   });
 
-  const {lastPrice, priceChangePercent} = data.tickers[0];
+  const {lastPrice, priceChangePercent, closeTime} = data.tickers[0];
   useFocusEffect(
     useCallback(() => {
       if (!subscribe) return;
@@ -54,6 +55,7 @@ function SymbolListItem({
                 priceChangePercent:
                   subscriptionData.data.ticker.priceChangePercent,
                 symbol: subscriptionData.data.ticker.symbol,
+                closeTime: subscriptionData.data.ticker.closeTime,
               },
             ],
           };
@@ -64,7 +66,7 @@ function SymbolListItem({
             'Please check your connection and try again',
           ),
       });
-    }, []),
+    }, [subscribe]),
   );
 
   return (
@@ -72,7 +74,11 @@ function SymbolListItem({
       {Left}
       <View style={style.middleSection}>
         <Symbol symbol={symbol} />
-        <Text style={style.subTitle}>{'Binance'}</Text>
+        <Text style={style.subTitle}>
+          {moment().diff(moment(parseInt(closeTime!))) < 10000
+            ? 'now'
+            : moment(parseInt(closeTime!)).fromNow()}
+        </Text>
       </View>
 
       <View style={style.rightSection}>

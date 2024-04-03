@@ -69,6 +69,7 @@ export const TICKER_QUERY = gql(/* GraphQL */ `
       prevClosePrice
       priceChangePercent
       symbol
+      closeTime
     }
   }
 `);
@@ -88,6 +89,7 @@ export const SYMBOLS_QUERY = gql(/* GraphQL */ `
       symbol
       lastPrice
       priceChangePercent
+      closeTime
     }
   }
 `);

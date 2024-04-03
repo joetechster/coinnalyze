@@ -14,15 +14,7 @@ import {
 } from '../globals';
 import useTheme from '../hooks/useTheme';
 import {Candle, GetCandlesQuery} from '../__generated__/graphql';
-import {
-  area,
-  curveBasis,
-  curveCardinal,
-  line,
-  scaleLinear,
-  scaleTime,
-  style,
-} from 'd3';
+import {area, curveCardinal, scaleLinear, scaleTime} from 'd3';
 import {useSuspenseQuery} from '@apollo/client';
 import {
   Circle,
@@ -35,8 +27,8 @@ import {
   Svg,
   Text,
 } from 'react-native-svg';
-import {Suspense, useCallback, useEffect} from 'react';
-import {showErrorToast, showToast} from '../toast';
+import {Suspense, useCallback} from 'react';
+import {showErrorToast} from '../toast';
 import Refreshable from './Refreshable';
 import {ErrorBoundary, ErrorBoundaryProps} from '../errorHandling';
 import {useFocusEffect} from '@react-navigation/native';
