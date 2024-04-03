@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useAppSelector} from '../redux_schema/hooks';
 import {selectSymbols} from '../redux_schema/symbolsSlice';
-import {memo, useCallback, useMemo, useState, useTransition} from 'react';
+import {memo, useCallback, useMemo, useState} from 'react';
 import {TickerOfficial} from '../__generated__/graphql';
 import Text from '../components/Text';
 import {
@@ -25,7 +25,6 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {StackParamList} from '../App';
 import Symbol from '../components/Symbol';
 import SearchIcon from '../../assets/icons/search-icon.svg';
-import {SearchSource} from 'jest';
 
 export default function SymbolPicker({
   route,
@@ -61,6 +60,7 @@ export default function SymbolPicker({
             onChangeText={onChangeSearch}
             value={search}
             placeholder="Search"
+            placeholderTextColor={onSurface(theme)}
           />
         </View>
       }

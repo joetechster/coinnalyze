@@ -1,11 +1,11 @@
 import {useSuspenseQuery} from '@apollo/client';
 import useTheme from '../hooks/useTheme';
 import {TICKER_QUERY, Theme, surface} from '../globals';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import Text, {BoldText} from './Text';
 import Symbol from './Symbol';
 import {ErrorBoundary, ErrorBoundaryProps} from '../errorHandling';
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import Refreshable, {RefreshableProps} from './Refreshable';
 import {formatPrice} from '../helpers/helpers';
 
@@ -27,6 +27,7 @@ export default function Comparer(
 }
 
 function ComparerInner({compare}: ComparerProps) {
+  const [presision, setPresision] = useState(2);
   const {style} = useTheme(styleDecorator);
   const {data} = useSuspenseQuery(TICKER_QUERY, {
     variables: {symbols: compare},
@@ -35,12 +36,14 @@ function ComparerInner({compare}: ComparerProps) {
   const ticker2 = data.tickers.find(t => t.symbol === compare[1])!;
 
   return (
-    <View style={style.comparer}>
+    <Pressable
+      style={style.comparer}
+      onPress={() => setPresision(prev => (prev === 10 ? 2 : 10))}>
       <Text>
         1 <Symbol symbol={ticker1.symbol!} nosuffix /> is
       </Text>
       <BoldText style={style.comparerPrice}>
-        {formatPrice(ticker1.lastPrice! / ticker2.lastPrice!, 2)}
+        {formatPrice(ticker1.lastPrice! / ticker2.lastPrice!, presision)}
         <Symbol
           symbol={ticker2.symbol!}
           size={0.8}
@@ -48,7 +51,7 @@ function ComparerInner({compare}: ComparerProps) {
           nosuffix
         />
       </BoldText>
-    </View>
+    </Pressable>
   );
 }
 

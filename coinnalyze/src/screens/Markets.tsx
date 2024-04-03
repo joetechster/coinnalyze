@@ -55,7 +55,8 @@ function styleDecorator(theme: Theme) {
     tabBarLabelStyle: {
       color: onBackground(theme),
       fontFamily: fontFamilies.bold,
-      fontSize: 12,
+      fontSize: 13,
+      textTransform: 'capitalize',
     },
     tabBarIndicatorStyle: {backgroundColor: primary(theme)},
     tabBarIndicatorContainerStyle: {

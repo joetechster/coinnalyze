@@ -76,7 +76,7 @@ function SymbolListItem({
         <Symbol symbol={symbol} />
         <Text style={style.subTitle}>
           {moment().diff(moment(parseInt(closeTime!))) < 10000
-            ? 'now'
+            ? 'Real time'
             : moment(parseInt(closeTime!)).fromNow()}
         </Text>
       </View>

@@ -56,7 +56,7 @@ function Moment({closeTime}: {closeTime: number}) {
   const calcFromNow = useCallback(
     () =>
       moment().diff(moment(closeTime!)) < 10000
-        ? 'now'
+        ? 'Now'
         : moment(closeTime!).fromNow(),
     [],
   );
