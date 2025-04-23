@@ -1,24 +1,53 @@
-# Coinnalayze
 
-**Coinnalayze** is a cryptocurrency tracking application that allows users to monitor live cryptocurrency movement using GraphQL and the Binance API. The backend is powered by Node.js, while the frontend is built with React Native, providing a seamless and responsive mobile experience.
+# Coinnalyze - Cryptocurrency Tracker
+
+A React Native mobile application for tracking cryptocurrency prices, market trends, and news.
 
 ## Features
+- **Real-time price tracking for ETH/USDT, BTC/USDT and other pairs (No refreshing to see updated price)**
+<table>
+  <tr>
+   <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/realtime-tracking.gif?raw=true" width="300" alt="Real time price tracking"></td>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/Markets.jpg?raw=true" width="300" alt="Market"></td>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/Marketlight.jpg?raw=true" width="300" alt="Market light mode"></td>
+    </tr>
+</table>
 
-- **Live Cryptocurrency Data**: Fetch real-time cryptocurrency prices and movements from the Binance API.
-- **GraphQL API**: Efficient data fetching with GraphQL for optimized performance and flexibility.
-- **React Native Frontend**: A smooth, responsive mobile interface for tracking your favorite cryptocurrencies.
-- **Node.js Backend**: Backend service that integrates with Binance API to serve data via GraphQL.
-- **Cross-Platform Support**: Works on both Android and iOS devices.
+- **News aggregation for crypto markets**
+<table>
+  <tr>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/News.jpg?raw=true" width="300" alt="News"></td>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/Newslight.jpg?raw=true" width="300" alt="News light mode"></td>
+    </tr>
+</table>
 
-## Technologies Used
+- **Compare two cryptocurrencies (Market comparison)**
+<table>
+  <tr>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/compare.gif?raw=true" width="300" alt="Crypto comparison"></td>
+    <td><img src="https://github.com/joetechster/coinnalyze/blob/main/media/Comparelight.jpg?raw=true" width="300" alt="Crypto comparison light mode"></td>
+    </tr>
+</table>
 
-### Backend
-- **Node.js**: Server-side JavaScript runtime.
-- **Express.js**: Web framework for building the backend API.
-- **GraphQL**: Query language for interacting with the backend and fetching cryptocurrency data.
-- **Binance API**: Real-time cryptocurrency market data provider.
+- **Support for Light and Dark theme / Theme switching**
+<table>
 
-### Frontend
-- **React Native**: Cross-platform mobile framework for building iOS and Android applications.
-- **Apollo Client**: GraphQL client for querying the backend.
-- **Redux**: State management for handling app state.
+<img src="https://github.com/joetechster/coinnalyze/blob/main/media/themeswitch.gif?raw=true" width="300" alt="Theme switching">
+</table>
+
+
+## Tech Stack
+- TypeScript
+- React Native
+- React Navigation
+- Redux ( for state management)
+- GraphQL (for realtime price updates)
+- Charting library (for price history)
+
+## Getting Started
+1. Clone this repository
+2. `npm install`
+3. `npx react-native run-android` or `npx react-native run-ios`
+
+## Demo
+Try the live demo on [Expo](https://expo.io/@yourusername/coimalyze)
