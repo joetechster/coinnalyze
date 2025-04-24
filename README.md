@@ -46,8 +46,9 @@ A React Native mobile application for tracking cryptocurrency prices, market tre
 
 ## Getting Started
 1. Clone this repository
+2. `cd coinnalyze/coinnalyze`
 2. `npm install`
 3. `npx react-native run-android` or `npx react-native run-ios`
 
-## Demo
-Try the live demo on [Expo](https://expo.io/@yourusername/coimalyze)
+## Try it out yourself
+[Install Android Application](https://github.com/joetechster/coinnalyze/releases/download/v1.0.0/coinnalyze.apk)
